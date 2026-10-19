@@ -1,0 +1,1924 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" width="2080" height="2541" viewBox="0 0 2080 2541" data-source="Micro_Lending_ERD.drawio" data-source-sha256="76061a539f952f8d3cb30b9db51fef15459bbb2770527770e5bdc8adc63ec2c3" data-page-id="funding" role="img" aria-label="02 Accounts requests and funding">
+  <title>02 Accounts requests and funding</title>
+  <rect width="100%" height="100%" fill="#ffffff" />
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#235983" />
+    </marker>
+  </defs>
+  <g data-cell-id="funding.title">
+    <text x="45.0" y="60.25" font-family="DejaVu Sans" font-size="30.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="45.0" dy="0">Micro-lending · accounts, requests and funding</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.subtitle">
+    <text x="45.0" y="109.75" font-family="DejaVu Sans" font-size="18.0" fill="#183247" text-anchor="start">
+      <tspan x="45.0" dy="0">PK primary key · U# unique group · F## foreign key · G generated · FK cards give counts in both directions.</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.User">
+    <rect stroke="#235983" fill="white" stroke-width="1.5" x="40.0" y="170.0" width="650.0" height="459.0" />
+  </g>
+  <g data-cell-id="funding.User.header">
+    <rect stroke="#235983" fill="#eef5f9" stroke-width="1.5" x="40.0" y="170.0" width="650.0" height="58.0" />
+  </g>
+  <g data-cell-id="funding.User.name">
+    <text x="52.0" y="197.75" font-family="DejaVu Sans" font-size="22.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="52.0" dy="0">User</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.User.kind">
+    <text x="52.0" y="219.5" font-family="DejaVu Sans" font-size="12.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">Strong · FR-01–FR-04; BR-01, BR-03; SEC-01</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.User.label.Attribute">
+    <text x="52.0" y="251.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="52.0" dy="0">Attribute</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.User.label.MySQL type">
+    <text x="340.0" y="251.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="340.0" dy="0">MySQL type</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.User.label.Keys">
+    <text x="525.0" y="251.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="525.0" dy="0">Keys</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.User.label.NULL">
+    <text x="630.0" y="251.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="630.0" dy="0">NULL</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.User.UserID">
+    <rect stroke="none" fill="#f6f9fb" stroke-width="1.5" x="40.0" y="265.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.User.UserID.name">
+    <text x="52.0" y="286.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start" text-decoration="underline">
+      <tspan x="52.0" dy="0">UserID</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.User.UserID.type">
+    <text x="340.0" y="286.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="340.0" dy="0">BIGINT UNSIGNED</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.User.UserID.keys">
+    <text x="525.0" y="285.0" font-family="DejaVu Sans" font-size="12.0" fill="#183247" text-anchor="start">
+      <tspan x="525.0" dy="0">PK</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.User.UserID.null">
+    <text x="630.0" y="285.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="630.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.User.LoginName">
+    <rect stroke="none" fill="white" stroke-width="1.5" x="40.0" y="296.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.User.LoginName.name">
+    <text x="52.0" y="317.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">LoginName</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.User.LoginName.type">
+    <text x="340.0" y="317.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="340.0" dy="0">VARCHAR(80)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.User.LoginName.keys">
+    <text x="525.0" y="316.0" font-family="DejaVu Sans" font-size="12.0" fill="#183247" text-anchor="start">
+      <tspan x="525.0" dy="0">U1</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.User.LoginName.null">
+    <text x="630.0" y="316.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="630.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.User.DisplayName">
+    <rect stroke="none" fill="#f6f9fb" stroke-width="1.5" x="40.0" y="327.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.User.DisplayName.name">
+    <text x="52.0" y="348.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">DisplayName</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.User.DisplayName.type">
+    <text x="340.0" y="348.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="340.0" dy="0">VARCHAR(120)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.User.DisplayName.keys" />
+  <g data-cell-id="funding.User.DisplayName.null">
+    <text x="630.0" y="347.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="630.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.User.PublicAlias">
+    <rect stroke="none" fill="white" stroke-width="1.5" x="40.0" y="358.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.User.PublicAlias.name">
+    <text x="52.0" y="379.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">PublicAlias</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.User.PublicAlias.type">
+    <text x="340.0" y="379.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="340.0" dy="0">VARCHAR(40)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.User.PublicAlias.keys">
+    <text x="525.0" y="378.0" font-family="DejaVu Sans" font-size="12.0" fill="#183247" text-anchor="start">
+      <tspan x="525.0" dy="0">U2</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.User.PublicAlias.null">
+    <text x="630.0" y="378.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="630.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.User.PrivateEmailCipher">
+    <rect stroke="none" fill="#f6f9fb" stroke-width="1.5" x="40.0" y="389.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.User.PrivateEmailCipher.name">
+    <text x="52.0" y="410.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">PrivateEmailCipher</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.User.PrivateEmailCipher.type">
+    <text x="340.0" y="410.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="340.0" dy="0">VARBINARY(512)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.User.PrivateEmailCipher.keys" />
+  <g data-cell-id="funding.User.PrivateEmailCipher.null">
+    <text x="630.0" y="409.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="630.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.User.PasswordHash">
+    <rect stroke="none" fill="white" stroke-width="1.5" x="40.0" y="420.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.User.PasswordHash.name">
+    <text x="52.0" y="441.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">PasswordHash</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.User.PasswordHash.type">
+    <text x="340.0" y="441.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="340.0" dy="0">VARCHAR(255)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.User.PasswordHash.keys" />
+  <g data-cell-id="funding.User.PasswordHash.null">
+    <text x="630.0" y="440.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="630.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.User.AccountStatus">
+    <rect stroke="none" fill="#f6f9fb" stroke-width="1.5" x="40.0" y="451.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.User.AccountStatus.name">
+    <text x="52.0" y="472.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">AccountStatus</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.User.AccountStatus.type">
+    <text x="340.0" y="472.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="340.0" dy="0">VARCHAR(16)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.User.AccountStatus.keys" />
+  <g data-cell-id="funding.User.AccountStatus.null">
+    <text x="630.0" y="471.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="630.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.User.CreatedAt">
+    <rect stroke="none" fill="white" stroke-width="1.5" x="40.0" y="482.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.User.CreatedAt.name">
+    <text x="52.0" y="503.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">CreatedAt</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.User.CreatedAt.type">
+    <text x="340.0" y="503.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="340.0" dy="0">DATETIME(6)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.User.CreatedAt.keys" />
+  <g data-cell-id="funding.User.CreatedAt.null">
+    <text x="630.0" y="502.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="630.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.User.RowVersion">
+    <rect stroke="none" fill="#f6f9fb" stroke-width="1.5" x="40.0" y="513.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.User.RowVersion.name">
+    <text x="52.0" y="534.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">RowVersion</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.User.RowVersion.type">
+    <text x="340.0" y="534.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="340.0" dy="0">BIGINT UNSIGNED</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.User.RowVersion.keys" />
+  <g data-cell-id="funding.User.RowVersion.null">
+    <text x="630.0" y="533.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="630.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.User.constraints">
+    <text x="52.0" y="572.375" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">PK: UserID</tspan>
+      <tspan x="52.0" dy="18.75">U1: LoginName</tspan>
+      <tspan x="52.0" dy="18.75">U2: PublicAlias</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.Role">
+    <rect stroke="#235983" fill="white" stroke-width="1.5" x="1060.0" y="170.0" width="650.0" height="221.0" />
+  </g>
+  <g data-cell-id="funding.Role.header">
+    <rect stroke="#235983" fill="#eef5f9" stroke-width="1.5" x="1060.0" y="170.0" width="650.0" height="58.0" />
+  </g>
+  <g data-cell-id="funding.Role.name">
+    <text x="1072.0" y="197.75" font-family="DejaVu Sans" font-size="22.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="1072.0" dy="0">Role</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.Role.kind">
+    <text x="1072.0" y="219.5" font-family="DejaVu Sans" font-size="12.0" fill="#183247" text-anchor="start">
+      <tspan x="1072.0" dy="0">Lookup/reference · FR-02; SEC-06, SEC-13</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.Role.label.Attribute">
+    <text x="1072.0" y="251.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="1072.0" dy="0">Attribute</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.Role.label.MySQL type">
+    <text x="1360.0" y="251.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="1360.0" dy="0">MySQL type</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.Role.label.Keys">
+    <text x="1545.0" y="251.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="1545.0" dy="0">Keys</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.Role.label.NULL">
+    <text x="1650.0" y="251.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="1650.0" dy="0">NULL</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.Role.RoleCode">
+    <rect stroke="none" fill="#f6f9fb" stroke-width="1.5" x="1060.0" y="265.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.Role.RoleCode.name">
+    <text x="1072.0" y="286.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start" text-decoration="underline">
+      <tspan x="1072.0" dy="0">RoleCode</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.Role.RoleCode.type">
+    <text x="1360.0" y="286.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="1360.0" dy="0">VARCHAR(16)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.Role.RoleCode.keys">
+    <text x="1545.0" y="285.0" font-family="DejaVu Sans" font-size="12.0" fill="#183247" text-anchor="start">
+      <tspan x="1545.0" dy="0">PK</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.Role.RoleCode.null">
+    <text x="1650.0" y="285.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="1650.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.Role.Description">
+    <rect stroke="none" fill="white" stroke-width="1.5" x="1060.0" y="296.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.Role.Description.name">
+    <text x="1072.0" y="317.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="1072.0" dy="0">Description</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.Role.Description.type">
+    <text x="1360.0" y="317.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="1360.0" dy="0">VARCHAR(255)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.Role.Description.keys" />
+  <g data-cell-id="funding.Role.Description.null">
+    <text x="1650.0" y="316.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="1650.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.Role.constraints">
+    <text x="1072.0" y="354.25" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="1072.0" dy="0">PK: RoleCode</tspan>
+      <tspan x="1072.0" dy="18.75">No additional UNIQUE constraint.</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.UserRole">
+    <rect stroke="#235983" fill="white" stroke-width="1.5" x="1060.0" y="436.0" width="650.0" height="428.0" />
+  </g>
+  <g data-cell-id="funding.UserRole.header">
+    <rect stroke="#235983" fill="#eef5f9" stroke-width="1.5" x="1060.0" y="436.0" width="650.0" height="58.0" />
+  </g>
+  <g data-cell-id="funding.UserRole.name">
+    <text x="1072.0" y="463.75" font-family="DejaVu Sans" font-size="22.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="1072.0" dy="0">UserRole</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.UserRole.kind">
+    <text x="1072.0" y="485.5" font-family="DejaVu Sans" font-size="12.0" fill="#183247" text-anchor="start">
+      <tspan x="1072.0" dy="0">Associative/history · FR-02; BR-01, BR-03; SEC-14</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.UserRole.label.Attribute">
+    <text x="1072.0" y="517.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="1072.0" dy="0">Attribute</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.UserRole.label.MySQL type">
+    <text x="1360.0" y="517.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="1360.0" dy="0">MySQL type</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.UserRole.label.Keys">
+    <text x="1545.0" y="517.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="1545.0" dy="0">Keys</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.UserRole.label.NULL">
+    <text x="1650.0" y="517.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="1650.0" dy="0">NULL</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.UserRole.UserRoleID">
+    <rect stroke="none" fill="#f6f9fb" stroke-width="1.5" x="1060.0" y="531.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.UserRole.UserRoleID.name">
+    <text x="1072.0" y="552.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start" text-decoration="underline">
+      <tspan x="1072.0" dy="0">UserRoleID</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.UserRole.UserRoleID.type">
+    <text x="1360.0" y="552.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="1360.0" dy="0">BIGINT UNSIGNED</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.UserRole.UserRoleID.keys">
+    <text x="1545.0" y="551.0" font-family="DejaVu Sans" font-size="12.0" fill="#183247" text-anchor="start">
+      <tspan x="1545.0" dy="0">PK</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.UserRole.UserRoleID.null">
+    <text x="1650.0" y="551.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="1650.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.UserRole.UserID">
+    <rect stroke="none" fill="white" stroke-width="1.5" x="1060.0" y="562.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.UserRole.UserID.name">
+    <text x="1072.0" y="583.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="1072.0" dy="0">UserID</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.UserRole.UserID.type">
+    <text x="1360.0" y="583.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="1360.0" dy="0">BIGINT UNSIGNED</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.UserRole.UserID.keys">
+    <text x="1545.0" y="582.0" font-family="DejaVu Sans" font-size="12.0" fill="#183247" text-anchor="start">
+      <tspan x="1545.0" dy="0">U1 F01</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.UserRole.UserID.null">
+    <text x="1650.0" y="582.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="1650.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.UserRole.RoleCode">
+    <rect stroke="none" fill="#f6f9fb" stroke-width="1.5" x="1060.0" y="593.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.UserRole.RoleCode.name">
+    <text x="1072.0" y="614.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="1072.0" dy="0">RoleCode</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.UserRole.RoleCode.type">
+    <text x="1360.0" y="614.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="1360.0" dy="0">VARCHAR(16)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.UserRole.RoleCode.keys">
+    <text x="1545.0" y="613.0" font-family="DejaVu Sans" font-size="12.0" fill="#183247" text-anchor="start">
+      <tspan x="1545.0" dy="0">U1 F02</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.UserRole.RoleCode.null">
+    <text x="1650.0" y="613.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="1650.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.UserRole.GrantedAt">
+    <rect stroke="none" fill="white" stroke-width="1.5" x="1060.0" y="624.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.UserRole.GrantedAt.name">
+    <text x="1072.0" y="645.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="1072.0" dy="0">GrantedAt</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.UserRole.GrantedAt.type">
+    <text x="1360.0" y="645.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="1360.0" dy="0">DATETIME(6)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.UserRole.GrantedAt.keys" />
+  <g data-cell-id="funding.UserRole.GrantedAt.null">
+    <text x="1650.0" y="644.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="1650.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.UserRole.GrantedByUserID">
+    <rect stroke="none" fill="#f6f9fb" stroke-width="1.5" x="1060.0" y="655.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.UserRole.GrantedByUserID.name">
+    <text x="1072.0" y="676.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="1072.0" dy="0">GrantedByUserID</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.UserRole.GrantedByUserID.type">
+    <text x="1360.0" y="676.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="1360.0" dy="0">BIGINT UNSIGNED</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.UserRole.GrantedByUserID.keys">
+    <text x="1545.0" y="675.0" font-family="DejaVu Sans" font-size="12.0" fill="#183247" text-anchor="start">
+      <tspan x="1545.0" dy="0">F03</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.UserRole.GrantedByUserID.null">
+    <text x="1650.0" y="675.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="1650.0" dy="0">Yes</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.UserRole.RevokedAt">
+    <rect stroke="none" fill="white" stroke-width="1.5" x="1060.0" y="686.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.UserRole.RevokedAt.name">
+    <text x="1072.0" y="707.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="1072.0" dy="0">RevokedAt</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.UserRole.RevokedAt.type">
+    <text x="1360.0" y="707.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="1360.0" dy="0">DATETIME(6)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.UserRole.RevokedAt.keys" />
+  <g data-cell-id="funding.UserRole.RevokedAt.null">
+    <text x="1650.0" y="706.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="1650.0" dy="0">Yes</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.UserRole.RevokedByUserID">
+    <rect stroke="none" fill="#f6f9fb" stroke-width="1.5" x="1060.0" y="717.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.UserRole.RevokedByUserID.name">
+    <text x="1072.0" y="738.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="1072.0" dy="0">RevokedByUserID</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.UserRole.RevokedByUserID.type">
+    <text x="1360.0" y="738.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="1360.0" dy="0">BIGINT UNSIGNED</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.UserRole.RevokedByUserID.keys">
+    <text x="1545.0" y="737.0" font-family="DejaVu Sans" font-size="12.0" fill="#183247" text-anchor="start">
+      <tspan x="1545.0" dy="0">F04</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.UserRole.RevokedByUserID.null">
+    <text x="1650.0" y="737.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="1650.0" dy="0">Yes</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.UserRole.ActiveMarker">
+    <rect stroke="none" fill="white" stroke-width="1.5" x="1060.0" y="748.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.UserRole.ActiveMarker.name">
+    <text x="1072.0" y="769.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="1072.0" dy="0">ActiveMarker</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.UserRole.ActiveMarker.type">
+    <text x="1360.0" y="769.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="1360.0" dy="0">TINYINT</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.UserRole.ActiveMarker.keys">
+    <text x="1545.0" y="768.0" font-family="DejaVu Sans" font-size="12.0" fill="#183247" text-anchor="start">
+      <tspan x="1545.0" dy="0">G U1</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.UserRole.ActiveMarker.null">
+    <text x="1650.0" y="768.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="1650.0" dy="0">G/Yes</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.UserRole.constraints">
+    <text x="1072.0" y="807.375" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="1072.0" dy="0">PK: UserRoleID</tspan>
+      <tspan x="1072.0" dy="18.75">U1: UserID, RoleCode, ActiveMarker</tspan>
+      <tspan x="1072.0" dy="18.75">ActiveMarker: 1 if active; otherwise NULL.</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.UserRole.ref.FK01">
+    <rect stroke="#8daec5" fill="#eef5f9" stroke-width="1.5" stroke-dasharray="6 4" x="1770.0" y="533.5" width="250.0" height="90.0" />
+    <text x="1895.0" y="557.5" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="middle">
+      <tspan x="1895.0" dy="0">FK01 → User</tspan>
+      <tspan x="1895.0" dy="17.5">UserID</tspan>
+      <tspan x="1895.0" dy="17.5">child → parent 1</tspan>
+      <tspan x="1895.0" dy="17.5">parent → child 0..N</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.UserRole.fk.FK01">
+    <polyline stroke="#235983" fill="none" stroke-width="1.8" points="1710.0,577.5 1735.0,577.5 1735.0,578.5 1770.0,578.5" />
+  </g>
+  <g data-cell-id="funding.UserRole.ref.FK02">
+    <rect stroke="#8daec5" fill="#eef5f9" stroke-width="1.5" stroke-dasharray="6 4" x="1770.0" y="635.5" width="250.0" height="90.0" />
+    <text x="1895.0" y="659.5" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="middle">
+      <tspan x="1895.0" dy="0">FK02 → Role</tspan>
+      <tspan x="1895.0" dy="17.5">RoleCode</tspan>
+      <tspan x="1895.0" dy="17.5">child → parent 1</tspan>
+      <tspan x="1895.0" dy="17.5">parent → child 0..N</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.UserRole.fk.FK02">
+    <polyline stroke="#235983" fill="none" stroke-width="1.8" points="1710.0,608.5 1743.0,608.5 1743.0,680.5 1770.0,680.5" />
+  </g>
+  <g data-cell-id="funding.UserRole.ref.FK03">
+    <rect stroke="#8daec5" fill="#eef5f9" stroke-width="1.5" stroke-dasharray="6 4" x="1770.0" y="737.5" width="250.0" height="90.0" />
+    <text x="1895.0" y="761.5" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="middle">
+      <tspan x="1895.0" dy="0">FK03 → User</tspan>
+      <tspan x="1895.0" dy="17.5">UserID</tspan>
+      <tspan x="1895.0" dy="17.5">child → parent 0..1</tspan>
+      <tspan x="1895.0" dy="17.5">parent → child 0..N</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.UserRole.fk.FK03">
+    <polyline stroke="#235983" fill="none" stroke-width="1.8" points="1710.0,670.5 1751.0,670.5 1751.0,782.5 1770.0,782.5" />
+  </g>
+  <g data-cell-id="funding.UserRole.ref.FK04">
+    <rect stroke="#8daec5" fill="#eef5f9" stroke-width="1.5" stroke-dasharray="6 4" x="1770.0" y="839.5" width="250.0" height="90.0" />
+    <text x="1895.0" y="863.5" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="middle">
+      <tspan x="1895.0" dy="0">FK04 → User</tspan>
+      <tspan x="1895.0" dy="17.5">UserID</tspan>
+      <tspan x="1895.0" dy="17.5">child → parent 0..1</tspan>
+      <tspan x="1895.0" dy="17.5">parent → child 0..N</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.UserRole.fk.FK04">
+    <polyline stroke="#235983" fill="none" stroke-width="1.8" points="1710.0,732.5 1759.0,732.5 1759.0,884.5 1770.0,884.5" />
+  </g>
+  <g data-cell-id="funding.BorrowerProfile">
+    <rect stroke="#235983" fill="white" stroke-width="1.5" x="40.0" y="674.0" width="650.0" height="314.0" />
+  </g>
+  <g data-cell-id="funding.BorrowerProfile.header">
+    <rect stroke="#235983" fill="#eef5f9" stroke-width="1.5" x="40.0" y="674.0" width="650.0" height="58.0" />
+  </g>
+  <g data-cell-id="funding.BorrowerProfile.name">
+    <text x="52.0" y="701.75" font-family="DejaVu Sans" font-size="22.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="52.0" dy="0">BorrowerProfile</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.BorrowerProfile.kind">
+    <text x="52.0" y="723.5" font-family="DejaVu Sans" font-size="12.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">Dependent 1:1 · FR-05; BR-01, BR-05; SEC-02, SEC-12</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.BorrowerProfile.label.Attribute">
+    <text x="52.0" y="755.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="52.0" dy="0">Attribute</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.BorrowerProfile.label.MySQL type">
+    <text x="340.0" y="755.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="340.0" dy="0">MySQL type</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.BorrowerProfile.label.Keys">
+    <text x="525.0" y="755.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="525.0" dy="0">Keys</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.BorrowerProfile.label.NULL">
+    <text x="630.0" y="755.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="630.0" dy="0">NULL</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.BorrowerProfile.UserID">
+    <rect stroke="none" fill="#f6f9fb" stroke-width="1.5" x="40.0" y="769.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.BorrowerProfile.UserID.name">
+    <text x="52.0" y="790.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start" text-decoration="underline">
+      <tspan x="52.0" dy="0">UserID</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.BorrowerProfile.UserID.type">
+    <text x="340.0" y="790.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="340.0" dy="0">BIGINT UNSIGNED</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.BorrowerProfile.UserID.keys">
+    <text x="525.0" y="789.0" font-family="DejaVu Sans" font-size="12.0" fill="#183247" text-anchor="start">
+      <tspan x="525.0" dy="0">PK F05</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.BorrowerProfile.UserID.null">
+    <text x="630.0" y="789.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="630.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.BorrowerProfile.MonthlyIncomeCipher">
+    <rect stroke="none" fill="white" stroke-width="1.5" x="40.0" y="800.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.BorrowerProfile.MonthlyIncomeCipher.name">
+    <text x="52.0" y="821.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">MonthlyIncomeCipher</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.BorrowerProfile.MonthlyIncomeCipher.type">
+    <text x="340.0" y="821.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="340.0" dy="0">VARBINARY(128)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.BorrowerProfile.MonthlyIncomeCipher.keys" />
+  <g data-cell-id="funding.BorrowerProfile.MonthlyIncomeCipher.null">
+    <text x="630.0" y="820.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="630.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.BorrowerProfile.ExternalObligationsCipher">
+    <rect stroke="none" fill="#f6f9fb" stroke-width="1.5" x="40.0" y="831.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.BorrowerProfile.ExternalObligationsCipher.name">
+    <text x="52.0" y="852.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">ExternalObligationsCipher</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.BorrowerProfile.ExternalObligationsCipher.type">
+    <text x="340.0" y="852.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="340.0" dy="0">VARBINARY(128)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.BorrowerProfile.ExternalObligationsCipher.keys" />
+  <g data-cell-id="funding.BorrowerProfile.ExternalObligationsCipher.null">
+    <text x="630.0" y="851.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="630.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.BorrowerProfile.UpdatedAt">
+    <rect stroke="none" fill="white" stroke-width="1.5" x="40.0" y="862.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.BorrowerProfile.UpdatedAt.name">
+    <text x="52.0" y="883.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">UpdatedAt</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.BorrowerProfile.UpdatedAt.type">
+    <text x="340.0" y="883.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="340.0" dy="0">DATETIME(6)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.BorrowerProfile.UpdatedAt.keys" />
+  <g data-cell-id="funding.BorrowerProfile.UpdatedAt.null">
+    <text x="630.0" y="882.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="630.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.BorrowerProfile.RowVersion">
+    <rect stroke="none" fill="#f6f9fb" stroke-width="1.5" x="40.0" y="893.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.BorrowerProfile.RowVersion.name">
+    <text x="52.0" y="914.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">RowVersion</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.BorrowerProfile.RowVersion.type">
+    <text x="340.0" y="914.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="340.0" dy="0">BIGINT UNSIGNED</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.BorrowerProfile.RowVersion.keys" />
+  <g data-cell-id="funding.BorrowerProfile.RowVersion.null">
+    <text x="630.0" y="913.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="630.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.BorrowerProfile.constraints">
+    <text x="52.0" y="951.25" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">PK: UserID</tspan>
+      <tspan x="52.0" dy="18.75">No additional UNIQUE constraint.</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.BorrowerProfile.ref.FK05">
+    <rect stroke="#8daec5" fill="#eef5f9" stroke-width="1.5" stroke-dasharray="6 4" x="750.0" y="744.0" width="250.0" height="90.0" />
+    <text x="875.0" y="768.0" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="middle">
+      <tspan x="875.0" dy="0">FK05 → User</tspan>
+      <tspan x="875.0" dy="17.5">UserID</tspan>
+      <tspan x="875.0" dy="17.5">child → parent 1</tspan>
+      <tspan x="875.0" dy="17.5">parent → child 0..1</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.BorrowerProfile.fk.FK05">
+    <polyline stroke="#235983" fill="none" stroke-width="1.8" points="690.0,784.5 715.0,784.5 715.0,789.0 750.0,789.0" />
+  </g>
+  <g data-cell-id="funding.LoanRequest">
+    <rect stroke="#235983" fill="white" stroke-width="1.5" x="1060.0" y="986.5" width="650.0" height="635.0" />
+  </g>
+  <g data-cell-id="funding.LoanRequest.header">
+    <rect stroke="#235983" fill="#eef5f9" stroke-width="1.5" x="1060.0" y="986.5" width="650.0" height="58.0" />
+  </g>
+  <g data-cell-id="funding.LoanRequest.name">
+    <text x="1072.0" y="1014.25" font-family="DejaVu Sans" font-size="22.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="1072.0" dy="0">LoanRequest</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.LoanRequest.kind">
+    <text x="1072.0" y="1036.0" font-family="DejaVu Sans" font-size="12.0" fill="#183247" text-anchor="start">
+      <tspan x="1072.0" dy="0">Strong · FR-06–FR-16, FR-24; BR-04–BR-13, BR-19</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.LoanRequest.label.Attribute">
+    <text x="1072.0" y="1067.625" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="1072.0" dy="0">Attribute</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.LoanRequest.label.MySQL type">
+    <text x="1360.0" y="1067.625" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="1360.0" dy="0">MySQL type</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.LoanRequest.label.Keys">
+    <text x="1545.0" y="1067.625" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="1545.0" dy="0">Keys</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.LoanRequest.label.NULL">
+    <text x="1650.0" y="1067.625" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="1650.0" dy="0">NULL</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.LoanRequest.RequestID">
+    <rect stroke="none" fill="#f6f9fb" stroke-width="1.5" x="1060.0" y="1081.5" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.LoanRequest.RequestID.name">
+    <text x="1072.0" y="1103.0" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start" text-decoration="underline">
+      <tspan x="1072.0" dy="0">RequestID</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.LoanRequest.RequestID.type">
+    <text x="1360.0" y="1102.625" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="1360.0" dy="0">BIGINT UNSIGNED</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.LoanRequest.RequestID.keys">
+    <text x="1545.0" y="1101.5" font-family="DejaVu Sans" font-size="12.0" fill="#183247" text-anchor="start">
+      <tspan x="1545.0" dy="0">PK</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.LoanRequest.RequestID.null">
+    <text x="1650.0" y="1102.25" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="1650.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.LoanRequest.BorrowerID">
+    <rect stroke="none" fill="white" stroke-width="1.5" x="1060.0" y="1112.5" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.LoanRequest.BorrowerID.name">
+    <text x="1072.0" y="1134.0" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="1072.0" dy="0">BorrowerID</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.LoanRequest.BorrowerID.type">
+    <text x="1360.0" y="1133.625" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="1360.0" dy="0">BIGINT UNSIGNED</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.LoanRequest.BorrowerID.keys">
+    <text x="1545.0" y="1132.5" font-family="DejaVu Sans" font-size="12.0" fill="#183247" text-anchor="start">
+      <tspan x="1545.0" dy="0">F06</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.LoanRequest.BorrowerID.null">
+    <text x="1650.0" y="1133.25" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="1650.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.LoanRequest.Purpose">
+    <rect stroke="none" fill="#f6f9fb" stroke-width="1.5" x="1060.0" y="1143.5" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.LoanRequest.Purpose.name">
+    <text x="1072.0" y="1165.0" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="1072.0" dy="0">Purpose</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.LoanRequest.Purpose.type">
+    <text x="1360.0" y="1164.625" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="1360.0" dy="0">VARCHAR(1000)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.LoanRequest.Purpose.keys" />
+  <g data-cell-id="funding.LoanRequest.Purpose.null">
+    <text x="1650.0" y="1164.25" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="1650.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.LoanRequest.Principal">
+    <rect stroke="none" fill="white" stroke-width="1.5" x="1060.0" y="1174.5" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.LoanRequest.Principal.name">
+    <text x="1072.0" y="1196.0" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="1072.0" dy="0">Principal</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.LoanRequest.Principal.type">
+    <text x="1360.0" y="1195.625" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="1360.0" dy="0">DECIMAL(18,2)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.LoanRequest.Principal.keys" />
+  <g data-cell-id="funding.LoanRequest.Principal.null">
+    <text x="1650.0" y="1195.25" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="1650.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.LoanRequest.InstallmentCount">
+    <rect stroke="none" fill="#f6f9fb" stroke-width="1.5" x="1060.0" y="1205.5" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.LoanRequest.InstallmentCount.name">
+    <text x="1072.0" y="1227.0" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="1072.0" dy="0">InstallmentCount</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.LoanRequest.InstallmentCount.type">
+    <text x="1360.0" y="1226.625" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="1360.0" dy="0">SMALLINT UNSIGNED</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.LoanRequest.InstallmentCount.keys" />
+  <g data-cell-id="funding.LoanRequest.InstallmentCount.null">
+    <text x="1650.0" y="1226.25" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="1650.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.LoanRequest.PolicyCode">
+    <rect stroke="none" fill="white" stroke-width="1.5" x="1060.0" y="1236.5" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.LoanRequest.PolicyCode.name">
+    <text x="1072.0" y="1258.0" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="1072.0" dy="0">PolicyCode</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.LoanRequest.PolicyCode.type">
+    <text x="1360.0" y="1257.625" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="1360.0" dy="0">VARCHAR(8)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.LoanRequest.PolicyCode.keys" />
+  <g data-cell-id="funding.LoanRequest.PolicyCode.null">
+    <text x="1650.0" y="1257.25" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="1650.0" dy="0">Yes</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.LoanRequest.RequestState">
+    <rect stroke="none" fill="#f6f9fb" stroke-width="1.5" x="1060.0" y="1267.5" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.LoanRequest.RequestState.name">
+    <text x="1072.0" y="1289.0" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="1072.0" dy="0">RequestState</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.LoanRequest.RequestState.type">
+    <text x="1360.0" y="1288.625" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="1360.0" dy="0">VARCHAR(20)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.LoanRequest.RequestState.keys" />
+  <g data-cell-id="funding.LoanRequest.RequestState.null">
+    <text x="1650.0" y="1288.25" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="1650.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.LoanRequest.CreatedAt">
+    <rect stroke="none" fill="white" stroke-width="1.5" x="1060.0" y="1298.5" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.LoanRequest.CreatedAt.name">
+    <text x="1072.0" y="1320.0" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="1072.0" dy="0">CreatedAt</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.LoanRequest.CreatedAt.type">
+    <text x="1360.0" y="1319.625" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="1360.0" dy="0">DATETIME(6)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.LoanRequest.CreatedAt.keys" />
+  <g data-cell-id="funding.LoanRequest.CreatedAt.null">
+    <text x="1650.0" y="1319.25" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="1650.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.LoanRequest.SubmittedAt">
+    <rect stroke="none" fill="#f6f9fb" stroke-width="1.5" x="1060.0" y="1329.5" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.LoanRequest.SubmittedAt.name">
+    <text x="1072.0" y="1351.0" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="1072.0" dy="0">SubmittedAt</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.LoanRequest.SubmittedAt.type">
+    <text x="1360.0" y="1350.625" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="1360.0" dy="0">DATETIME(6)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.LoanRequest.SubmittedAt.keys" />
+  <g data-cell-id="funding.LoanRequest.SubmittedAt.null">
+    <text x="1650.0" y="1350.25" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="1650.0" dy="0">Yes</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.LoanRequest.FundingDeadlineAt">
+    <rect stroke="none" fill="white" stroke-width="1.5" x="1060.0" y="1360.5" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.LoanRequest.FundingDeadlineAt.name">
+    <text x="1072.0" y="1382.0" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="1072.0" dy="0">FundingDeadlineAt</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.LoanRequest.FundingDeadlineAt.type">
+    <text x="1360.0" y="1381.625" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="1360.0" dy="0">DATETIME(6)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.LoanRequest.FundingDeadlineAt.keys" />
+  <g data-cell-id="funding.LoanRequest.FundingDeadlineAt.null">
+    <text x="1650.0" y="1381.25" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="1650.0" dy="0">Yes</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.LoanRequest.TerminalReason">
+    <rect stroke="none" fill="#f6f9fb" stroke-width="1.5" x="1060.0" y="1391.5" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.LoanRequest.TerminalReason.name">
+    <text x="1072.0" y="1413.0" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="1072.0" dy="0">TerminalReason</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.LoanRequest.TerminalReason.type">
+    <text x="1360.0" y="1412.625" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="1360.0" dy="0">VARCHAR(1000)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.LoanRequest.TerminalReason.keys" />
+  <g data-cell-id="funding.LoanRequest.TerminalReason.null">
+    <text x="1650.0" y="1412.25" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="1650.0" dy="0">Yes</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.LoanRequest.RowVersion">
+    <rect stroke="none" fill="white" stroke-width="1.5" x="1060.0" y="1422.5" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.LoanRequest.RowVersion.name">
+    <text x="1072.0" y="1444.0" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="1072.0" dy="0">RowVersion</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.LoanRequest.RowVersion.type">
+    <text x="1360.0" y="1443.625" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="1360.0" dy="0">BIGINT UNSIGNED</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.LoanRequest.RowVersion.keys" />
+  <g data-cell-id="funding.LoanRequest.RowVersion.null">
+    <text x="1650.0" y="1443.25" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="1650.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.LoanRequest.SubmittedIncomeCipher">
+    <rect stroke="none" fill="#f6f9fb" stroke-width="1.5" x="1060.0" y="1453.5" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.LoanRequest.SubmittedIncomeCipher.name">
+    <text x="1072.0" y="1475.0" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="1072.0" dy="0">SubmittedIncomeCipher</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.LoanRequest.SubmittedIncomeCipher.type">
+    <text x="1360.0" y="1474.625" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="1360.0" dy="0">VARBINARY(128)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.LoanRequest.SubmittedIncomeCipher.keys" />
+  <g data-cell-id="funding.LoanRequest.SubmittedIncomeCipher.null">
+    <text x="1650.0" y="1474.25" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="1650.0" dy="0">Yes</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.LoanRequest.SubmittedObligationsCipher">
+    <rect stroke="none" fill="white" stroke-width="1.5" x="1060.0" y="1484.5" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.LoanRequest.SubmittedObligationsCipher.name">
+    <text x="1072.0" y="1506.0" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="1072.0" dy="0">SubmittedObligationsCipher</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.LoanRequest.SubmittedObligationsCipher.type">
+    <text x="1360.0" y="1505.625" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="1360.0" dy="0">VARBINARY(128)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.LoanRequest.SubmittedObligationsCipher.keys" />
+  <g data-cell-id="funding.LoanRequest.SubmittedObligationsCipher.null">
+    <text x="1650.0" y="1505.25" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="1650.0" dy="0">Yes</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.LoanRequest.constraints">
+    <text x="1072.0" y="1545.0" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="1072.0" dy="0">PK: RequestID</tspan>
+      <tspan x="1072.0" dy="18.75">No additional UNIQUE constraint.</tspan>
+      <tspan x="1072.0" dy="18.75">Fixed D1. Frozen inputs required after submission; no borrower</tspan>
+      <tspan x="1072.0" dy="18.75">UNIQUE.</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.LoanRequest.ref.FK06">
+    <rect stroke="#8daec5" fill="#eef5f9" stroke-width="1.5" stroke-dasharray="6 4" x="1770.0" y="1084.0" width="250.0" height="90.0" />
+    <text x="1895.0" y="1108.0" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="middle">
+      <tspan x="1895.0" dy="0">FK06 → User</tspan>
+      <tspan x="1895.0" dy="17.5">UserID</tspan>
+      <tspan x="1895.0" dy="17.5">child → parent 1</tspan>
+      <tspan x="1895.0" dy="17.5">parent → child 0..N</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.LoanRequest.fk.FK06">
+    <polyline stroke="#235983" fill="none" stroke-width="1.8" points="1710.0,1128.0 1735.0,1128.0 1735.0,1129.0 1770.0,1129.0" />
+  </g>
+  <g data-cell-id="funding.RequestEvaluation">
+    <rect stroke="#235983" fill="white" stroke-width="1.5" x="40.0" y="1033.0" width="650.0" height="718.0" />
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.header">
+    <rect stroke="#235983" fill="#eef5f9" stroke-width="1.5" x="40.0" y="1033.0" width="650.0" height="58.0" />
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.name">
+    <text x="52.0" y="1060.75" font-family="DejaVu Sans" font-size="22.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="52.0" dy="0">RequestEvaluation</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.kind">
+    <text x="52.0" y="1082.5" font-family="DejaVu Sans" font-size="12.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">Dependent/history · FR-07–FR-09, FR-12; BR-04, BR-06, BR-07; AC-04, AC-29</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.label.Attribute">
+    <text x="52.0" y="1114.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="52.0" dy="0">Attribute</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.label.MySQL type">
+    <text x="340.0" y="1114.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="340.0" dy="0">MySQL type</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.label.Keys">
+    <text x="525.0" y="1114.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="525.0" dy="0">Keys</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.label.NULL">
+    <text x="630.0" y="1114.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="630.0" dy="0">NULL</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.EvaluationID">
+    <rect stroke="none" fill="#f6f9fb" stroke-width="1.5" x="40.0" y="1128.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.EvaluationID.name">
+    <text x="52.0" y="1149.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start" text-decoration="underline">
+      <tspan x="52.0" dy="0">EvaluationID</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.EvaluationID.type">
+    <text x="340.0" y="1149.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="340.0" dy="0">BIGINT UNSIGNED</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.EvaluationID.keys">
+    <text x="525.0" y="1148.0" font-family="DejaVu Sans" font-size="12.0" fill="#183247" text-anchor="start">
+      <tspan x="525.0" dy="0">PK</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.EvaluationID.null">
+    <text x="630.0" y="1148.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="630.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.RequestID">
+    <rect stroke="none" fill="white" stroke-width="1.5" x="40.0" y="1159.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.RequestID.name">
+    <text x="52.0" y="1180.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">RequestID</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.RequestID.type">
+    <text x="340.0" y="1180.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="340.0" dy="0">BIGINT UNSIGNED</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.RequestID.keys">
+    <text x="525.0" y="1179.0" font-family="DejaVu Sans" font-size="12.0" fill="#183247" text-anchor="start">
+      <tspan x="525.0" dy="0">U1 U2 F07</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.RequestID.null">
+    <text x="630.0" y="1179.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="630.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.EvaluationKind">
+    <rect stroke="none" fill="#f6f9fb" stroke-width="1.5" x="40.0" y="1190.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.EvaluationKind.name">
+    <text x="52.0" y="1211.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">EvaluationKind</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.EvaluationKind.type">
+    <text x="340.0" y="1211.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="340.0" dy="0">VARCHAR(16)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.EvaluationKind.keys">
+    <text x="525.0" y="1210.0" font-family="DejaVu Sans" font-size="12.0" fill="#183247" text-anchor="start">
+      <tspan x="525.0" dy="0">U1</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.EvaluationKind.null">
+    <text x="630.0" y="1210.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="630.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.AttemptNumber">
+    <rect stroke="none" fill="white" stroke-width="1.5" x="40.0" y="1221.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.AttemptNumber.name">
+    <text x="52.0" y="1242.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">AttemptNumber</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.AttemptNumber.type">
+    <text x="340.0" y="1242.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="340.0" dy="0">INT UNSIGNED</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.AttemptNumber.keys">
+    <text x="525.0" y="1241.0" font-family="DejaVu Sans" font-size="12.0" fill="#183247" text-anchor="start">
+      <tspan x="525.0" dy="0">U1</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.AttemptNumber.null">
+    <text x="630.0" y="1241.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="630.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.EvaluatedAt">
+    <rect stroke="none" fill="#f6f9fb" stroke-width="1.5" x="40.0" y="1252.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.EvaluatedAt.name">
+    <text x="52.0" y="1273.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">EvaluatedAt</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.EvaluatedAt.type">
+    <text x="340.0" y="1273.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="340.0" dy="0">DATETIME(6)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.EvaluatedAt.keys" />
+  <g data-cell-id="funding.RequestEvaluation.EvaluatedAt.null">
+    <text x="630.0" y="1272.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="630.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.PlatformBurdenCipher">
+    <rect stroke="none" fill="white" stroke-width="1.5" x="40.0" y="1283.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.PlatformBurdenCipher.name">
+    <text x="52.0" y="1304.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">PlatformBurdenCipher</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.PlatformBurdenCipher.type">
+    <text x="340.0" y="1304.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="340.0" dy="0">VARBINARY(128)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.PlatformBurdenCipher.keys" />
+  <g data-cell-id="funding.RequestEvaluation.PlatformBurdenCipher.null">
+    <text x="630.0" y="1303.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="630.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.NoDelinquencyPass">
+    <rect stroke="none" fill="#f6f9fb" stroke-width="1.5" x="40.0" y="1314.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.NoDelinquencyPass.name">
+    <text x="52.0" y="1335.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">NoDelinquencyPass</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.NoDelinquencyPass.type">
+    <text x="340.0" y="1335.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="340.0" dy="0">TINYINT UNSIGNED</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.NoDelinquencyPass.keys" />
+  <g data-cell-id="funding.RequestEvaluation.NoDelinquencyPass.null">
+    <text x="630.0" y="1334.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="630.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.AffordabilityPass">
+    <rect stroke="none" fill="white" stroke-width="1.5" x="40.0" y="1345.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.AffordabilityPass.name">
+    <text x="52.0" y="1366.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">AffordabilityPass</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.AffordabilityPass.type">
+    <text x="340.0" y="1366.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="340.0" dy="0">TINYINT UNSIGNED</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.AffordabilityPass.keys" />
+  <g data-cell-id="funding.RequestEvaluation.AffordabilityPass.null">
+    <text x="630.0" y="1365.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="630.0" dy="0">Yes</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.CompletedAt">
+    <rect stroke="none" fill="#f6f9fb" stroke-width="1.5" x="40.0" y="1376.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.CompletedAt.name">
+    <text x="52.0" y="1397.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">CompletedAt</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.CompletedAt.type">
+    <text x="340.0" y="1397.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="340.0" dy="0">DATETIME(6)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.CompletedAt.keys" />
+  <g data-cell-id="funding.RequestEvaluation.CompletedAt.null">
+    <text x="630.0" y="1396.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="630.0" dy="0">Yes</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.Result">
+    <rect stroke="none" fill="white" stroke-width="1.5" x="40.0" y="1407.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.Result.name">
+    <text x="52.0" y="1428.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">Result</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.Result.type">
+    <text x="340.0" y="1428.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="340.0" dy="0">VARCHAR(4)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.Result.keys">
+    <text x="525.0" y="1427.0" font-family="DejaVu Sans" font-size="12.0" fill="#183247" text-anchor="start">
+      <tspan x="525.0" dy="0">G</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.Result.null">
+    <text x="630.0" y="1427.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="630.0" dy="0">G/Yes</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.AdministratorID">
+    <rect stroke="none" fill="#f6f9fb" stroke-width="1.5" x="40.0" y="1438.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.AdministratorID.name">
+    <text x="52.0" y="1459.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">AdministratorID</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.AdministratorID.type">
+    <text x="340.0" y="1459.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="340.0" dy="0">BIGINT UNSIGNED</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.AdministratorID.keys">
+    <text x="525.0" y="1458.0" font-family="DejaVu Sans" font-size="12.0" fill="#183247" text-anchor="start">
+      <tspan x="525.0" dy="0">F08</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.AdministratorID.null">
+    <text x="630.0" y="1458.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="630.0" dy="0">Yes</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.Decision">
+    <rect stroke="none" fill="white" stroke-width="1.5" x="40.0" y="1469.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.Decision.name">
+    <text x="52.0" y="1490.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">Decision</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.Decision.type">
+    <text x="340.0" y="1490.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="340.0" dy="0">VARCHAR(8)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.Decision.keys" />
+  <g data-cell-id="funding.RequestEvaluation.Decision.null">
+    <text x="630.0" y="1489.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="630.0" dy="0">Yes</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.Reason">
+    <rect stroke="none" fill="#f6f9fb" stroke-width="1.5" x="40.0" y="1500.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.Reason.name">
+    <text x="52.0" y="1521.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">Reason</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.Reason.type">
+    <text x="340.0" y="1521.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="340.0" dy="0">VARCHAR(1000)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.Reason.keys" />
+  <g data-cell-id="funding.RequestEvaluation.Reason.null">
+    <text x="630.0" y="1520.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="630.0" dy="0">Yes</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.DecidedAt">
+    <rect stroke="none" fill="white" stroke-width="1.5" x="40.0" y="1531.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.DecidedAt.name">
+    <text x="52.0" y="1552.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">DecidedAt</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.DecidedAt.type">
+    <text x="340.0" y="1552.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="340.0" dy="0">DATETIME(6)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.DecidedAt.keys" />
+  <g data-cell-id="funding.RequestEvaluation.DecidedAt.null">
+    <text x="630.0" y="1551.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="630.0" dy="0">Yes</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.ContextID">
+    <rect stroke="none" fill="#f6f9fb" stroke-width="1.5" x="40.0" y="1562.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.ContextID.name">
+    <text x="52.0" y="1583.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">ContextID</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.ContextID.type">
+    <text x="340.0" y="1583.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="340.0" dy="0">BINARY(16)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.ContextID.keys" />
+  <g data-cell-id="funding.RequestEvaluation.ContextID.null">
+    <text x="630.0" y="1582.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="630.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.FinalReviewMarker">
+    <rect stroke="none" fill="white" stroke-width="1.5" x="40.0" y="1593.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.FinalReviewMarker.name">
+    <text x="52.0" y="1614.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">FinalReviewMarker</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.FinalReviewMarker.type">
+    <text x="340.0" y="1614.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="340.0" dy="0">TINYINT</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.FinalReviewMarker.keys">
+    <text x="525.0" y="1613.0" font-family="DejaVu Sans" font-size="12.0" fill="#183247" text-anchor="start">
+      <tspan x="525.0" dy="0">G U2</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.FinalReviewMarker.null">
+    <text x="630.0" y="1613.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="630.0" dy="0">G/Yes</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.constraints">
+    <text x="52.0" y="1654.625" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">PK: EvaluationID</tspan>
+      <tspan x="52.0" dy="18.75">U1: RequestID, EvaluationKind, AttemptNumber</tspan>
+      <tspan x="52.0" dy="18.75">U2: RequestID, FinalReviewMarker</tspan>
+      <tspan x="52.0" dy="18.75">Result: Pass iff both flags = 1 after completion.</tspan>
+      <tspan x="52.0" dy="18.75">FinalReviewMarker: 1 for a final Review; otherwise NULL.</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.ref.FK07">
+    <rect stroke="#8daec5" fill="#eef5f9" stroke-width="1.5" stroke-dasharray="6 4" x="750.0" y="1130.5" width="250.0" height="90.0" />
+    <text x="875.0" y="1154.5" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="middle">
+      <tspan x="875.0" dy="0">FK07 → LoanRequest</tspan>
+      <tspan x="875.0" dy="17.5">RequestID</tspan>
+      <tspan x="875.0" dy="17.5">child → parent 1</tspan>
+      <tspan x="875.0" dy="17.5">parent → child 0..N</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.fk.FK07">
+    <polyline stroke="#235983" fill="none" stroke-width="1.8" points="690.0,1174.5 715.0,1174.5 715.0,1175.5 750.0,1175.5" />
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.ref.FK08">
+    <rect stroke="#8daec5" fill="#eef5f9" stroke-width="1.5" stroke-dasharray="6 4" x="750.0" y="1409.5" width="250.0" height="90.0" />
+    <text x="875.0" y="1433.5" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="middle">
+      <tspan x="875.0" dy="0">FK08 → User</tspan>
+      <tspan x="875.0" dy="17.5">UserID</tspan>
+      <tspan x="875.0" dy="17.5">child → parent 0..1</tspan>
+      <tspan x="875.0" dy="17.5">parent → child 0..N</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.RequestEvaluation.fk.FK08">
+    <polyline stroke="#235983" fill="none" stroke-width="1.8" points="690.0,1453.5 723.0,1453.5 723.0,1454.5 750.0,1454.5" />
+  </g>
+  <g data-cell-id="funding.OperationReceipt">
+    <rect stroke="#235983" fill="white" stroke-width="1.5" x="1060.0" y="1666.5" width="650.0" height="314.0" />
+  </g>
+  <g data-cell-id="funding.OperationReceipt.header">
+    <rect stroke="#235983" fill="#eef5f9" stroke-width="1.5" x="1060.0" y="1666.5" width="650.0" height="58.0" />
+  </g>
+  <g data-cell-id="funding.OperationReceipt.name">
+    <text x="1072.0" y="1694.25" font-family="DejaVu Sans" font-size="22.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="1072.0" dy="0">OperationReceipt</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.OperationReceipt.kind">
+    <text x="1072.0" y="1716.0" font-family="DejaVu Sans" font-size="12.0" fill="#183247" text-anchor="start">
+      <tspan x="1072.0" dy="0">Technical/history · FR-30; BR-20; AC-15, AC-16</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.OperationReceipt.label.Attribute">
+    <text x="1072.0" y="1747.625" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="1072.0" dy="0">Attribute</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.OperationReceipt.label.MySQL type">
+    <text x="1360.0" y="1747.625" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="1360.0" dy="0">MySQL type</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.OperationReceipt.label.Keys">
+    <text x="1545.0" y="1747.625" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="1545.0" dy="0">Keys</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.OperationReceipt.label.NULL">
+    <text x="1650.0" y="1747.625" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="1650.0" dy="0">NULL</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.OperationReceipt.OperationID">
+    <rect stroke="none" fill="#f6f9fb" stroke-width="1.5" x="1060.0" y="1761.5" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.OperationReceipt.OperationID.name">
+    <text x="1072.0" y="1783.0" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start" text-decoration="underline">
+      <tspan x="1072.0" dy="0">OperationID</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.OperationReceipt.OperationID.type">
+    <text x="1360.0" y="1782.625" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="1360.0" dy="0">BIGINT UNSIGNED</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.OperationReceipt.OperationID.keys">
+    <text x="1545.0" y="1781.5" font-family="DejaVu Sans" font-size="12.0" fill="#183247" text-anchor="start">
+      <tspan x="1545.0" dy="0">PK</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.OperationReceipt.OperationID.null">
+    <text x="1650.0" y="1782.25" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="1650.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.OperationReceipt.CallerUserID">
+    <rect stroke="none" fill="white" stroke-width="1.5" x="1060.0" y="1792.5" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.OperationReceipt.CallerUserID.name">
+    <text x="1072.0" y="1814.0" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="1072.0" dy="0">CallerUserID</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.OperationReceipt.CallerUserID.type">
+    <text x="1360.0" y="1813.625" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="1360.0" dy="0">BIGINT UNSIGNED</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.OperationReceipt.CallerUserID.keys">
+    <text x="1545.0" y="1812.5" font-family="DejaVu Sans" font-size="12.0" fill="#183247" text-anchor="start">
+      <tspan x="1545.0" dy="0">U1 F09</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.OperationReceipt.CallerUserID.null">
+    <text x="1650.0" y="1813.25" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="1650.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.OperationReceipt.OperationReference">
+    <rect stroke="none" fill="#f6f9fb" stroke-width="1.5" x="1060.0" y="1823.5" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.OperationReceipt.OperationReference.name">
+    <text x="1072.0" y="1845.0" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="1072.0" dy="0">OperationReference</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.OperationReceipt.OperationReference.type">
+    <text x="1360.0" y="1844.625" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="1360.0" dy="0">VARCHAR(64)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.OperationReceipt.OperationReference.keys">
+    <text x="1545.0" y="1843.5" font-family="DejaVu Sans" font-size="12.0" fill="#183247" text-anchor="start">
+      <tspan x="1545.0" dy="0">U1</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.OperationReceipt.OperationReference.null">
+    <text x="1650.0" y="1844.25" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="1650.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.OperationReceipt.ActionCode">
+    <rect stroke="none" fill="white" stroke-width="1.5" x="1060.0" y="1854.5" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.OperationReceipt.ActionCode.name">
+    <text x="1072.0" y="1876.0" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="1072.0" dy="0">ActionCode</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.OperationReceipt.ActionCode.type">
+    <text x="1360.0" y="1875.625" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="1360.0" dy="0">VARCHAR(20)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.OperationReceipt.ActionCode.keys" />
+  <g data-cell-id="funding.OperationReceipt.ActionCode.null">
+    <text x="1650.0" y="1875.25" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="1650.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.OperationReceipt.ReceiptSnapshot">
+    <rect stroke="none" fill="#f6f9fb" stroke-width="1.5" x="1060.0" y="1885.5" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.OperationReceipt.ReceiptSnapshot.name">
+    <text x="1072.0" y="1907.0" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="1072.0" dy="0">ReceiptSnapshot</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.OperationReceipt.ReceiptSnapshot.type">
+    <text x="1360.0" y="1906.625" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="1360.0" dy="0">MEDIUMBLOB</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.OperationReceipt.ReceiptSnapshot.keys" />
+  <g data-cell-id="funding.OperationReceipt.ReceiptSnapshot.null">
+    <text x="1650.0" y="1906.25" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="1650.0" dy="0">Yes</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.OperationReceipt.constraints">
+    <text x="1072.0" y="1943.75" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="1072.0" dy="0">PK: OperationID</tspan>
+      <tspan x="1072.0" dy="18.75">U1: CallerUserID, OperationReference</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.OperationReceipt.ref.FK09">
+    <rect stroke="#8daec5" fill="#eef5f9" stroke-width="1.5" stroke-dasharray="6 4" x="1770.0" y="1764.0" width="250.0" height="90.0" />
+    <text x="1895.0" y="1788.0" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="middle">
+      <tspan x="1895.0" dy="0">FK09 → User</tspan>
+      <tspan x="1895.0" dy="17.5">UserID</tspan>
+      <tspan x="1895.0" dy="17.5">child → parent 1</tspan>
+      <tspan x="1895.0" dy="17.5">parent → child 0..N</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.OperationReceipt.fk.FK09">
+    <polyline stroke="#235983" fill="none" stroke-width="1.8" points="1710.0,1808.0 1735.0,1808.0 1735.0,1809.0 1770.0,1809.0" />
+  </g>
+  <g data-cell-id="funding.FundingCommitment">
+    <rect stroke="#235983" fill="white" stroke-width="1.5" x="40.0" y="1796.0" width="650.0" height="480.0" />
+  </g>
+  <g data-cell-id="funding.FundingCommitment.header">
+    <rect stroke="#235983" fill="#eef5f9" stroke-width="1.5" x="40.0" y="1796.0" width="650.0" height="58.0" />
+  </g>
+  <g data-cell-id="funding.FundingCommitment.name">
+    <text x="52.0" y="1823.75" font-family="DejaVu Sans" font-size="22.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="52.0" dy="0">FundingCommitment</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.FundingCommitment.kind">
+    <text x="52.0" y="1845.5" font-family="DejaVu Sans" font-size="12.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">Associative/event · FR-12–FR-16; BR-09–BR-12, BR-20</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.FundingCommitment.label.Attribute">
+    <text x="52.0" y="1877.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="52.0" dy="0">Attribute</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.FundingCommitment.label.MySQL type">
+    <text x="340.0" y="1877.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="340.0" dy="0">MySQL type</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.FundingCommitment.label.Keys">
+    <text x="525.0" y="1877.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="525.0" dy="0">Keys</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.FundingCommitment.label.NULL">
+    <text x="630.0" y="1877.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="630.0" dy="0">NULL</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.FundingCommitment.CommitmentID">
+    <rect stroke="none" fill="#f6f9fb" stroke-width="1.5" x="40.0" y="1891.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.FundingCommitment.CommitmentID.name">
+    <text x="52.0" y="1912.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start" text-decoration="underline">
+      <tspan x="52.0" dy="0">CommitmentID</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.FundingCommitment.CommitmentID.type">
+    <text x="340.0" y="1912.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="340.0" dy="0">BIGINT UNSIGNED</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.FundingCommitment.CommitmentID.keys">
+    <text x="525.0" y="1911.0" font-family="DejaVu Sans" font-size="12.0" fill="#183247" text-anchor="start">
+      <tspan x="525.0" dy="0">PK</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.FundingCommitment.CommitmentID.null">
+    <text x="630.0" y="1911.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="630.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.FundingCommitment.RequestID">
+    <rect stroke="none" fill="white" stroke-width="1.5" x="40.0" y="1922.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.FundingCommitment.RequestID.name">
+    <text x="52.0" y="1943.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">RequestID</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.FundingCommitment.RequestID.type">
+    <text x="340.0" y="1943.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="340.0" dy="0">BIGINT UNSIGNED</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.FundingCommitment.RequestID.keys">
+    <text x="525.0" y="1942.0" font-family="DejaVu Sans" font-size="12.0" fill="#183247" text-anchor="start">
+      <tspan x="525.0" dy="0">F10</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.FundingCommitment.RequestID.null">
+    <text x="630.0" y="1942.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="630.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.FundingCommitment.OperationID">
+    <rect stroke="none" fill="#f6f9fb" stroke-width="1.5" x="40.0" y="1953.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.FundingCommitment.OperationID.name">
+    <text x="52.0" y="1974.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">OperationID</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.FundingCommitment.OperationID.type">
+    <text x="340.0" y="1974.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="340.0" dy="0">BIGINT UNSIGNED</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.FundingCommitment.OperationID.keys">
+    <text x="525.0" y="1973.0" font-family="DejaVu Sans" font-size="12.0" fill="#183247" text-anchor="start">
+      <tspan x="525.0" dy="0">U1 F11</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.FundingCommitment.OperationID.null">
+    <text x="630.0" y="1973.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="630.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.FundingCommitment.EvaluationID">
+    <rect stroke="none" fill="white" stroke-width="1.5" x="40.0" y="1984.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.FundingCommitment.EvaluationID.name">
+    <text x="52.0" y="2005.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">EvaluationID</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.FundingCommitment.EvaluationID.type">
+    <text x="340.0" y="2005.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="340.0" dy="0">BIGINT UNSIGNED</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.FundingCommitment.EvaluationID.keys">
+    <text x="525.0" y="2004.0" font-family="DejaVu Sans" font-size="12.0" fill="#183247" text-anchor="start">
+      <tspan x="525.0" dy="0">U2 F12</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.FundingCommitment.EvaluationID.null">
+    <text x="630.0" y="2004.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="630.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.FundingCommitment.Amount">
+    <rect stroke="none" fill="#f6f9fb" stroke-width="1.5" x="40.0" y="2015.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.FundingCommitment.Amount.name">
+    <text x="52.0" y="2036.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">Amount</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.FundingCommitment.Amount.type">
+    <text x="340.0" y="2036.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="340.0" dy="0">DECIMAL(18,2)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.FundingCommitment.Amount.keys" />
+  <g data-cell-id="funding.FundingCommitment.Amount.null">
+    <text x="630.0" y="2035.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="630.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.FundingCommitment.CommitmentState">
+    <rect stroke="none" fill="white" stroke-width="1.5" x="40.0" y="2046.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.FundingCommitment.CommitmentState.name">
+    <text x="52.0" y="2067.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">CommitmentState</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.FundingCommitment.CommitmentState.type">
+    <text x="340.0" y="2067.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="340.0" dy="0">VARCHAR(8)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.FundingCommitment.CommitmentState.keys" />
+  <g data-cell-id="funding.FundingCommitment.CommitmentState.null">
+    <text x="630.0" y="2066.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="630.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.FundingCommitment.CreatedAt">
+    <rect stroke="none" fill="#f6f9fb" stroke-width="1.5" x="40.0" y="2077.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.FundingCommitment.CreatedAt.name">
+    <text x="52.0" y="2098.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">CreatedAt</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.FundingCommitment.CreatedAt.type">
+    <text x="340.0" y="2098.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="340.0" dy="0">DATETIME(6)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.FundingCommitment.CreatedAt.keys" />
+  <g data-cell-id="funding.FundingCommitment.CreatedAt.null">
+    <text x="630.0" y="2097.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="630.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.FundingCommitment.AppliedAt">
+    <rect stroke="none" fill="white" stroke-width="1.5" x="40.0" y="2108.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.FundingCommitment.AppliedAt.name">
+    <text x="52.0" y="2129.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">AppliedAt</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.FundingCommitment.AppliedAt.type">
+    <text x="340.0" y="2129.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="340.0" dy="0">DATETIME(6)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.FundingCommitment.AppliedAt.keys" />
+  <g data-cell-id="funding.FundingCommitment.AppliedAt.null">
+    <text x="630.0" y="2128.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="630.0" dy="0">Yes</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.FundingCommitment.ReleasedAt">
+    <rect stroke="none" fill="#f6f9fb" stroke-width="1.5" x="40.0" y="2139.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="funding.FundingCommitment.ReleasedAt.name">
+    <text x="52.0" y="2160.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">ReleasedAt</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.FundingCommitment.ReleasedAt.type">
+    <text x="340.0" y="2160.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="340.0" dy="0">DATETIME(6)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.FundingCommitment.ReleasedAt.keys" />
+  <g data-cell-id="funding.FundingCommitment.ReleasedAt.null">
+    <text x="630.0" y="2159.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="630.0" dy="0">Yes</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.FundingCommitment.constraints">
+    <text x="52.0" y="2199.5" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">PK: CommitmentID</tspan>
+      <tspan x="52.0" dy="18.75">U1: OperationID</tspan>
+      <tspan x="52.0" dy="18.75">U2: EvaluationID</tspan>
+      <tspan x="52.0" dy="18.75">Lender = receipt caller; repeat lender/request pairs allowed.</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.FundingCommitment.ref.FK10">
+    <rect stroke="#8daec5" fill="#eef5f9" stroke-width="1.5" stroke-dasharray="6 4" x="750.0" y="1893.5" width="250.0" height="90.0" />
+    <text x="875.0" y="1917.5" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="middle">
+      <tspan x="875.0" dy="0">FK10 → LoanRequest</tspan>
+      <tspan x="875.0" dy="17.5">RequestID</tspan>
+      <tspan x="875.0" dy="17.5">child → parent 1</tspan>
+      <tspan x="875.0" dy="17.5">parent → child 0..N</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.FundingCommitment.fk.FK10">
+    <polyline stroke="#235983" fill="none" stroke-width="1.8" points="690.0,1937.5 715.0,1937.5 715.0,1938.5 750.0,1938.5" />
+  </g>
+  <g data-cell-id="funding.FundingCommitment.ref.FK11">
+    <rect stroke="#8daec5" fill="#eef5f9" stroke-width="1.5" stroke-dasharray="6 4" x="750.0" y="1995.5" width="250.0" height="90.0" />
+    <text x="875.0" y="2019.5" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="middle">
+      <tspan x="875.0" dy="0">FK11 → OperationReceipt</tspan>
+      <tspan x="875.0" dy="17.5">OperationID</tspan>
+      <tspan x="875.0" dy="17.5">child → parent 1</tspan>
+      <tspan x="875.0" dy="17.5">parent → child 0..1</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.FundingCommitment.fk.FK11">
+    <polyline stroke="#235983" fill="none" stroke-width="1.8" points="690.0,1968.5 723.0,1968.5 723.0,2040.5 750.0,2040.5" />
+  </g>
+  <g data-cell-id="funding.FundingCommitment.ref.FK12">
+    <rect stroke="#8daec5" fill="#eef5f9" stroke-width="1.5" stroke-dasharray="6 4" x="750.0" y="2097.5" width="250.0" height="90.0" />
+    <text x="875.0" y="2121.5" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="middle">
+      <tspan x="875.0" dy="0">FK12 → RequestEvaluation</tspan>
+      <tspan x="875.0" dy="17.5">EvaluationID</tspan>
+      <tspan x="875.0" dy="17.5">child → parent 1</tspan>
+      <tspan x="875.0" dy="17.5">parent → child 0..1</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.FundingCommitment.fk.FK12">
+    <polyline stroke="#235983" fill="none" stroke-width="1.8" points="690.0,1999.5 731.0,1999.5 731.0,2142.5 750.0,2142.5" />
+  </g>
+  <g data-cell-id="funding.notes">
+    <rect stroke="#c4d6e1" fill="#f7fafc" stroke-width="1.5" x="40.0" y="2321.0" width="2000.0" height="135.0" />
+  </g>
+  <g data-cell-id="funding.notes.text">
+    <text x="60.0" y="2371.25" font-family="DejaVu Sans" font-size="18.0" fill="#183247" text-anchor="start">
+      <tspan x="60.0" dy="0">Profile = current values. Request = frozen submitted values. Evaluation = one retained check.</tspan>
+      <tspan x="60.0" dy="22.5">Receipt = caller-scoped exact retry. Commitment = one contribution, including repeat lender contributions.</tspan>
+      <tspan x="60.0" dy="22.5">Dashed cards are named references, not entities. Full constraints: TDD §4, §6–8. Audit catalogue: §8.1.</tspan>
+    </text>
+  </g>
+  <g data-cell-id="funding.footer">
+    <text x="40.0" y="2495.25" font-family="DejaVu Sans" font-size="18.0" fill="#183247" text-anchor="start">
+      <tspan x="40.0" dy="0">FRD 1.2 · TDD 1.2 · 15 entities / 114 attributes / 27 FKs · FK matrix: ERD.md · Source: model.json</tspan>
+    </text>
+  </g>
+</svg>

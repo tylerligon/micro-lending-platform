@@ -1,0 +1,1477 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" width="2080" height="1955" viewBox="0 0 2080 1955" data-source="Micro_Lending_ERD.drawio" data-source-sha256="76061a539f952f8d3cb30b9db51fef15459bbb2770527770e5bdc8adc63ec2c3" data-page-id="repayment" role="img" aria-label="03 Loans repayments and oversight">
+  <title>03 Loans repayments and oversight</title>
+  <rect width="100%" height="100%" fill="#ffffff" />
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#235983" />
+    </marker>
+  </defs>
+  <g data-cell-id="repayment.title">
+    <text x="45.0" y="60.25" font-family="DejaVu Sans" font-size="30.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="45.0" dy="0">Micro-lending · loans, repayments and oversight</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.subtitle">
+    <text x="45.0" y="109.75" font-family="DejaVu Sans" font-size="18.0" fill="#183247" text-anchor="start">
+      <tspan x="45.0" dy="0">PK primary key · U# unique group · F## foreign key · G generated · FK cards give counts in both directions.</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Loan">
+    <rect stroke="#235983" fill="white" stroke-width="1.5" x="40.0" y="170.0" width="650.0" height="397.0" />
+  </g>
+  <g data-cell-id="repayment.Loan.header">
+    <rect stroke="#235983" fill="#eef5f9" stroke-width="1.5" x="40.0" y="170.0" width="650.0" height="58.0" />
+  </g>
+  <g data-cell-id="repayment.Loan.name">
+    <text x="52.0" y="197.75" font-family="DejaVu Sans" font-size="22.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="52.0" dy="0">Loan</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Loan.kind">
+    <text x="52.0" y="219.5" font-family="DejaVu Sans" font-size="12.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">Strong with required 1:1 origin · FR-14–FR-22; BR-12–BR-18</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Loan.label.Attribute">
+    <text x="52.0" y="251.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="52.0" dy="0">Attribute</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Loan.label.MySQL type">
+    <text x="340.0" y="251.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="340.0" dy="0">MySQL type</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Loan.label.Keys">
+    <text x="525.0" y="251.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="525.0" dy="0">Keys</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Loan.label.NULL">
+    <text x="630.0" y="251.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="630.0" dy="0">NULL</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Loan.LoanID">
+    <rect stroke="none" fill="#f6f9fb" stroke-width="1.5" x="40.0" y="265.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="repayment.Loan.LoanID.name">
+    <text x="52.0" y="286.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start" text-decoration="underline">
+      <tspan x="52.0" dy="0">LoanID</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Loan.LoanID.type">
+    <text x="340.0" y="286.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="340.0" dy="0">BIGINT UNSIGNED</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Loan.LoanID.keys">
+    <text x="525.0" y="285.0" font-family="DejaVu Sans" font-size="12.0" fill="#183247" text-anchor="start">
+      <tspan x="525.0" dy="0">PK</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Loan.LoanID.null">
+    <text x="630.0" y="285.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="630.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Loan.RequestID">
+    <rect stroke="none" fill="white" stroke-width="1.5" x="40.0" y="296.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="repayment.Loan.RequestID.name">
+    <text x="52.0" y="317.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">RequestID</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Loan.RequestID.type">
+    <text x="340.0" y="317.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="340.0" dy="0">BIGINT UNSIGNED</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Loan.RequestID.keys">
+    <text x="525.0" y="316.0" font-family="DejaVu Sans" font-size="12.0" fill="#183247" text-anchor="start">
+      <tspan x="525.0" dy="0">U1 F13</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Loan.RequestID.null">
+    <text x="630.0" y="316.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="630.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Loan.ActivatedAt">
+    <rect stroke="none" fill="#f6f9fb" stroke-width="1.5" x="40.0" y="327.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="repayment.Loan.ActivatedAt.name">
+    <text x="52.0" y="348.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">ActivatedAt</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Loan.ActivatedAt.type">
+    <text x="340.0" y="348.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="340.0" dy="0">DATETIME(6)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Loan.ActivatedAt.keys" />
+  <g data-cell-id="repayment.Loan.ActivatedAt.null">
+    <text x="630.0" y="347.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="630.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Loan.LoanState">
+    <rect stroke="none" fill="white" stroke-width="1.5" x="40.0" y="358.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="repayment.Loan.LoanState.name">
+    <text x="52.0" y="379.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">LoanState</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Loan.LoanState.type">
+    <text x="340.0" y="379.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="340.0" dy="0">VARCHAR(8)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Loan.LoanState.keys" />
+  <g data-cell-id="repayment.Loan.LoanState.null">
+    <text x="630.0" y="378.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="630.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Loan.CompletedAt">
+    <rect stroke="none" fill="#f6f9fb" stroke-width="1.5" x="40.0" y="389.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="repayment.Loan.CompletedAt.name">
+    <text x="52.0" y="410.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">CompletedAt</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Loan.CompletedAt.type">
+    <text x="340.0" y="410.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="340.0" dy="0">DATETIME(6)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Loan.CompletedAt.keys" />
+  <g data-cell-id="repayment.Loan.CompletedAt.null">
+    <text x="630.0" y="409.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="630.0" dy="0">Yes</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Loan.ObservedCondition">
+    <rect stroke="none" fill="white" stroke-width="1.5" x="40.0" y="420.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="repayment.Loan.ObservedCondition.name">
+    <text x="52.0" y="441.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">ObservedCondition</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Loan.ObservedCondition.type">
+    <text x="340.0" y="441.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="340.0" dy="0">VARCHAR(16)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Loan.ObservedCondition.keys" />
+  <g data-cell-id="repayment.Loan.ObservedCondition.null">
+    <text x="630.0" y="440.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="630.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Loan.LastEvaluatedAt">
+    <rect stroke="none" fill="#f6f9fb" stroke-width="1.5" x="40.0" y="451.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="repayment.Loan.LastEvaluatedAt.name">
+    <text x="52.0" y="472.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">LastEvaluatedAt</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Loan.LastEvaluatedAt.type">
+    <text x="340.0" y="472.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="340.0" dy="0">DATETIME(6)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Loan.LastEvaluatedAt.keys" />
+  <g data-cell-id="repayment.Loan.LastEvaluatedAt.null">
+    <text x="630.0" y="471.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="630.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Loan.constraints">
+    <text x="52.0" y="510.375" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">PK: LoanID</tspan>
+      <tspan x="52.0" dy="18.75">U1: RequestID</tspan>
+      <tspan x="52.0" dy="18.75">Borrower/terms from request. Current balance/overdue are derived.</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Loan.ref.FK13">
+    <rect stroke="#8daec5" fill="#eef5f9" stroke-width="1.5" stroke-dasharray="6 4" x="750.0" y="267.5" width="250.0" height="90.0" />
+    <text x="875.0" y="291.5" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="middle">
+      <tspan x="875.0" dy="0">FK13 → LoanRequest</tspan>
+      <tspan x="875.0" dy="17.5">RequestID</tspan>
+      <tspan x="875.0" dy="17.5">child → parent 1</tspan>
+      <tspan x="875.0" dy="17.5">parent → child 0..1</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Loan.fk.FK13">
+    <polyline stroke="#235983" fill="none" stroke-width="1.8" points="690.0,311.5 715.0,311.5 715.0,312.5 750.0,312.5" />
+  </g>
+  <g data-cell-id="repayment.Installment">
+    <rect stroke="#235983" fill="white" stroke-width="1.5" x="1060.0" y="170.0" width="650.0" height="283.0" />
+  </g>
+  <g data-cell-id="repayment.Installment.header">
+    <rect stroke="#235983" fill="#eef5f9" stroke-width="1.5" x="1060.0" y="170.0" width="650.0" height="58.0" />
+  </g>
+  <g data-cell-id="repayment.Installment.name">
+    <text x="1072.0" y="197.75" font-family="DejaVu Sans" font-size="22.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="1072.0" dy="0">Installment</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Installment.kind">
+    <text x="1072.0" y="219.5" font-family="DejaVu Sans" font-size="12.0" fill="#183247" text-anchor="start">
+      <tspan x="1072.0" dy="0">Weak/dependent · FR-15, FR-18, FR-19; BR-13–BR-17</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Installment.label.Attribute">
+    <text x="1072.0" y="251.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="1072.0" dy="0">Attribute</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Installment.label.MySQL type">
+    <text x="1360.0" y="251.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="1360.0" dy="0">MySQL type</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Installment.label.Keys">
+    <text x="1545.0" y="251.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="1545.0" dy="0">Keys</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Installment.label.NULL">
+    <text x="1650.0" y="251.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="1650.0" dy="0">NULL</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Installment.LoanID">
+    <rect stroke="none" fill="#f6f9fb" stroke-width="1.5" x="1060.0" y="265.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="repayment.Installment.LoanID.name">
+    <text x="1072.0" y="286.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start" text-decoration="underline">
+      <tspan x="1072.0" dy="0">LoanID</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Installment.LoanID.type">
+    <text x="1360.0" y="286.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="1360.0" dy="0">BIGINT UNSIGNED</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Installment.LoanID.keys">
+    <text x="1545.0" y="285.0" font-family="DejaVu Sans" font-size="12.0" fill="#183247" text-anchor="start">
+      <tspan x="1545.0" dy="0">PK U1 F14</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Installment.LoanID.null">
+    <text x="1650.0" y="285.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="1650.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Installment.InstallmentNumber">
+    <rect stroke="none" fill="white" stroke-width="1.5" x="1060.0" y="296.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="repayment.Installment.InstallmentNumber.name">
+    <text x="1072.0" y="317.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start" text-decoration="underline">
+      <tspan x="1072.0" dy="0">InstallmentNumber</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Installment.InstallmentNumber.type">
+    <text x="1360.0" y="317.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="1360.0" dy="0">SMALLINT UNSIGNED</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Installment.InstallmentNumber.keys">
+    <text x="1545.0" y="316.0" font-family="DejaVu Sans" font-size="12.0" fill="#183247" text-anchor="start">
+      <tspan x="1545.0" dy="0">PK</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Installment.InstallmentNumber.null">
+    <text x="1650.0" y="316.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="1650.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Installment.DueDate">
+    <rect stroke="none" fill="#f6f9fb" stroke-width="1.5" x="1060.0" y="327.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="repayment.Installment.DueDate.name">
+    <text x="1072.0" y="348.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="1072.0" dy="0">DueDate</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Installment.DueDate.type">
+    <text x="1360.0" y="348.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="1360.0" dy="0">DATE</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Installment.DueDate.keys">
+    <text x="1545.0" y="347.0" font-family="DejaVu Sans" font-size="12.0" fill="#183247" text-anchor="start">
+      <tspan x="1545.0" dy="0">U1</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Installment.DueDate.null">
+    <text x="1650.0" y="347.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="1650.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Installment.ScheduledPrincipal">
+    <rect stroke="none" fill="white" stroke-width="1.5" x="1060.0" y="358.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="repayment.Installment.ScheduledPrincipal.name">
+    <text x="1072.0" y="379.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="1072.0" dy="0">ScheduledPrincipal</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Installment.ScheduledPrincipal.type">
+    <text x="1360.0" y="379.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="1360.0" dy="0">DECIMAL(18,2)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Installment.ScheduledPrincipal.keys" />
+  <g data-cell-id="repayment.Installment.ScheduledPrincipal.null">
+    <text x="1650.0" y="378.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="1650.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Installment.constraints">
+    <text x="1072.0" y="416.25" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="1072.0" dy="0">PK: (LoanID,InstallmentNumber)</tspan>
+      <tspan x="1072.0" dy="18.75">U1: LoanID, DueDate</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Installment.ref.FK14">
+    <rect stroke="#8daec5" fill="#eef5f9" stroke-width="1.5" stroke-dasharray="6 4" x="1770.0" y="240.0" width="250.0" height="90.0" />
+    <text x="1895.0" y="264.0" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="middle">
+      <tspan x="1895.0" dy="0">FK14 → Loan</tspan>
+      <tspan x="1895.0" dy="17.5">LoanID</tspan>
+      <tspan x="1895.0" dy="17.5">child → parent 1</tspan>
+      <tspan x="1895.0" dy="17.5">parent → child 3 or 6</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Installment.fk.FK14">
+    <polyline stroke="#235983" fill="none" stroke-width="1.8" points="1710.0,280.5 1735.0,280.5 1735.0,285.0 1770.0,285.0" />
+  </g>
+  <g data-cell-id="repayment.Repayment">
+    <rect stroke="#235983" fill="white" stroke-width="1.5" x="1060.0" y="498.0" width="650.0" height="314.0" />
+  </g>
+  <g data-cell-id="repayment.Repayment.header">
+    <rect stroke="#235983" fill="#eef5f9" stroke-width="1.5" x="1060.0" y="498.0" width="650.0" height="58.0" />
+  </g>
+  <g data-cell-id="repayment.Repayment.name">
+    <text x="1072.0" y="525.75" font-family="DejaVu Sans" font-size="22.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="1072.0" dy="0">Repayment</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Repayment.kind">
+    <text x="1072.0" y="547.5" font-family="DejaVu Sans" font-size="12.0" fill="#183247" text-anchor="start">
+      <tspan x="1072.0" dy="0">Event/dependent · FR-17–FR-21, FR-30; BR-14–BR-16, BR-20</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Repayment.label.Attribute">
+    <text x="1072.0" y="579.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="1072.0" dy="0">Attribute</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Repayment.label.MySQL type">
+    <text x="1360.0" y="579.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="1360.0" dy="0">MySQL type</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Repayment.label.Keys">
+    <text x="1545.0" y="579.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="1545.0" dy="0">Keys</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Repayment.label.NULL">
+    <text x="1650.0" y="579.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="1650.0" dy="0">NULL</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Repayment.LoanID">
+    <rect stroke="none" fill="#f6f9fb" stroke-width="1.5" x="1060.0" y="593.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="repayment.Repayment.LoanID.name">
+    <text x="1072.0" y="614.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start" text-decoration="underline">
+      <tspan x="1072.0" dy="0">LoanID</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Repayment.LoanID.type">
+    <text x="1360.0" y="614.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="1360.0" dy="0">BIGINT UNSIGNED</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Repayment.LoanID.keys">
+    <text x="1545.0" y="613.0" font-family="DejaVu Sans" font-size="12.0" fill="#183247" text-anchor="start">
+      <tspan x="1545.0" dy="0">PK F15</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Repayment.LoanID.null">
+    <text x="1650.0" y="613.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="1650.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Repayment.RepaymentNumber">
+    <rect stroke="none" fill="white" stroke-width="1.5" x="1060.0" y="624.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="repayment.Repayment.RepaymentNumber.name">
+    <text x="1072.0" y="645.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start" text-decoration="underline">
+      <tspan x="1072.0" dy="0">RepaymentNumber</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Repayment.RepaymentNumber.type">
+    <text x="1360.0" y="645.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="1360.0" dy="0">INT UNSIGNED</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Repayment.RepaymentNumber.keys">
+    <text x="1545.0" y="644.0" font-family="DejaVu Sans" font-size="12.0" fill="#183247" text-anchor="start">
+      <tspan x="1545.0" dy="0">PK</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Repayment.RepaymentNumber.null">
+    <text x="1650.0" y="644.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="1650.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Repayment.OperationID">
+    <rect stroke="none" fill="#f6f9fb" stroke-width="1.5" x="1060.0" y="655.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="repayment.Repayment.OperationID.name">
+    <text x="1072.0" y="676.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="1072.0" dy="0">OperationID</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Repayment.OperationID.type">
+    <text x="1360.0" y="676.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="1360.0" dy="0">BIGINT UNSIGNED</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Repayment.OperationID.keys">
+    <text x="1545.0" y="675.0" font-family="DejaVu Sans" font-size="12.0" fill="#183247" text-anchor="start">
+      <tspan x="1545.0" dy="0">U1 F16</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Repayment.OperationID.null">
+    <text x="1650.0" y="675.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="1650.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Repayment.Amount">
+    <rect stroke="none" fill="white" stroke-width="1.5" x="1060.0" y="686.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="repayment.Repayment.Amount.name">
+    <text x="1072.0" y="707.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="1072.0" dy="0">Amount</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Repayment.Amount.type">
+    <text x="1360.0" y="707.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="1360.0" dy="0">DECIMAL(18,2)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Repayment.Amount.keys" />
+  <g data-cell-id="repayment.Repayment.Amount.null">
+    <text x="1650.0" y="706.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="1650.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Repayment.PostedAt">
+    <rect stroke="none" fill="#f6f9fb" stroke-width="1.5" x="1060.0" y="717.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="repayment.Repayment.PostedAt.name">
+    <text x="1072.0" y="738.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="1072.0" dy="0">PostedAt</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Repayment.PostedAt.type">
+    <text x="1360.0" y="738.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="1360.0" dy="0">DATETIME(6)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Repayment.PostedAt.keys" />
+  <g data-cell-id="repayment.Repayment.PostedAt.null">
+    <text x="1650.0" y="737.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="1650.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Repayment.constraints">
+    <text x="1072.0" y="775.25" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="1072.0" dy="0">PK: (LoanID,RepaymentNumber)</tspan>
+      <tspan x="1072.0" dy="18.75">U1: OperationID</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Repayment.ref.FK15">
+    <rect stroke="#8daec5" fill="#eef5f9" stroke-width="1.5" stroke-dasharray="6 4" x="1770.0" y="568.0" width="250.0" height="90.0" />
+    <text x="1895.0" y="592.0" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="middle">
+      <tspan x="1895.0" dy="0">FK15 → Loan</tspan>
+      <tspan x="1895.0" dy="17.5">LoanID</tspan>
+      <tspan x="1895.0" dy="17.5">child → parent 1</tspan>
+      <tspan x="1895.0" dy="17.5">parent → child 0..N</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Repayment.fk.FK15">
+    <polyline stroke="#235983" fill="none" stroke-width="1.8" points="1710.0,608.5 1735.0,608.5 1735.0,613.0 1770.0,613.0" />
+  </g>
+  <g data-cell-id="repayment.Repayment.ref.FK16">
+    <rect stroke="#8daec5" fill="#eef5f9" stroke-width="1.5" stroke-dasharray="6 4" x="1770.0" y="670.0" width="250.0" height="90.0" />
+    <text x="1895.0" y="694.0" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="middle">
+      <tspan x="1895.0" dy="0">FK16 → OperationReceipt</tspan>
+      <tspan x="1895.0" dy="17.5">OperationID</tspan>
+      <tspan x="1895.0" dy="17.5">child → parent 1</tspan>
+      <tspan x="1895.0" dy="17.5">parent → child 0..1</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.Repayment.fk.FK16">
+    <polyline stroke="#235983" fill="none" stroke-width="1.8" points="1710.0,670.5 1743.0,670.5 1743.0,715.0 1770.0,715.0" />
+  </g>
+  <g data-cell-id="repayment.RepaymentAllocation">
+    <rect stroke="#235983" fill="white" stroke-width="1.5" x="40.0" y="612.0" width="650.0" height="304.0" />
+  </g>
+  <g data-cell-id="repayment.RepaymentAllocation.header">
+    <rect stroke="#235983" fill="#eef5f9" stroke-width="1.5" x="40.0" y="612.0" width="650.0" height="58.0" />
+  </g>
+  <g data-cell-id="repayment.RepaymentAllocation.name">
+    <text x="52.0" y="639.75" font-family="DejaVu Sans" font-size="22.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="52.0" dy="0">RepaymentAllocation</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.RepaymentAllocation.kind">
+    <text x="52.0" y="661.5" font-family="DejaVu Sans" font-size="12.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">Associative/dependent · FR-18, FR-21; BR-02, BR-15</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.RepaymentAllocation.label.Attribute">
+    <text x="52.0" y="693.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="52.0" dy="0">Attribute</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.RepaymentAllocation.label.MySQL type">
+    <text x="340.0" y="693.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="340.0" dy="0">MySQL type</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.RepaymentAllocation.label.Keys">
+    <text x="525.0" y="693.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="525.0" dy="0">Keys</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.RepaymentAllocation.label.NULL">
+    <text x="630.0" y="693.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="630.0" dy="0">NULL</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.RepaymentAllocation.LoanID">
+    <rect stroke="none" fill="#f6f9fb" stroke-width="1.5" x="40.0" y="707.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="repayment.RepaymentAllocation.LoanID.name">
+    <text x="52.0" y="728.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start" text-decoration="underline">
+      <tspan x="52.0" dy="0">LoanID</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.RepaymentAllocation.LoanID.type">
+    <text x="340.0" y="728.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="340.0" dy="0">BIGINT UNSIGNED</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.RepaymentAllocation.LoanID.keys">
+    <text x="525.0" y="727.0" font-family="DejaVu Sans" font-size="12.0" fill="#183247" text-anchor="start">
+      <tspan x="525.0" dy="0">PK F17 F18</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.RepaymentAllocation.LoanID.null">
+    <text x="630.0" y="727.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="630.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.RepaymentAllocation.RepaymentNumber">
+    <rect stroke="none" fill="white" stroke-width="1.5" x="40.0" y="738.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="repayment.RepaymentAllocation.RepaymentNumber.name">
+    <text x="52.0" y="759.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start" text-decoration="underline">
+      <tspan x="52.0" dy="0">RepaymentNumber</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.RepaymentAllocation.RepaymentNumber.type">
+    <text x="340.0" y="759.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="340.0" dy="0">INT UNSIGNED</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.RepaymentAllocation.RepaymentNumber.keys">
+    <text x="525.0" y="758.0" font-family="DejaVu Sans" font-size="12.0" fill="#183247" text-anchor="start">
+      <tspan x="525.0" dy="0">PK F17</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.RepaymentAllocation.RepaymentNumber.null">
+    <text x="630.0" y="758.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="630.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.RepaymentAllocation.InstallmentNumber">
+    <rect stroke="none" fill="#f6f9fb" stroke-width="1.5" x="40.0" y="769.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="repayment.RepaymentAllocation.InstallmentNumber.name">
+    <text x="52.0" y="790.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start" text-decoration="underline">
+      <tspan x="52.0" dy="0">InstallmentNumber</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.RepaymentAllocation.InstallmentNumber.type">
+    <text x="340.0" y="790.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="340.0" dy="0">SMALLINT UNSIGNED</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.RepaymentAllocation.InstallmentNumber.keys">
+    <text x="525.0" y="789.0" font-family="DejaVu Sans" font-size="12.0" fill="#183247" text-anchor="start">
+      <tspan x="525.0" dy="0">PK F18</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.RepaymentAllocation.InstallmentNumber.null">
+    <text x="630.0" y="789.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="630.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.RepaymentAllocation.AllocatedPrincipal">
+    <rect stroke="none" fill="white" stroke-width="1.5" x="40.0" y="800.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="repayment.RepaymentAllocation.AllocatedPrincipal.name">
+    <text x="52.0" y="821.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">AllocatedPrincipal</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.RepaymentAllocation.AllocatedPrincipal.type">
+    <text x="340.0" y="821.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="340.0" dy="0">DECIMAL(18,2)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.RepaymentAllocation.AllocatedPrincipal.keys" />
+  <g data-cell-id="repayment.RepaymentAllocation.AllocatedPrincipal.null">
+    <text x="630.0" y="820.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="630.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.RepaymentAllocation.constraints">
+    <text x="52.0" y="859.375" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">PK: (LoanID,RepaymentNumber,InstallmentNumber)</tspan>
+      <tspan x="52.0" dy="18.75">No additional UNIQUE constraint.</tspan>
+      <tspan x="52.0" dy="18.75">Both composite FKs share LoanID: cross-loan allocation is impossible.</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.RepaymentAllocation.ref.FK17">
+    <rect stroke="#8daec5" fill="#eef5f9" stroke-width="1.5" stroke-dasharray="6 4" x="750.0" y="709.5" width="250.0" height="90.0" />
+    <text x="875.0" y="733.5" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="middle">
+      <tspan x="875.0" dy="0">FK17 → Repayment</tspan>
+      <tspan x="875.0" dy="17.5">LoanID, RepaymentNumber</tspan>
+      <tspan x="875.0" dy="17.5">child → parent 1</tspan>
+      <tspan x="875.0" dy="17.5">parent → child 1..N</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.RepaymentAllocation.fk.FK17">
+    <polyline stroke="#235983" fill="none" stroke-width="1.8" points="690.0,753.5 715.0,753.5 715.0,754.5 750.0,754.5" />
+  </g>
+  <g data-cell-id="repayment.RepaymentAllocation.ref.FK18">
+    <rect stroke="#8daec5" fill="#eef5f9" stroke-width="1.5" stroke-dasharray="6 4" x="750.0" y="811.5" width="250.0" height="90.0" />
+    <text x="875.0" y="835.5" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="middle">
+      <tspan x="875.0" dy="0">FK18 → Installment</tspan>
+      <tspan x="875.0" dy="17.5">LoanID, InstallmentNumber</tspan>
+      <tspan x="875.0" dy="17.5">child → parent 1</tspan>
+      <tspan x="875.0" dy="17.5">parent → child 0..N</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.RepaymentAllocation.fk.FK18">
+    <polyline stroke="#235983" fill="none" stroke-width="1.8" points="690.0,784.5 723.0,784.5 723.0,856.5 750.0,856.5" />
+  </g>
+  <g data-cell-id="repayment.OversightNote">
+    <rect stroke="#235983" fill="white" stroke-width="1.5" x="1060.0" y="857.0" width="650.0" height="376.0" />
+  </g>
+  <g data-cell-id="repayment.OversightNote.header">
+    <rect stroke="#235983" fill="#eef5f9" stroke-width="1.5" x="1060.0" y="857.0" width="650.0" height="58.0" />
+  </g>
+  <g data-cell-id="repayment.OversightNote.name">
+    <text x="1072.0" y="884.75" font-family="DejaVu Sans" font-size="22.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="1072.0" dy="0">OversightNote</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.OversightNote.kind">
+    <text x="1072.0" y="906.5" font-family="DejaVu Sans" font-size="12.0" fill="#183247" text-anchor="start">
+      <tspan x="1072.0" dy="0">History · FR-23; BR-25; SEC-06</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.OversightNote.label.Attribute">
+    <text x="1072.0" y="938.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="1072.0" dy="0">Attribute</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.OversightNote.label.MySQL type">
+    <text x="1360.0" y="938.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="1360.0" dy="0">MySQL type</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.OversightNote.label.Keys">
+    <text x="1545.0" y="938.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="1545.0" dy="0">Keys</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.OversightNote.label.NULL">
+    <text x="1650.0" y="938.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="1650.0" dy="0">NULL</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.OversightNote.NoteID">
+    <rect stroke="none" fill="#f6f9fb" stroke-width="1.5" x="1060.0" y="952.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="repayment.OversightNote.NoteID.name">
+    <text x="1072.0" y="973.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start" text-decoration="underline">
+      <tspan x="1072.0" dy="0">NoteID</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.OversightNote.NoteID.type">
+    <text x="1360.0" y="973.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="1360.0" dy="0">BIGINT UNSIGNED</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.OversightNote.NoteID.keys">
+    <text x="1545.0" y="972.0" font-family="DejaVu Sans" font-size="12.0" fill="#183247" text-anchor="start">
+      <tspan x="1545.0" dy="0">PK</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.OversightNote.NoteID.null">
+    <text x="1650.0" y="972.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="1650.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.OversightNote.RequestID">
+    <rect stroke="none" fill="white" stroke-width="1.5" x="1060.0" y="983.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="repayment.OversightNote.RequestID.name">
+    <text x="1072.0" y="1004.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="1072.0" dy="0">RequestID</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.OversightNote.RequestID.type">
+    <text x="1360.0" y="1004.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="1360.0" dy="0">BIGINT UNSIGNED</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.OversightNote.RequestID.keys">
+    <text x="1545.0" y="1003.0" font-family="DejaVu Sans" font-size="12.0" fill="#183247" text-anchor="start">
+      <tspan x="1545.0" dy="0">F19</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.OversightNote.RequestID.null">
+    <text x="1650.0" y="1003.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="1650.0" dy="0">Yes</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.OversightNote.LoanID">
+    <rect stroke="none" fill="#f6f9fb" stroke-width="1.5" x="1060.0" y="1014.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="repayment.OversightNote.LoanID.name">
+    <text x="1072.0" y="1035.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="1072.0" dy="0">LoanID</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.OversightNote.LoanID.type">
+    <text x="1360.0" y="1035.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="1360.0" dy="0">BIGINT UNSIGNED</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.OversightNote.LoanID.keys">
+    <text x="1545.0" y="1034.0" font-family="DejaVu Sans" font-size="12.0" fill="#183247" text-anchor="start">
+      <tspan x="1545.0" dy="0">F20</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.OversightNote.LoanID.null">
+    <text x="1650.0" y="1034.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="1650.0" dy="0">Yes</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.OversightNote.AdministratorID">
+    <rect stroke="none" fill="white" stroke-width="1.5" x="1060.0" y="1045.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="repayment.OversightNote.AdministratorID.name">
+    <text x="1072.0" y="1066.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="1072.0" dy="0">AdministratorID</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.OversightNote.AdministratorID.type">
+    <text x="1360.0" y="1066.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="1360.0" dy="0">BIGINT UNSIGNED</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.OversightNote.AdministratorID.keys">
+    <text x="1545.0" y="1065.0" font-family="DejaVu Sans" font-size="12.0" fill="#183247" text-anchor="start">
+      <tspan x="1545.0" dy="0">F21</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.OversightNote.AdministratorID.null">
+    <text x="1650.0" y="1065.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="1650.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.OversightNote.CreatedAt">
+    <rect stroke="none" fill="#f6f9fb" stroke-width="1.5" x="1060.0" y="1076.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="repayment.OversightNote.CreatedAt.name">
+    <text x="1072.0" y="1097.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="1072.0" dy="0">CreatedAt</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.OversightNote.CreatedAt.type">
+    <text x="1360.0" y="1097.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="1360.0" dy="0">DATETIME(6)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.OversightNote.CreatedAt.keys" />
+  <g data-cell-id="repayment.OversightNote.CreatedAt.null">
+    <text x="1650.0" y="1096.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="1650.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.OversightNote.NoteText">
+    <rect stroke="none" fill="white" stroke-width="1.5" x="1060.0" y="1107.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="repayment.OversightNote.NoteText.name">
+    <text x="1072.0" y="1128.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="1072.0" dy="0">NoteText</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.OversightNote.NoteText.type">
+    <text x="1360.0" y="1128.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="1360.0" dy="0">TEXT</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.OversightNote.NoteText.keys" />
+  <g data-cell-id="repayment.OversightNote.NoteText.null">
+    <text x="1650.0" y="1127.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="1650.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.OversightNote.CorrectsNoteID">
+    <rect stroke="none" fill="#f6f9fb" stroke-width="1.5" x="1060.0" y="1138.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="repayment.OversightNote.CorrectsNoteID.name">
+    <text x="1072.0" y="1159.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="1072.0" dy="0">CorrectsNoteID</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.OversightNote.CorrectsNoteID.type">
+    <text x="1360.0" y="1159.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="1360.0" dy="0">BIGINT UNSIGNED</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.OversightNote.CorrectsNoteID.keys">
+    <text x="1545.0" y="1158.0" font-family="DejaVu Sans" font-size="12.0" fill="#183247" text-anchor="start">
+      <tspan x="1545.0" dy="0">F22</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.OversightNote.CorrectsNoteID.null">
+    <text x="1650.0" y="1158.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="1650.0" dy="0">Yes</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.OversightNote.constraints">
+    <text x="1072.0" y="1196.25" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="1072.0" dy="0">PK: NoteID</tspan>
+      <tspan x="1072.0" dy="18.75">No additional UNIQUE constraint.</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.OversightNote.ref.FK19">
+    <rect stroke="#8daec5" fill="#eef5f9" stroke-width="1.5" stroke-dasharray="6 4" x="1770.0" y="954.5" width="250.0" height="90.0" />
+    <text x="1895.0" y="978.5" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="middle">
+      <tspan x="1895.0" dy="0">FK19 → LoanRequest</tspan>
+      <tspan x="1895.0" dy="17.5">RequestID</tspan>
+      <tspan x="1895.0" dy="17.5">child → parent 0..1</tspan>
+      <tspan x="1895.0" dy="17.5">parent → child 0..N</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.OversightNote.fk.FK19">
+    <polyline stroke="#235983" fill="none" stroke-width="1.8" points="1710.0,998.5 1735.0,998.5 1735.0,999.5 1770.0,999.5" />
+  </g>
+  <g data-cell-id="repayment.OversightNote.ref.FK20">
+    <rect stroke="#8daec5" fill="#eef5f9" stroke-width="1.5" stroke-dasharray="6 4" x="1770.0" y="1056.5" width="250.0" height="90.0" />
+    <text x="1895.0" y="1080.5" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="middle">
+      <tspan x="1895.0" dy="0">FK20 → Loan</tspan>
+      <tspan x="1895.0" dy="17.5">LoanID</tspan>
+      <tspan x="1895.0" dy="17.5">child → parent 0..1</tspan>
+      <tspan x="1895.0" dy="17.5">parent → child 0..N</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.OversightNote.fk.FK20">
+    <polyline stroke="#235983" fill="none" stroke-width="1.8" points="1710.0,1029.5 1743.0,1029.5 1743.0,1101.5 1770.0,1101.5" />
+  </g>
+  <g data-cell-id="repayment.OversightNote.ref.FK21">
+    <rect stroke="#8daec5" fill="#eef5f9" stroke-width="1.5" stroke-dasharray="6 4" x="1770.0" y="1158.5" width="250.0" height="90.0" />
+    <text x="1895.0" y="1182.5" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="middle">
+      <tspan x="1895.0" dy="0">FK21 → User</tspan>
+      <tspan x="1895.0" dy="17.5">UserID</tspan>
+      <tspan x="1895.0" dy="17.5">child → parent 1</tspan>
+      <tspan x="1895.0" dy="17.5">parent → child 0..N</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.OversightNote.fk.FK21">
+    <polyline stroke="#235983" fill="none" stroke-width="1.8" points="1710.0,1060.5 1751.0,1060.5 1751.0,1203.5 1770.0,1203.5" />
+  </g>
+  <g data-cell-id="repayment.OversightNote.ref.FK22">
+    <rect stroke="#8daec5" fill="#eef5f9" stroke-width="1.5" stroke-dasharray="6 4" x="1770.0" y="1260.5" width="250.0" height="90.0" />
+    <text x="1895.0" y="1284.5" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="middle">
+      <tspan x="1895.0" dy="0">FK22 → OversightNote</tspan>
+      <tspan x="1895.0" dy="17.5">NoteID</tspan>
+      <tspan x="1895.0" dy="17.5">child → parent 0..1</tspan>
+      <tspan x="1895.0" dy="17.5">parent → child 0..N</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.OversightNote.fk.FK22">
+    <polyline stroke="#235983" fill="none" stroke-width="1.8" points="1710.0,1153.5 1759.0,1153.5 1759.0,1305.5 1770.0,1305.5" />
+  </g>
+  <g data-cell-id="repayment.AuditEvent">
+    <rect stroke="#235983" fill="white" stroke-width="1.5" x="40.0" y="961.0" width="650.0" height="624.0" />
+  </g>
+  <g data-cell-id="repayment.AuditEvent.header">
+    <rect stroke="#235983" fill="#eef5f9" stroke-width="1.5" x="40.0" y="961.0" width="650.0" height="58.0" />
+  </g>
+  <g data-cell-id="repayment.AuditEvent.name">
+    <text x="52.0" y="988.75" font-family="DejaVu Sans" font-size="22.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="52.0" dy="0">AuditEvent</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditEvent.kind">
+    <text x="52.0" y="1010.5" font-family="DejaVu Sans" font-size="12.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">Audit/history · FR-28; Section 9.2; SEC-08, SEC-10, SEC-11</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditEvent.label.Attribute">
+    <text x="52.0" y="1042.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="52.0" dy="0">Attribute</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditEvent.label.MySQL type">
+    <text x="340.0" y="1042.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="340.0" dy="0">MySQL type</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditEvent.label.Keys">
+    <text x="525.0" y="1042.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="525.0" dy="0">Keys</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditEvent.label.NULL">
+    <text x="630.0" y="1042.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="630.0" dy="0">NULL</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditEvent.AuditEventID">
+    <rect stroke="none" fill="#f6f9fb" stroke-width="1.5" x="40.0" y="1056.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="repayment.AuditEvent.AuditEventID.name">
+    <text x="52.0" y="1077.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start" text-decoration="underline">
+      <tspan x="52.0" dy="0">AuditEventID</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditEvent.AuditEventID.type">
+    <text x="340.0" y="1077.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="340.0" dy="0">BIGINT UNSIGNED</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditEvent.AuditEventID.keys">
+    <text x="525.0" y="1076.0" font-family="DejaVu Sans" font-size="12.0" fill="#183247" text-anchor="start">
+      <tspan x="525.0" dy="0">PK</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditEvent.AuditEventID.null">
+    <text x="630.0" y="1076.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="630.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditEvent.OccurredAt">
+    <rect stroke="none" fill="white" stroke-width="1.5" x="40.0" y="1087.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="repayment.AuditEvent.OccurredAt.name">
+    <text x="52.0" y="1108.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">OccurredAt</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditEvent.OccurredAt.type">
+    <text x="340.0" y="1108.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="340.0" dy="0">DATETIME(6)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditEvent.OccurredAt.keys" />
+  <g data-cell-id="repayment.AuditEvent.OccurredAt.null">
+    <text x="630.0" y="1107.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="630.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditEvent.EventType">
+    <rect stroke="none" fill="#f6f9fb" stroke-width="1.5" x="40.0" y="1118.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="repayment.AuditEvent.EventType.name">
+    <text x="52.0" y="1139.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">EventType</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditEvent.EventType.type">
+    <text x="340.0" y="1139.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="340.0" dy="0">VARCHAR(40)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditEvent.EventType.keys" />
+  <g data-cell-id="repayment.AuditEvent.EventType.null">
+    <text x="630.0" y="1138.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="630.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditEvent.Outcome">
+    <rect stroke="none" fill="white" stroke-width="1.5" x="40.0" y="1149.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="repayment.AuditEvent.Outcome.name">
+    <text x="52.0" y="1170.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">Outcome</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditEvent.Outcome.type">
+    <text x="340.0" y="1170.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="340.0" dy="0">VARCHAR(12)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditEvent.Outcome.keys" />
+  <g data-cell-id="repayment.AuditEvent.Outcome.null">
+    <text x="630.0" y="1169.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="630.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditEvent.ActorUserID">
+    <rect stroke="none" fill="#f6f9fb" stroke-width="1.5" x="40.0" y="1180.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="repayment.AuditEvent.ActorUserID.name">
+    <text x="52.0" y="1201.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">ActorUserID</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditEvent.ActorUserID.type">
+    <text x="340.0" y="1201.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="340.0" dy="0">BIGINT UNSIGNED</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditEvent.ActorUserID.keys">
+    <text x="525.0" y="1200.0" font-family="DejaVu Sans" font-size="12.0" fill="#183247" text-anchor="start">
+      <tspan x="525.0" dy="0">F23</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditEvent.ActorUserID.null">
+    <text x="630.0" y="1200.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="630.0" dy="0">Yes</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditEvent.ActingRoleCode">
+    <rect stroke="none" fill="white" stroke-width="1.5" x="40.0" y="1211.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="repayment.AuditEvent.ActingRoleCode.name">
+    <text x="52.0" y="1232.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">ActingRoleCode</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditEvent.ActingRoleCode.type">
+    <text x="340.0" y="1232.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="340.0" dy="0">VARCHAR(16)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditEvent.ActingRoleCode.keys">
+    <text x="525.0" y="1231.0" font-family="DejaVu Sans" font-size="12.0" fill="#183247" text-anchor="start">
+      <tspan x="525.0" dy="0">F24</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditEvent.ActingRoleCode.null">
+    <text x="630.0" y="1231.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="630.0" dy="0">Yes</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditEvent.ServiceActor">
+    <rect stroke="none" fill="#f6f9fb" stroke-width="1.5" x="40.0" y="1242.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="repayment.AuditEvent.ServiceActor.name">
+    <text x="52.0" y="1263.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">ServiceActor</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditEvent.ServiceActor.type">
+    <text x="340.0" y="1263.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="340.0" dy="0">VARCHAR(24)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditEvent.ServiceActor.keys" />
+  <g data-cell-id="repayment.AuditEvent.ServiceActor.null">
+    <text x="630.0" y="1262.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="630.0" dy="0">Yes</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditEvent.InitiatingUserID">
+    <rect stroke="none" fill="white" stroke-width="1.5" x="40.0" y="1273.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="repayment.AuditEvent.InitiatingUserID.name">
+    <text x="52.0" y="1294.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">InitiatingUserID</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditEvent.InitiatingUserID.type">
+    <text x="340.0" y="1294.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="340.0" dy="0">BIGINT UNSIGNED</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditEvent.InitiatingUserID.keys">
+    <text x="525.0" y="1293.0" font-family="DejaVu Sans" font-size="12.0" fill="#183247" text-anchor="start">
+      <tspan x="525.0" dy="0">F25</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditEvent.InitiatingUserID.null">
+    <text x="630.0" y="1293.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="630.0" dy="0">Yes</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditEvent.TechnicalAccount">
+    <rect stroke="none" fill="#f6f9fb" stroke-width="1.5" x="40.0" y="1304.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="repayment.AuditEvent.TechnicalAccount.name">
+    <text x="52.0" y="1325.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">TechnicalAccount</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditEvent.TechnicalAccount.type">
+    <text x="340.0" y="1325.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="340.0" dy="0">VARCHAR(288)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditEvent.TechnicalAccount.keys" />
+  <g data-cell-id="repayment.AuditEvent.TechnicalAccount.null">
+    <text x="630.0" y="1324.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="630.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditEvent.SubjectType">
+    <rect stroke="none" fill="white" stroke-width="1.5" x="40.0" y="1335.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="repayment.AuditEvent.SubjectType.name">
+    <text x="52.0" y="1356.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">SubjectType</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditEvent.SubjectType.type">
+    <text x="340.0" y="1356.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="340.0" dy="0">VARCHAR(32)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditEvent.SubjectType.keys" />
+  <g data-cell-id="repayment.AuditEvent.SubjectType.null">
+    <text x="630.0" y="1355.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="630.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditEvent.SubjectKey">
+    <rect stroke="none" fill="#f6f9fb" stroke-width="1.5" x="40.0" y="1366.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="repayment.AuditEvent.SubjectKey.name">
+    <text x="52.0" y="1387.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">SubjectKey</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditEvent.SubjectKey.type">
+    <text x="340.0" y="1387.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="340.0" dy="0">VARCHAR(128)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditEvent.SubjectKey.keys" />
+  <g data-cell-id="repayment.AuditEvent.SubjectKey.null">
+    <text x="630.0" y="1386.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="630.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditEvent.ContextID">
+    <rect stroke="none" fill="white" stroke-width="1.5" x="40.0" y="1397.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="repayment.AuditEvent.ContextID.name">
+    <text x="52.0" y="1418.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">ContextID</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditEvent.ContextID.type">
+    <text x="340.0" y="1418.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="340.0" dy="0">BINARY(16)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditEvent.ContextID.keys" />
+  <g data-cell-id="repayment.AuditEvent.ContextID.null">
+    <text x="630.0" y="1417.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="630.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditEvent.OperationID">
+    <rect stroke="none" fill="#f6f9fb" stroke-width="1.5" x="40.0" y="1428.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="repayment.AuditEvent.OperationID.name">
+    <text x="52.0" y="1449.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">OperationID</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditEvent.OperationID.type">
+    <text x="340.0" y="1449.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="340.0" dy="0">BIGINT UNSIGNED</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditEvent.OperationID.keys">
+    <text x="525.0" y="1448.0" font-family="DejaVu Sans" font-size="12.0" fill="#183247" text-anchor="start">
+      <tspan x="525.0" dy="0">F26</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditEvent.OperationID.null">
+    <text x="630.0" y="1448.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="630.0" dy="0">Yes</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditEvent.AttemptedOperationReference">
+    <rect stroke="none" fill="white" stroke-width="1.5" x="40.0" y="1459.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="repayment.AuditEvent.AttemptedOperationReference.name">
+    <text x="52.0" y="1480.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">AttemptedOperationReference</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditEvent.AttemptedOperationReference.type">
+    <text x="340.0" y="1480.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="340.0" dy="0">VARCHAR(64)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditEvent.AttemptedOperationReference.keys" />
+  <g data-cell-id="repayment.AuditEvent.AttemptedOperationReference.null">
+    <text x="630.0" y="1479.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="630.0" dy="0">Yes</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditEvent.ReasonCode">
+    <rect stroke="none" fill="#f6f9fb" stroke-width="1.5" x="40.0" y="1490.0" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="repayment.AuditEvent.ReasonCode.name">
+    <text x="52.0" y="1511.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">ReasonCode</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditEvent.ReasonCode.type">
+    <text x="340.0" y="1511.125" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="340.0" dy="0">VARCHAR(40)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditEvent.ReasonCode.keys" />
+  <g data-cell-id="repayment.AuditEvent.ReasonCode.null">
+    <text x="630.0" y="1510.75" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="630.0" dy="0">Yes</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditEvent.constraints">
+    <text x="52.0" y="1548.25" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="52.0" dy="0">PK: AuditEventID</tspan>
+      <tspan x="52.0" dy="18.75">No additional UNIQUE constraint.</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditEvent.ref.FK23">
+    <rect stroke="#8daec5" fill="#eef5f9" stroke-width="1.5" stroke-dasharray="6 4" x="750.0" y="1151.5" width="250.0" height="90.0" />
+    <text x="875.0" y="1175.5" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="middle">
+      <tspan x="875.0" dy="0">FK23 → User</tspan>
+      <tspan x="875.0" dy="17.5">UserID</tspan>
+      <tspan x="875.0" dy="17.5">child → parent 0..1</tspan>
+      <tspan x="875.0" dy="17.5">parent → child 0..N</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditEvent.fk.FK23">
+    <polyline stroke="#235983" fill="none" stroke-width="1.8" points="690.0,1195.5 715.0,1195.5 715.0,1196.5 750.0,1196.5" />
+  </g>
+  <g data-cell-id="repayment.AuditEvent.ref.FK24">
+    <rect stroke="#8daec5" fill="#eef5f9" stroke-width="1.5" stroke-dasharray="6 4" x="750.0" y="1253.5" width="250.0" height="90.0" />
+    <text x="875.0" y="1277.5" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="middle">
+      <tspan x="875.0" dy="0">FK24 → Role</tspan>
+      <tspan x="875.0" dy="17.5">RoleCode</tspan>
+      <tspan x="875.0" dy="17.5">child → parent 0..1</tspan>
+      <tspan x="875.0" dy="17.5">parent → child 0..N</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditEvent.fk.FK24">
+    <polyline stroke="#235983" fill="none" stroke-width="1.8" points="690.0,1226.5 723.0,1226.5 723.0,1298.5 750.0,1298.5" />
+  </g>
+  <g data-cell-id="repayment.AuditEvent.ref.FK25">
+    <rect stroke="#8daec5" fill="#eef5f9" stroke-width="1.5" stroke-dasharray="6 4" x="750.0" y="1355.5" width="250.0" height="90.0" />
+    <text x="875.0" y="1379.5" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="middle">
+      <tspan x="875.0" dy="0">FK25 → User</tspan>
+      <tspan x="875.0" dy="17.5">UserID</tspan>
+      <tspan x="875.0" dy="17.5">child → parent 0..1</tspan>
+      <tspan x="875.0" dy="17.5">parent → child 0..N</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditEvent.fk.FK25">
+    <polyline stroke="#235983" fill="none" stroke-width="1.8" points="690.0,1288.5 731.0,1288.5 731.0,1400.5 750.0,1400.5" />
+  </g>
+  <g data-cell-id="repayment.AuditEvent.ref.FK26">
+    <rect stroke="#8daec5" fill="#eef5f9" stroke-width="1.5" stroke-dasharray="6 4" x="750.0" y="1457.5" width="250.0" height="90.0" />
+    <text x="875.0" y="1481.5" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="middle">
+      <tspan x="875.0" dy="0">FK26 → OperationReceipt</tspan>
+      <tspan x="875.0" dy="17.5">OperationID</tspan>
+      <tspan x="875.0" dy="17.5">child → parent 0..1</tspan>
+      <tspan x="875.0" dy="17.5">parent → child 0..N</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditEvent.fk.FK26">
+    <polyline stroke="#235983" fill="none" stroke-width="1.8" points="690.0,1443.5 739.0,1443.5 739.0,1502.5 750.0,1502.5" />
+  </g>
+  <g data-cell-id="repayment.AuditChange">
+    <rect stroke="#235983" fill="white" stroke-width="1.5" x="1060.0" y="1407.5" width="650.0" height="283.0" />
+  </g>
+  <g data-cell-id="repayment.AuditChange.header">
+    <rect stroke="#235983" fill="#eef5f9" stroke-width="1.5" x="1060.0" y="1407.5" width="650.0" height="58.0" />
+  </g>
+  <g data-cell-id="repayment.AuditChange.name">
+    <text x="1072.0" y="1435.25" font-family="DejaVu Sans" font-size="22.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="1072.0" dy="0">AuditChange</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditChange.kind">
+    <text x="1072.0" y="1457.0" font-family="DejaVu Sans" font-size="12.0" fill="#183247" text-anchor="start">
+      <tspan x="1072.0" dy="0">Dependent/audit · FRD Section 9.2; SEC-11, SEC-12</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditChange.label.Attribute">
+    <text x="1072.0" y="1488.625" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="1072.0" dy="0">Attribute</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditChange.label.MySQL type">
+    <text x="1360.0" y="1488.625" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="1360.0" dy="0">MySQL type</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditChange.label.Keys">
+    <text x="1545.0" y="1488.625" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="1545.0" dy="0">Keys</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditChange.label.NULL">
+    <text x="1650.0" y="1488.625" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="1650.0" dy="0">NULL</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditChange.AuditEventID">
+    <rect stroke="none" fill="#f6f9fb" stroke-width="1.5" x="1060.0" y="1502.5" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="repayment.AuditChange.AuditEventID.name">
+    <text x="1072.0" y="1524.0" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start" text-decoration="underline">
+      <tspan x="1072.0" dy="0">AuditEventID</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditChange.AuditEventID.type">
+    <text x="1360.0" y="1523.625" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="1360.0" dy="0">BIGINT UNSIGNED</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditChange.AuditEventID.keys">
+    <text x="1545.0" y="1522.5" font-family="DejaVu Sans" font-size="12.0" fill="#183247" text-anchor="start">
+      <tspan x="1545.0" dy="0">PK F27</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditChange.AuditEventID.null">
+    <text x="1650.0" y="1523.25" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="1650.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditChange.FieldName">
+    <rect stroke="none" fill="white" stroke-width="1.5" x="1060.0" y="1533.5" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="repayment.AuditChange.FieldName.name">
+    <text x="1072.0" y="1555.0" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start" text-decoration="underline">
+      <tspan x="1072.0" dy="0">FieldName</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditChange.FieldName.type">
+    <text x="1360.0" y="1554.625" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="1360.0" dy="0">VARCHAR(64)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditChange.FieldName.keys">
+    <text x="1545.0" y="1553.5" font-family="DejaVu Sans" font-size="12.0" fill="#183247" text-anchor="start">
+      <tspan x="1545.0" dy="0">PK</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditChange.FieldName.null">
+    <text x="1650.0" y="1554.25" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="1650.0" dy="0">No</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditChange.OldValue">
+    <rect stroke="none" fill="#f6f9fb" stroke-width="1.5" x="1060.0" y="1564.5" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="repayment.AuditChange.OldValue.name">
+    <text x="1072.0" y="1586.0" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="1072.0" dy="0">OldValue</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditChange.OldValue.type">
+    <text x="1360.0" y="1585.625" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="1360.0" dy="0">VARCHAR(1000)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditChange.OldValue.keys" />
+  <g data-cell-id="repayment.AuditChange.OldValue.null">
+    <text x="1650.0" y="1585.25" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="1650.0" dy="0">Yes</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditChange.NewValue">
+    <rect stroke="none" fill="white" stroke-width="1.5" x="1060.0" y="1595.5" width="650.0" height="31.0" />
+  </g>
+  <g data-cell-id="repayment.AuditChange.NewValue.name">
+    <text x="1072.0" y="1617.0" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="1072.0" dy="0">NewValue</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditChange.NewValue.type">
+    <text x="1360.0" y="1616.625" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="1360.0" dy="0">VARCHAR(1000)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditChange.NewValue.keys" />
+  <g data-cell-id="repayment.AuditChange.NewValue.null">
+    <text x="1650.0" y="1616.25" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="start">
+      <tspan x="1650.0" dy="0">Yes</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditChange.constraints">
+    <text x="1072.0" y="1653.75" font-family="DejaVu Sans" font-size="15.0" fill="#183247" text-anchor="start">
+      <tspan x="1072.0" dy="0">PK: (AuditEventID,FieldName)</tspan>
+      <tspan x="1072.0" dy="18.75">No additional UNIQUE constraint.</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditChange.ref.FK27">
+    <rect stroke="#8daec5" fill="#eef5f9" stroke-width="1.5" stroke-dasharray="6 4" x="1770.0" y="1477.5" width="250.0" height="90.0" />
+    <text x="1895.0" y="1501.5" font-family="DejaVu Sans" font-size="14.0" fill="#183247" text-anchor="middle">
+      <tspan x="1895.0" dy="0">FK27 → AuditEvent</tspan>
+      <tspan x="1895.0" dy="17.5">AuditEventID</tspan>
+      <tspan x="1895.0" dy="17.5">child → parent 1</tspan>
+      <tspan x="1895.0" dy="17.5">parent → child 0..N</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.AuditChange.fk.FK27">
+    <polyline stroke="#235983" fill="none" stroke-width="1.8" points="1710.0,1518.0 1735.0,1518.0 1735.0,1522.5 1770.0,1522.5" />
+  </g>
+  <g data-cell-id="repayment.notes">
+    <rect stroke="#c4d6e1" fill="#f7fafc" stroke-width="1.5" x="40.0" y="1735.5" width="2000.0" height="135.0" />
+  </g>
+  <g data-cell-id="repayment.notes.text">
+    <text x="60.0" y="1785.75" font-family="DejaVu Sans" font-size="18.0" fill="#183247" text-anchor="start">
+      <tspan x="60.0" dy="0">DERIVED VIEWS (not application entities): v_request_funding = one request; v_installment_balance = one installment;</tspan>
+      <tspan x="60.0" dy="22.5">v_loan_balance = one loan. RQ-04/05 calculate overdue at T. Lender scope uses EXISTS of an own Applied commitment.</tspan>
+      <tspan x="60.0" dy="22.5">BuildRun / BuildStep are operational only (TDD §9). Reconciliation, schedule minimums and oldest-first allocation require transactions.</tspan>
+    </text>
+  </g>
+  <g data-cell-id="repayment.footer">
+    <text x="40.0" y="1909.75" font-family="DejaVu Sans" font-size="18.0" fill="#183247" text-anchor="start">
+      <tspan x="40.0" dy="0">FRD 1.2 · TDD 1.2 · 15 entities / 114 attributes / 27 FKs · FK matrix: ERD.md · Source: model.json</tspan>
+    </text>
+  </g>
+</svg>

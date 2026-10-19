@@ -1,0 +1,461 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" width="2200" height="1790" viewBox="0 0 2200 1790" data-source="Micro_Lending_ERD.drawio" data-source-sha256="76061a539f952f8d3cb30b9db51fef15459bbb2770527770e5bdc8adc63ec2c3" data-page-id="conceptual" role="img" aria-label="01 Conceptual model">
+  <title>01 Conceptual model</title>
+  <rect width="100%" height="100%" fill="#ffffff" />
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#235983" />
+    </marker>
+  </defs>
+  <g data-cell-id="concept.title">
+    <text x="45.0" y="60.25" font-family="DejaVu Sans" font-size="30.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="45.0" dy="0">Micro-lending · conceptual model</tspan>
+    </text>
+  </g>
+  <g data-cell-id="concept.subtitle">
+    <text x="45.0" y="109.75" font-family="DejaVu Sans" font-size="18.0" fill="#183247" text-anchor="start">
+      <tspan x="45.0" dy="0">Read the named relationships first. Complete typed attributes appear on pages 2–3; repeated User labels denote the same entity.</tspan>
+    </text>
+  </g>
+  <g data-cell-id="c.borrower">
+    <rect stroke="#235983" fill="#eef5f9" stroke-width="1.5" x="70.0" y="200.0" width="260.0" height="74.0" />
+    <text x="200.0" y="245.625" font-family="DejaVu Sans" font-size="23.0" fill="#183247" text-anchor="middle" font-weight="bold">
+      <tspan x="200.0" dy="0">User (borrower)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="c.owns">
+    <polygon stroke="#235983" fill="white" stroke-width="1.5" points="497.5,191.0 585.0,237.0 497.5,283.0 410.0,237.0" />
+    <text x="497.5" y="243.375" font-family="DejaVu Sans" font-size="17.0" fill="#183247" text-anchor="middle" font-weight="bold">
+      <tspan x="497.5" dy="0">owns</tspan>
+    </text>
+  </g>
+  <g data-cell-id="c.request">
+    <rect stroke="#235983" fill="#eef5f9" stroke-width="1.5" x="665.0" y="200.0" width="260.0" height="74.0" />
+    <text x="795.0" y="245.625" font-family="DejaVu Sans" font-size="23.0" fill="#183247" text-anchor="middle" font-weight="bold">
+      <tspan x="795.0" dy="0">LoanRequest</tspan>
+    </text>
+  </g>
+  <g data-cell-id="c.receives">
+    <polygon stroke="#235983" fill="white" stroke-width="1.5" points="1092.5,191.0 1180.0,237.0 1092.5,283.0 1005.0,237.0" />
+    <text x="1092.5" y="243.375" font-family="DejaVu Sans" font-size="17.0" fill="#183247" text-anchor="middle" font-weight="bold">
+      <tspan x="1092.5" dy="0">receives</tspan>
+    </text>
+  </g>
+  <g data-cell-id="c.commitment">
+    <rect stroke="#235983" fill="#eef5f9" stroke-width="1.5" x="1260.0" y="200.0" width="300.0" height="74.0" />
+    <text x="1410.0" y="245.625" font-family="DejaVu Sans" font-size="23.0" fill="#183247" text-anchor="middle" font-weight="bold">
+      <tspan x="1410.0" dy="0">FundingCommitment</tspan>
+    </text>
+  </g>
+  <g data-cell-id="c.makes">
+    <polygon stroke="#235983" fill="white" stroke-width="1.5" points="1732.5,191.0 1820.0,237.0 1732.5,283.0 1645.0,237.0" />
+    <text x="1732.5" y="243.375" font-family="DejaVu Sans" font-size="17.0" fill="#183247" text-anchor="middle" font-weight="bold">
+      <tspan x="1732.5" dy="0">makes</tspan>
+    </text>
+  </g>
+  <g data-cell-id="c.lender">
+    <rect stroke="#235983" fill="#eef5f9" stroke-width="1.5" x="1870.0" y="200.0" width="260.0" height="74.0" />
+    <text x="2000.0" y="245.625" font-family="DejaVu Sans" font-size="23.0" fill="#183247" text-anchor="middle" font-weight="bold">
+      <tspan x="2000.0" dy="0">User (lender)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="c.owns.left">
+    <polyline stroke="#235983" fill="none" stroke-width="1.8" points="330.0,237.0 410.0,237.0" />
+  </g>
+  <g data-cell-id="c.owns.right">
+    <polyline stroke="#235983" fill="none" stroke-width="1.8" points="585.0,237.0 665.0,237.0" />
+  </g>
+  <g data-cell-id="c.owns.right.total">
+    <polyline stroke="#235983" fill="none" stroke-width="1.8" points="585.0,242.0 665.0,242.0" />
+  </g>
+  <g data-cell-id="c.receives.left">
+    <polyline stroke="#235983" fill="none" stroke-width="1.8" points="925.0,237.0 1005.0,237.0" />
+  </g>
+  <g data-cell-id="c.receives.right">
+    <polyline stroke="#235983" fill="none" stroke-width="1.8" points="1180.0,237.0 1260.0,237.0" />
+  </g>
+  <g data-cell-id="c.receives.right.total">
+    <polyline stroke="#235983" fill="none" stroke-width="1.8" points="1180.0,242.0 1260.0,242.0" />
+  </g>
+  <g data-cell-id="c.makes.left">
+    <polyline stroke="#235983" fill="none" stroke-width="1.8" points="1560.0,237.0 1645.0,237.0" />
+  </g>
+  <g data-cell-id="c.makes.left.total">
+    <polyline stroke="#235983" fill="none" stroke-width="1.8" points="1560.0,242.0 1645.0,242.0" />
+  </g>
+  <g data-cell-id="c.makes.right">
+    <polyline stroke="#235983" fill="none" stroke-width="1.8" points="1820.0,237.0 1870.0,237.0" />
+  </g>
+  <g data-cell-id="c.card.a">
+    <text x="340.0" y="213.875" font-family="DejaVu Sans" font-size="17.0" fill="#183247" text-anchor="start">
+      <tspan x="340.0" dy="0">(0,N)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="c.card.b">
+    <text x="592.0" y="213.875" font-family="DejaVu Sans" font-size="17.0" fill="#183247" text-anchor="start">
+      <tspan x="592.0" dy="0">(1,1)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="c.card.c">
+    <text x="935.0" y="213.875" font-family="DejaVu Sans" font-size="17.0" fill="#183247" text-anchor="start">
+      <tspan x="935.0" dy="0">(0,N)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="c.card.d">
+    <text x="1187.0" y="213.875" font-family="DejaVu Sans" font-size="17.0" fill="#183247" text-anchor="start">
+      <tspan x="1187.0" dy="0">(1,1)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="c.card.e">
+    <text x="1570.0" y="213.875" font-family="DejaVu Sans" font-size="17.0" fill="#183247" text-anchor="start">
+      <tspan x="1570.0" dy="0">(1,1)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="c.card.f">
+    <text x="1812.0" y="177.875" font-family="DejaVu Sans" font-size="17.0" fill="#183247" text-anchor="start">
+      <tspan x="1812.0" dy="0">(0,N)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="c.repeat">
+    <text x="1190.0" y="334.25" font-family="DejaVu Sans" font-size="18.0" fill="#183247" text-anchor="start">
+      <tspan x="1190.0" dy="0">Each contribution is its own event. One lender may contribute again to the same eligible request.</tspan>
+    </text>
+  </g>
+  <g data-cell-id="c.evaluates">
+    <polygon stroke="#235983" fill="white" stroke-width="1.5" points="795.0,398.0 880.0,448.0 795.0,498.0 710.0,448.0" />
+    <text x="795.0" y="454.375" font-family="DejaVu Sans" font-size="17.0" fill="#183247" text-anchor="middle" font-weight="bold">
+      <tspan x="795.0" dy="0">evaluates</tspan>
+    </text>
+  </g>
+  <g data-cell-id="c.evaluation">
+    <rect stroke="#235983" fill="#eef5f9" stroke-width="1.5" x="650.0" y="625.0" width="290.0" height="74.0" />
+    <text x="795.0" y="670.625" font-family="DejaVu Sans" font-size="23.0" fill="#183247" text-anchor="middle" font-weight="bold">
+      <tspan x="795.0" dy="0">RequestEvaluation</tspan>
+    </text>
+  </g>
+  <g data-cell-id="c.eval.up">
+    <polyline stroke="#235983" fill="none" stroke-width="1.8" points="795.0,274.0 795.0,398.0" />
+  </g>
+  <g data-cell-id="c.eval.down">
+    <polyline stroke="#235983" fill="none" stroke-width="1.8" points="795.0,498.0 795.0,625.0" />
+  </g>
+  <g data-cell-id="c.eval.down.total">
+    <polyline stroke="#235983" fill="none" stroke-width="1.8" points="800.0,498.0 800.0,625.0" />
+  </g>
+  <g data-cell-id="c.eval.c1">
+    <text x="810.0" y="345.75" font-family="DejaVu Sans" font-size="18.0" fill="#183247" text-anchor="start">
+      <tspan x="810.0" dy="0">(0,N)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="c.eval.c2">
+    <text x="810.0" y="569.75" font-family="DejaVu Sans" font-size="18.0" fill="#183247" text-anchor="start">
+      <tspan x="810.0" dy="0">(1,1)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="c.eval.note">
+    <text x="70.0" y="477.75" font-family="DejaVu Sans" font-size="19.0" fill="#183247" text-anchor="start">
+      <tspan x="70.0" dy="0">RequestEvaluation retains:</tspan>
+      <tspan x="70.0" dy="23.75">• a submission observation</tspan>
+      <tspan x="70.0" dy="23.75">• its assessment completion</tspan>
+      <tspan x="70.0" dy="23.75">• separate review/funding attempts</tspan>
+      <tspan x="70.0" dy="23.75" />
+      <tspan x="70.0" dy="23.75">Completed history is immutable.</tspan>
+    </text>
+  </g>
+  <g data-cell-id="c.origin">
+    <polygon stroke="#235983" fill="white" stroke-width="1.5" points="1197.5,425.0 1285.0,475.0 1197.5,525.0 1110.0,475.0" />
+    <text x="1197.5" y="481.375" font-family="DejaVu Sans" font-size="17.0" fill="#183247" text-anchor="middle" font-weight="bold">
+      <tspan x="1197.5" dy="0">activates</tspan>
+    </text>
+  </g>
+  <g data-cell-id="c.loan">
+    <rect stroke="#235983" fill="#eef5f9" stroke-width="1.5" x="1390.0" y="438.0" width="260.0" height="74.0" />
+    <text x="1520.0" y="483.625" font-family="DejaVu Sans" font-size="23.0" fill="#183247" text-anchor="middle" font-weight="bold">
+      <tspan x="1520.0" dy="0">Loan</tspan>
+    </text>
+  </g>
+  <g data-cell-id="c.origin.left">
+    <polyline stroke="#235983" fill="none" stroke-width="1.8" points="925.0,255.0 970.0,255.0 970.0,475.0 1110.0,475.0" />
+  </g>
+  <g data-cell-id="c.origin.right">
+    <polyline stroke="#235983" fill="none" stroke-width="1.8" points="1285.0,475.0 1390.0,475.0" />
+  </g>
+  <g data-cell-id="c.origin.right.total">
+    <polyline stroke="#235983" fill="none" stroke-width="1.8" points="1285.0,480.0 1390.0,480.0" />
+  </g>
+  <g data-cell-id="c.origin.c1">
+    <text x="975.0" y="456.75" font-family="DejaVu Sans" font-size="18.0" fill="#183247" text-anchor="start">
+      <tspan x="975.0" dy="0">(0,1)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="c.origin.c2">
+    <text x="1294.0" y="456.75" font-family="DejaVu Sans" font-size="18.0" fill="#183247" text-anchor="start">
+      <tspan x="1294.0" dy="0">(1,1)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="c.full">
+    <text x="1680.0" y="543.0" font-family="DejaVu Sans" font-size="18.0" fill="#183247" text-anchor="start">
+      <tspan x="1680.0" dy="0">Only full funding activates a loan.</tspan>
+      <tspan x="1680.0" dy="22.5">Borrowers can have multiple loans.</tspan>
+    </text>
+  </g>
+  <g data-cell-id="c.schedule">
+    <polygon stroke="#235983" fill="white" stroke-width="1.5" points="1519.5,675.0 1607.0,725.0 1519.5,775.0 1432.0,725.0" />
+    <text x="1519.5" y="731.375" font-family="DejaVu Sans" font-size="17.0" fill="#183247" text-anchor="middle" font-weight="bold">
+      <tspan x="1519.5" dy="0">schedules</tspan>
+    </text>
+  </g>
+  <g data-cell-id="c.schedule.inner">
+    <polygon stroke="#235983" fill="none" stroke-width="1.5" points="1519.5,682.0 1600.0,725.0 1519.5,768.0 1439.0,725.0" />
+  </g>
+  <g data-cell-id="c.installment">
+    <rect stroke="#235983" fill="#eef5f9" stroke-width="1.5" x="1390.0" y="910.0" width="260.0" height="84.0" />
+    <text x="1520.0" y="960.625" font-family="DejaVu Sans" font-size="23.0" fill="#183247" text-anchor="middle" font-weight="bold">
+      <tspan x="1520.0" dy="0">Installment</tspan>
+    </text>
+  </g>
+  <g data-cell-id="c.installment.inner">
+    <rect stroke="#235983" fill="none" stroke-width="1.5" x="1396.0" y="916.0" width="248.0" height="72.0" />
+  </g>
+  <g data-cell-id="c.schedule.up">
+    <polyline stroke="#235983" fill="none" stroke-width="1.8" points="1520.0,512.0 1520.0,675.0" />
+  </g>
+  <g data-cell-id="c.schedule.up.total">
+    <polyline stroke="#235983" fill="none" stroke-width="1.8" points="1525.0,512.0 1525.0,675.0" />
+  </g>
+  <g data-cell-id="c.schedule.down">
+    <polyline stroke="#235983" fill="none" stroke-width="1.8" points="1520.0,775.0 1520.0,910.0" />
+  </g>
+  <g data-cell-id="c.schedule.down.total">
+    <polyline stroke="#235983" fill="none" stroke-width="1.8" points="1525.0,775.0 1525.0,910.0" />
+  </g>
+  <g data-cell-id="c.schedule.c1">
+    <text x="1535.0" y="642.75" font-family="DejaVu Sans" font-size="18.0" fill="#183247" text-anchor="start">
+      <tspan x="1535.0" dy="0">(3 or 6)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="c.schedule.c2">
+    <text x="1535.0" y="856.75" font-family="DejaVu Sans" font-size="18.0" fill="#183247" text-anchor="start">
+      <tspan x="1535.0" dy="0">(1,1)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="c.weak.note">
+    <text x="1330.0" y="1045.5" font-family="DejaVu Sans" font-size="18.0" fill="#183247" text-anchor="start">
+      <tspan x="1330.0" dy="0">Weak entity: PK (LoanID, InstallmentNumber)</tspan>
+      <tspan x="1330.0" dy="22.5">InstallmentNumber is unique only within its loan.</tspan>
+    </text>
+  </g>
+  <g data-cell-id="c.partial">
+    <ellipse stroke="#235983" fill="white" stroke-width="1.5" cx="1905.0" cy="952.0" rx="155.0" ry="32.0" />
+    <text x="1905.0" y="959.125" font-family="DejaVu Sans" font-size="19.0" fill="#183247" text-anchor="middle">
+      <tspan x="1905.0" dy="0">InstallmentNumber</tspan>
+    </text>
+  </g>
+  <g data-cell-id="c.partial.link">
+    <polyline stroke="#235983" fill="none" stroke-width="1.8" points="1650.0,952.0 1750.0,952.0" />
+  </g>
+  <g data-cell-id="c.partial.underline">
+    <polyline stroke="#235983" fill="none" stroke-width="1.8" stroke-dasharray="6 4" points="1790.0,969.0 2020.0,969.0" />
+  </g>
+  <g data-cell-id="c.partial.caption">
+    <text x="1740.0" y="1011.0" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="1740.0" dy="0">Partial key (dashed underline)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="c.repayment">
+    <rect stroke="#235983" fill="#eef5f9" stroke-width="1.5" x="665.0" y="910.0" width="260.0" height="84.0" />
+    <text x="795.0" y="960.625" font-family="DejaVu Sans" font-size="23.0" fill="#183247" text-anchor="middle" font-weight="bold">
+      <tspan x="795.0" dy="0">Repayment</tspan>
+    </text>
+  </g>
+  <g data-cell-id="c.haspayment">
+    <polygon stroke="#235983" fill="white" stroke-width="1.5" points="1182.5,690.0 1270.0,740.0 1182.5,790.0 1095.0,740.0" />
+    <text x="1182.5" y="746.375" font-family="DejaVu Sans" font-size="17.0" fill="#183247" text-anchor="middle" font-weight="bold">
+      <tspan x="1182.5" dy="0">records</tspan>
+    </text>
+  </g>
+  <g data-cell-id="c.pay.loan">
+    <polyline stroke="#235983" fill="none" stroke-width="1.8" points="1390.0,490.0 1350.0,490.0 1350.0,740.0 1270.0,740.0" />
+  </g>
+  <g data-cell-id="c.pay.payment">
+    <polyline stroke="#235983" fill="none" stroke-width="1.8" points="1095.0,740.0 795.0,740.0 795.0,910.0" />
+  </g>
+  <g data-cell-id="c.pay.payment.total">
+    <polyline stroke="#235983" fill="none" stroke-width="1.8" points="1095.0,745.0 800.0,745.0 800.0,910.0" />
+  </g>
+  <g data-cell-id="c.pay.c1">
+    <text x="1280.0" y="725.75" font-family="DejaVu Sans" font-size="18.0" fill="#183247" text-anchor="start">
+      <tspan x="1280.0" dy="0">(0,N)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="c.pay.c2">
+    <text x="805.0" y="872.75" font-family="DejaVu Sans" font-size="18.0" fill="#183247" text-anchor="start">
+      <tspan x="805.0" dy="0">(1,1)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="c.covers">
+    <polygon stroke="#235983" fill="white" stroke-width="1.5" points="1167.5,902.0 1255.0,952.0 1167.5,1002.0 1080.0,952.0" />
+    <text x="1167.5" y="958.375" font-family="DejaVu Sans" font-size="17.0" fill="#183247" text-anchor="middle" font-weight="bold">
+      <tspan x="1167.5" dy="0">covers</tspan>
+    </text>
+  </g>
+  <g data-cell-id="c.covers.left">
+    <polyline stroke="#235983" fill="none" stroke-width="1.8" points="925.0,952.0 1080.0,952.0" />
+  </g>
+  <g data-cell-id="c.covers.left.total">
+    <polyline stroke="#235983" fill="none" stroke-width="1.8" points="925.0,957.0 1080.0,957.0" />
+  </g>
+  <g data-cell-id="c.covers.right">
+    <polyline stroke="#235983" fill="none" stroke-width="1.8" points="1255.0,952.0 1390.0,952.0" />
+  </g>
+  <g data-cell-id="c.covers.c1">
+    <text x="960.0" y="929.75" font-family="DejaVu Sans" font-size="18.0" fill="#183247" text-anchor="start">
+      <tspan x="960.0" dy="0">(1,N)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="c.covers.c2">
+    <text x="1280.0" y="929.75" font-family="DejaVu Sans" font-size="18.0" fill="#183247" text-anchor="start">
+      <tspan x="1280.0" dy="0">(0,N)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="c.amount">
+    <ellipse stroke="#235983" fill="white" stroke-width="1.5" cx="1167.5" cy="1111.0" rx="97.5" ry="31.0" />
+    <text x="1167.5" y="1117.375" font-family="DejaVu Sans" font-size="17.0" fill="#183247" text-anchor="middle">
+      <tspan x="1167.5" dy="0">AllocatedPrincipal</tspan>
+    </text>
+  </g>
+  <g data-cell-id="c.amount.link">
+    <polyline stroke="#235983" fill="none" stroke-width="1.8" points="1167.0,1002.0 1167.0,1080.0" />
+  </g>
+  <g data-cell-id="c.cover.map">
+    <text x="1230.0" y="1208.5" font-family="DejaVu Sans" font-size="20.0" fill="#183247" text-anchor="middle">
+      <tspan x="1230.0" dy="0">M:N → RepaymentAllocation</tspan>
+      <tspan x="1230.0" dy="25.0">One payment can cover several installments;</tspan>
+      <tspan x="1230.0" dy="25.0">one installment can receive several payments.</tspan>
+    </text>
+  </g>
+  <g data-cell-id="c.legend.panel">
+    <rect stroke="#c4d6e1" fill="#f7fafc" stroke-width="1.5" x="45.0" y="1320.0" width="2110.0" height="420.0" />
+  </g>
+  <g data-cell-id="c.legend.title">
+    <text x="70.0" y="1366.125" font-family="DejaVu Sans" font-size="23.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="70.0" dy="0">Notation and relational mapping</tspan>
+    </text>
+  </g>
+  <g data-cell-id="c.attr.user">
+    <rect stroke="#235983" fill="#eef5f9" stroke-width="1.5" x="95.0" y="1425.0" width="180.0" height="70.0" />
+    <text x="185.0" y="1468.625" font-family="DejaVu Sans" font-size="23.0" fill="#183247" text-anchor="middle" font-weight="bold">
+      <tspan x="185.0" dy="0">User</tspan>
+    </text>
+  </g>
+  <g data-cell-id="c.attr.assigned">
+    <polygon stroke="#235983" fill="white" stroke-width="1.5" points="420.0,1415.0 505.0,1460.0 420.0,1505.0 335.0,1460.0" />
+    <text x="420.0" y="1466.375" font-family="DejaVu Sans" font-size="17.0" fill="#183247" text-anchor="middle" font-weight="bold">
+      <tspan x="420.0" dy="0">assigned</tspan>
+    </text>
+  </g>
+  <g data-cell-id="c.attr.role">
+    <rect stroke="#235983" fill="#eef5f9" stroke-width="1.5" x="565.0" y="1425.0" width="180.0" height="70.0" />
+    <text x="655.0" y="1468.625" font-family="DejaVu Sans" font-size="23.0" fill="#183247" text-anchor="middle" font-weight="bold">
+      <tspan x="655.0" dy="0">Role</tspan>
+    </text>
+  </g>
+  <g data-cell-id="c.attr.roles.left">
+    <polyline stroke="#235983" fill="none" stroke-width="1.8" points="275.0,1460.0 335.0,1460.0" />
+  </g>
+  <g data-cell-id="c.attr.roles.right">
+    <polyline stroke="#235983" fill="none" stroke-width="1.8" points="505.0,1460.0 565.0,1460.0" />
+  </g>
+  <g data-cell-id="c.attr.roles.c1">
+    <text x="263.0" y="1401.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="263.0" dy="0">(0,N)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="c.attr.roles.c2">
+    <text x="515.0" y="1401.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="515.0" dy="0">(0,N)</tspan>
+    </text>
+  </g>
+  <g data-cell-id="c.attr.roles.map">
+    <text x="70.0" y="1670.75" font-family="DejaVu Sans" font-size="17.0" fill="#183247" text-anchor="start">
+      <tspan x="70.0" dy="0">M:N roles → UserRole episodes.</tspan>
+      <tspan x="70.0" dy="21.25">At most one active membership per pair.</tspan>
+    </text>
+  </g>
+  <g data-cell-id="c.attr.key">
+    <ellipse stroke="#235983" fill="white" stroke-width="1.5" cx="177.5" cy="1587.5" rx="82.5" ry="27.5" />
+    <text x="177.5" y="1594.25" font-family="DejaVu Sans" font-size="18.0" fill="#183247" text-anchor="middle" text-decoration="underline">
+      <tspan x="177.5" dy="0">UserID</tspan>
+    </text>
+  </g>
+  <g data-cell-id="c.attr.roles">
+    <ellipse stroke="#235983" fill="white" stroke-width="1.5" cx="382.5" cy="1587.5" rx="82.5" ry="27.5" />
+    <text x="382.5" y="1594.25" font-family="DejaVu Sans" font-size="18.0" fill="#183247" text-anchor="middle">
+      <tspan x="382.5" dy="0">Roles</tspan>
+    </text>
+  </g>
+  <g data-cell-id="c.attr.roles.inner">
+    <ellipse stroke="#235983" fill="none" stroke-width="1.5" cx="382.5" cy="1587.5" rx="76.5" ry="21.5" />
+  </g>
+  <g data-cell-id="c.attr.derived">
+    <ellipse stroke="#235983" fill="white" stroke-width="1.5" stroke-dasharray="6 4" cx="630.0" cy="1587.5" rx="120.0" ry="27.5" />
+    <text x="630.0" y="1594.25" font-family="DejaVu Sans" font-size="18.0" fill="#183247" text-anchor="middle">
+      <tspan x="630.0" dy="0">RemainingPrincipal</tspan>
+    </text>
+  </g>
+  <g data-cell-id="c.attr.key.link">
+    <polyline stroke="#235983" fill="none" stroke-width="1.8" points="185.0,1495.0 185.0,1560.0" />
+  </g>
+  <g data-cell-id="c.attr.multi.link">
+    <polyline stroke="#235983" fill="none" stroke-width="1.8" points="220.0,1495.0 220.0,1520.0 382.0,1520.0 382.0,1560.0" />
+  </g>
+  <g data-cell-id="c.attr.derived.note">
+    <text x="510.0" y="1658.5" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="start">
+      <tspan x="510.0" dy="0">Loan balance:</tspan>
+      <tspan x="510.0" dy="20.0">scheduled − allocations.</tspan>
+    </text>
+  </g>
+  <g data-cell-id="c.attr.composite">
+    <ellipse stroke="#235983" fill="white" stroke-width="1.5" cx="970.0" cy="1442.5" rx="120.0" ry="32.5" />
+    <text x="970.0" y="1449.625" font-family="DejaVu Sans" font-size="19.0" fill="#183247" text-anchor="middle">
+      <tspan x="970.0" dy="0">RepaymentID</tspan>
+    </text>
+  </g>
+  <g data-cell-id="c.attr.loanid">
+    <ellipse stroke="#235983" fill="white" stroke-width="1.5" cx="890.0" cy="1562.5" rx="85.0" ry="27.5" />
+    <text x="890.0" y="1569.25" font-family="DejaVu Sans" font-size="18.0" fill="#183247" text-anchor="middle">
+      <tspan x="890.0" dy="0">LoanID</tspan>
+    </text>
+  </g>
+  <g data-cell-id="c.attr.repaynum">
+    <ellipse stroke="#235983" fill="white" stroke-width="1.5" cx="1122.5" cy="1562.5" rx="122.5" ry="27.5" />
+    <text x="1122.5" y="1569.25" font-family="DejaVu Sans" font-size="18.0" fill="#183247" text-anchor="middle">
+      <tspan x="1122.5" dy="0">RepaymentNumber</tspan>
+    </text>
+  </g>
+  <g data-cell-id="c.attr.comp1">
+    <polyline stroke="#235983" fill="none" stroke-width="1.8" points="925.0,1475.0 890.0,1535.0" />
+  </g>
+  <g data-cell-id="c.attr.comp2">
+    <polyline stroke="#235983" fill="none" stroke-width="1.8" points="1015.0,1475.0 1122.0,1535.0" />
+  </g>
+  <g data-cell-id="c.attr.comp.note">
+    <text x="815.0" y="1639.125" font-family="DejaVu Sans" font-size="17.0" fill="#183247" text-anchor="start">
+      <tspan x="815.0" dy="0">Composite identifier maps to two PK columns.</tspan>
+      <tspan x="815.0" dy="21.25">Role ovals are notation, not a stored list.</tspan>
+      <tspan x="815.0" dy="21.25">Dashed oval = derived; underlined oval = key.</tspan>
+    </text>
+  </g>
+  <g data-cell-id="c.legend.text">
+    <text x="1370.0" y="1459.0" font-family="DejaVu Sans" font-size="19.0" fill="#183247" text-anchor="start">
+      <tspan x="1370.0" dy="0">Rectangles: entities · diamonds: relationships</tspan>
+      <tspan x="1370.0" dy="23.75">Double rectangle + diamond: weak / identifying</tspan>
+      <tspan x="1370.0" dy="23.75">Double line: total participation · single: partial</tspan>
+      <tspan x="1370.0" dy="23.75">(min,max) at an entity: its participation count</tspan>
+      <tspan x="1370.0" dy="23.75" />
+      <tspan x="1370.0" dy="23.75">The 3-or-6 schedule minimum is transactional.</tspan>
+      <tspan x="1370.0" dy="23.75">Page 2–3 FK cards state both directions explicitly.</tspan>
+      <tspan x="1370.0" dy="23.75">All 15 entities and 114 attributes are defined there.</tspan>
+    </text>
+  </g>
+</svg>

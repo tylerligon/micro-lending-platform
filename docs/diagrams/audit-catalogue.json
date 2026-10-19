@@ -1,0 +1,645 @@
+{
+  "version": "1.1",
+  "tdd_section": "8.1",
+  "outcomes": [
+    "Success",
+    "Denied",
+    "Failed",
+    "Interrupted"
+  ],
+  "subjects": {
+    "User": "UserID",
+    "UserRole": "UserRoleID",
+    "BorrowerProfile": "UserID",
+    "LoanRequest": "RequestID",
+    "RequestEvaluation": "EvaluationID",
+    "FundingCommitment": "CommitmentID",
+    "Loan": "LoanID",
+    "Repayment": "LoanID/RepaymentNumber",
+    "OversightNote": "NoteID",
+    "Attempt": "ActionCode/target (see TDD \u00a78.1)"
+  },
+  "service_actors": [
+    "Bootstrap",
+    "Assessment",
+    "Activation",
+    "Release",
+    "Expiration",
+    "RepaymentCompletion",
+    "Delinquency",
+    "Recovery"
+  ],
+  "reasons": [
+    "NOT_AUTHENTICATED",
+    "ROLE_REQUIRED",
+    "OWNER_REQUIRED",
+    "PARTICIPATION_REQUIRED",
+    "ACCOUNT_RESTRICTED",
+    "ACCOUNT_INACTIVE",
+    "ROLE_CONFLICT",
+    "LIVE_PARTICIPATION",
+    "STALE_VERSION",
+    "DUPLICATE_LOGIN",
+    "DUPLICATE_ROLE",
+    "INVALID_INPUT",
+    "INVALID_STATE",
+    "POLICY_LIMIT",
+    "DEADLINE_REACHED",
+    "SELF_FUNDING",
+    "CAPACITY_EXCEEDED",
+    "OVERPAYMENT",
+    "OPERATION_CONFLICT",
+    "CIPHER_INVALID",
+    "AFFORDABILITY_FAIL",
+    "DELINQUENCY_PRESENT",
+    "DB_DEADLOCK",
+    "DB_LOCK_TIMEOUT",
+    "DB_ERROR",
+    "CONNECTION_LOST",
+    "ADMIN_DECISION",
+    "BORROWER_CANCELLED",
+    "WORKER_EXPIRED",
+    "INTEGRITY_FAILURE",
+    "UNKNOWN_TARGET"
+  ],
+  "redacted_fields": [
+    "PrivateEmailCipher",
+    "PasswordHash",
+    "MonthlyIncomeCipher",
+    "ExternalObligationsCipher",
+    "SubmittedIncomeCipher",
+    "SubmittedObligationsCipher",
+    "PlatformBurdenCipher"
+  ],
+  "events": [
+    {
+      "name": "UserCreated",
+      "subject": "User",
+      "outcome": "Success",
+      "fields": [
+        "LoginName",
+        "PublicAlias",
+        "AccountStatus",
+        "PrivateEmailCipher",
+        "PasswordHash"
+      ],
+      "actors": [
+        {
+          "kind": "human",
+          "role": "Administrator",
+          "binding": "none"
+        },
+        {
+          "kind": "service",
+          "service": "Bootstrap",
+          "binding": "fresh_build",
+          "initiator": "none"
+        }
+      ]
+    },
+    {
+      "name": "AccountStatusChanged",
+      "subject": "User",
+      "outcome": "Success",
+      "fields": [
+        "AccountStatus",
+        "StatusReason"
+      ],
+      "actors": [
+        {
+          "kind": "human",
+          "role": "Administrator",
+          "binding": "none"
+        }
+      ],
+      "required_fields": [
+        "AccountStatus",
+        "StatusReason"
+      ],
+      "required_reason": "ADMIN_DECISION"
+    },
+    {
+      "name": "RoleGranted",
+      "subject": "UserRole",
+      "outcome": "Success",
+      "fields": [
+        "UserID",
+        "RoleCode",
+        "GrantedAt"
+      ],
+      "actors": [
+        {
+          "kind": "human",
+          "role": "Administrator",
+          "binding": "grantor"
+        },
+        {
+          "kind": "service",
+          "service": "Bootstrap",
+          "binding": "bootstrap_grant",
+          "initiator": "none"
+        }
+      ]
+    },
+    {
+      "name": "RoleRevoked",
+      "subject": "UserRole",
+      "outcome": "Success",
+      "fields": [
+        "RevokedAt"
+      ],
+      "actors": [
+        {
+          "kind": "human",
+          "role": "Administrator",
+          "binding": "revoker"
+        }
+      ]
+    },
+    {
+      "name": "ProfileSaved",
+      "subject": "BorrowerProfile",
+      "outcome": "Success",
+      "fields": [
+        "MonthlyIncomeCipher",
+        "ExternalObligationsCipher"
+      ],
+      "actors": [
+        {
+          "kind": "human",
+          "role": "Borrower",
+          "binding": "profile_owner"
+        }
+      ]
+    },
+    {
+      "name": "RequestSaved",
+      "subject": "LoanRequest",
+      "outcome": "Success",
+      "fields": [
+        "Purpose",
+        "Principal",
+        "InstallmentCount",
+        "RequestState"
+      ],
+      "actors": [
+        {
+          "kind": "human",
+          "role": "Borrower",
+          "binding": "request_owner"
+        }
+      ]
+    },
+    {
+      "name": "RequestSubmitted",
+      "subject": "LoanRequest",
+      "outcome": "Success",
+      "fields": [
+        "RequestState",
+        "PolicyCode",
+        "SubmittedAt",
+        "EvaluationID",
+        "SubmittedIncomeCipher",
+        "SubmittedObligationsCipher"
+      ],
+      "actors": [
+        {
+          "kind": "human",
+          "role": "Borrower",
+          "binding": "request_owner"
+        }
+      ]
+    },
+    {
+      "name": "AssessmentCompleted",
+      "subject": "RequestEvaluation",
+      "outcome": "Success",
+      "fields": [
+        "RequestID",
+        "Result",
+        "NoDelinquencyPass",
+        "AffordabilityPass",
+        "CompletedAt",
+        "RequestState"
+      ],
+      "actors": [
+        {
+          "kind": "service",
+          "service": "Assessment",
+          "binding": "submission_evaluation",
+          "initiator": "optional_administrator"
+        }
+      ]
+    },
+    {
+      "name": "ReviewApproved",
+      "subject": "RequestEvaluation",
+      "outcome": "Success",
+      "fields": [
+        "RequestID",
+        "Decision",
+        "DecidedAt",
+        "FundingDeadlineAt",
+        "RequestState"
+      ],
+      "actors": [
+        {
+          "kind": "human",
+          "role": "Administrator",
+          "binding": "reviewer"
+        }
+      ],
+      "required_reason": "ADMIN_DECISION"
+    },
+    {
+      "name": "ReviewRejected",
+      "subject": "RequestEvaluation",
+      "outcome": "Success",
+      "fields": [
+        "RequestID",
+        "Decision",
+        "DecidedAt",
+        "RequestState"
+      ],
+      "actors": [
+        {
+          "kind": "human",
+          "role": "Administrator",
+          "binding": "reviewer"
+        }
+      ],
+      "required_reason": "ADMIN_DECISION"
+    },
+    {
+      "name": "CommitmentAccepted",
+      "subject": "FundingCommitment",
+      "outcome": "Success",
+      "fields": [
+        "RequestID",
+        "EvaluationID",
+        "Amount",
+        "CommitmentState",
+        "PendingTotal"
+      ],
+      "actors": [
+        {
+          "kind": "human",
+          "role": "Lender",
+          "binding": "commitment_caller"
+        }
+      ]
+    },
+    {
+      "name": "CommitmentApplied",
+      "subject": "FundingCommitment",
+      "outcome": "Success",
+      "fields": [
+        "CommitmentState",
+        "AppliedAt",
+        "LoanID"
+      ],
+      "actors": [
+        {
+          "kind": "service",
+          "service": "Activation",
+          "binding": "activation_operation",
+          "initiator": "funding_caller"
+        }
+      ]
+    },
+    {
+      "name": "LoanActivated",
+      "subject": "Loan",
+      "outcome": "Success",
+      "fields": [
+        "RequestID",
+        "LoanState",
+        "ActivatedAt",
+        "InstallmentCount",
+        "Principal",
+        "RequestState"
+      ],
+      "actors": [
+        {
+          "kind": "service",
+          "service": "Activation",
+          "binding": "activation_operation",
+          "initiator": "funding_caller"
+        }
+      ]
+    },
+    {
+      "name": "RequestCancelled",
+      "subject": "LoanRequest",
+      "outcome": "Success",
+      "fields": [
+        "RequestState",
+        "TerminalReason"
+      ],
+      "actors": [
+        {
+          "kind": "human",
+          "role": "Borrower",
+          "binding": "request_owner"
+        },
+        {
+          "kind": "human",
+          "role": "Administrator",
+          "binding": "none"
+        }
+      ]
+    },
+    {
+      "name": "RequestExpired",
+      "subject": "LoanRequest",
+      "outcome": "Success",
+      "fields": [
+        "RequestState",
+        "FundingDeadlineAt"
+      ],
+      "actors": [
+        {
+          "kind": "service",
+          "service": "Expiration",
+          "binding": "none",
+          "initiator": "optional_administrator"
+        }
+      ],
+      "required_reason": "WORKER_EXPIRED"
+    },
+    {
+      "name": "CommitmentReleased",
+      "subject": "FundingCommitment",
+      "outcome": "Success",
+      "fields": [
+        "CommitmentState",
+        "ReleasedAt"
+      ],
+      "actors": [
+        {
+          "kind": "service",
+          "service": "Release",
+          "binding": "release_parent",
+          "initiator": "parent_initiator"
+        }
+      ]
+    },
+    {
+      "name": "RepaymentPosted",
+      "subject": "Repayment",
+      "outcome": "Success",
+      "fields": [
+        "Amount",
+        "AllocationCount",
+        "OutstandingBefore",
+        "OutstandingAfter"
+      ],
+      "actors": [
+        {
+          "kind": "human",
+          "role": "Borrower",
+          "binding": "repayment_caller"
+        }
+      ]
+    },
+    {
+      "name": "LoanCompleted",
+      "subject": "Loan",
+      "outcome": "Success",
+      "fields": [
+        "LoanState",
+        "CompletedAt",
+        "ObservedCondition"
+      ],
+      "actors": [
+        {
+          "kind": "service",
+          "service": "RepaymentCompletion",
+          "binding": "repayment_operation",
+          "initiator": "repayment_caller"
+        }
+      ]
+    },
+    {
+      "name": "DelinquencyChanged",
+      "subject": "Loan",
+      "outcome": "Success",
+      "fields": [
+        "ObservedCondition",
+        "LastEvaluatedAt",
+        "OldestOverdueDueDate",
+        "OverduePrincipal"
+      ],
+      "actors": [
+        {
+          "kind": "service",
+          "service": "Delinquency",
+          "binding": "no_operation",
+          "initiator": "optional_administrator"
+        },
+        {
+          "kind": "service",
+          "service": "Delinquency",
+          "binding": "repayment_operation",
+          "initiator": "repayment_caller"
+        }
+      ]
+    },
+    {
+      "name": "NoteAppended",
+      "subject": "OversightNote",
+      "outcome": "Success",
+      "fields": [
+        "RequestID",
+        "LoanID",
+        "CorrectsNoteID"
+      ],
+      "actors": [
+        {
+          "kind": "human",
+          "role": "Administrator",
+          "binding": "note_author"
+        }
+      ]
+    },
+    {
+      "name": "AttemptRejected",
+      "subject": "Attempt",
+      "outcome": "Denied",
+      "fields": [],
+      "actors": [
+        {
+          "kind": "verified_failure"
+        },
+        {
+          "kind": "anonymous"
+        },
+        {
+          "kind": "service",
+          "service": "Assessment",
+          "binding": "failure_context",
+          "initiator": "optional_verified_user"
+        },
+        {
+          "kind": "service",
+          "service": "Activation",
+          "binding": "failure_context",
+          "initiator": "optional_verified_user"
+        },
+        {
+          "kind": "service",
+          "service": "Release",
+          "binding": "failure_context",
+          "initiator": "optional_verified_user"
+        },
+        {
+          "kind": "service",
+          "service": "Expiration",
+          "binding": "failure_context",
+          "initiator": "optional_verified_user"
+        },
+        {
+          "kind": "service",
+          "service": "RepaymentCompletion",
+          "binding": "failure_context",
+          "initiator": "optional_verified_user"
+        },
+        {
+          "kind": "service",
+          "service": "Delinquency",
+          "binding": "failure_context",
+          "initiator": "optional_verified_user"
+        }
+      ]
+    },
+    {
+      "name": "TransactionFailed",
+      "subject": "Attempt",
+      "outcome": "Failed",
+      "fields": [],
+      "actors": [
+        {
+          "kind": "verified_failure"
+        },
+        {
+          "kind": "anonymous"
+        },
+        {
+          "kind": "service",
+          "service": "Assessment",
+          "binding": "failure_context",
+          "initiator": "optional_verified_user"
+        },
+        {
+          "kind": "service",
+          "service": "Activation",
+          "binding": "failure_context",
+          "initiator": "optional_verified_user"
+        },
+        {
+          "kind": "service",
+          "service": "Release",
+          "binding": "failure_context",
+          "initiator": "optional_verified_user"
+        },
+        {
+          "kind": "service",
+          "service": "Expiration",
+          "binding": "failure_context",
+          "initiator": "optional_verified_user"
+        },
+        {
+          "kind": "service",
+          "service": "RepaymentCompletion",
+          "binding": "failure_context",
+          "initiator": "optional_verified_user"
+        },
+        {
+          "kind": "service",
+          "service": "Delinquency",
+          "binding": "failure_context",
+          "initiator": "optional_verified_user"
+        }
+      ]
+    },
+    {
+      "name": "InterruptionObserved",
+      "subject": "Attempt",
+      "outcome": "Interrupted",
+      "fields": [],
+      "actors": [
+        {
+          "kind": "service",
+          "service": "Recovery",
+          "binding": "failure_context",
+          "initiator": "optional_verified_user"
+        }
+      ]
+    }
+  ],
+  "protected_fields": {
+    "StatusReason": {
+      "event": "AccountStatusChanged",
+      "storage": "AuditChange.NewValue",
+      "required": true,
+      "old_value": null,
+      "min_characters": 1,
+      "max_characters": 1000,
+      "trimmed": true,
+      "read_roles": [
+        "Administrator"
+      ],
+      "other_audit_readers": "field name only; OldValue and NewValue NULL"
+    }
+  },
+  "bootstrap_contract": {
+    "events": [
+      "UserCreated",
+      "RoleGranted"
+    ],
+    "requires_fresh_build": true,
+    "requires_trusted_build_identity": true,
+    "runtime_allowed": false
+  },
+  "service_failure_actions": {
+    "Assessment": [
+      "AssessRequest"
+    ],
+    "Activation": [
+      "CommitFunding"
+    ],
+    "Release": [
+      "CancelRequest",
+      "ExpireRequest"
+    ],
+    "Expiration": [
+      "ExpireRequest"
+    ],
+    "RepaymentCompletion": [
+      "PostRepayment"
+    ],
+    "Delinquency": [
+      "EvaluateDelinquency",
+      "PostRepayment"
+    ],
+    "Recovery": [
+      "CreateUser",
+      "SetRole",
+      "SetAccountStatus",
+      "SaveProfile",
+      "SaveDraft",
+      "SubmitRequest",
+      "AssessRequest",
+      "ReviewRequest",
+      "CommitFunding",
+      "CancelRequest",
+      "ExpireRequest",
+      "PostRepayment",
+      "EvaluateDelinquency",
+      "AppendNote",
+      "SignIn",
+      "ReadReport",
+      "ReadDetail"
+    ]
+  }
+}

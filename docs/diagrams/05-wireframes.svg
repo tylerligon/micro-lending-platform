@@ -1,0 +1,160 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1490" viewBox="0 0 1600 1490" data-source="Application_Design.drawio" data-source-sha256="6b8ff79fe0a55258e62cb696db57177951c47120a99483977f380f687696da3d" data-page-id="wireframes" role="img" aria-label="Basic UI wireframes — design only">
+  <title>Basic UI wireframes — design only</title>
+  <rect width="100%" height="100%" fill="#ffffff" />
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#235983" />
+    </marker>
+  </defs>
+  <g data-cell-id="ui.title">
+    <text x="40.0" y="58.75" font-family="DejaVu Sans" font-size="30.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="40.0" dy="0">Basic interface · wireframes</tspan>
+    </text>
+  </g>
+  <g data-cell-id="ui.sub">
+    <text x="40.0" y="105.25" font-family="DejaVu Sans" font-size="19.0" fill="#183247" text-anchor="start">
+      <tspan x="40.0" dy="0">FR-33 / AC-25. Layout sketches only; controls are not implemented. Same lending rules and authorization apply to every route.</tspan>
+      <tspan x="40.0" dy="23.75">Shared sign-in → permitted role navigation. A dual user can switch Borrower/Lender; self-funding stays forbidden.</tspan>
+    </text>
+  </g>
+  <g data-cell-id="b">
+    <rect stroke="#235983" fill="#f7fafc" stroke-width="1.5" x="40.0" y="175.0" width="740.0" height="740.0" />
+  </g>
+  <g data-cell-id="b.title">
+    <text x="58.0" y="218.875" font-family="DejaVu Sans" font-size="25.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="58.0" dy="0">BORROWER · own requests and loans</tspan>
+    </text>
+  </g>
+  <g data-cell-id="b.profile">
+    <text x="60.0" y="277.5" font-family="DejaVu Sans" font-size="20.0" fill="#183247" text-anchor="start">
+      <tspan x="60.0" dy="0">Private profile: monthly income [1000.00]</tspan>
+      <tspan x="60.0" dy="25.0">External obligations [100.00]          [Save profile]</tspan>
+    </text>
+  </g>
+  <g data-cell-id="b.draft">
+    <text x="60.0" y="377.5" font-family="DejaVu Sans" font-size="20.0" fill="#183247" text-anchor="start">
+      <tspan x="60.0" dy="0">New request: purpose [equipment]</tspan>
+      <tspan x="60.0" dy="25.0">Principal [300.00]     Installments [3 / 6]</tspan>
+    </text>
+  </g>
+  <g data-cell-id="b.save">
+    <rect stroke="#235983" fill="#eef5f9" stroke-width="1.5" x="60.0" y="430.0" width="175.0" height="48.0" />
+    <text x="147.5" y="460.75" font-family="DejaVu Sans" font-size="18.0" fill="#183247" text-anchor="middle" font-weight="bold">
+      <tspan x="147.5" dy="0">Save draft</tspan>
+    </text>
+  </g>
+  <g data-cell-id="b.submit">
+    <rect stroke="#235983" fill="#eef5f9" stroke-width="1.5" x="260.0" y="430.0" width="205.0" height="48.0" />
+    <text x="362.5" y="460.75" font-family="DejaVu Sans" font-size="18.0" fill="#183247" text-anchor="middle" font-weight="bold">
+      <tspan x="362.5" dy="0">Submit request</tspan>
+    </text>
+  </g>
+  <g data-cell-id="b.loans">
+    <text x="60.0" y="550.0" font-family="DejaVu Sans" font-size="20.0" fill="#183247" text-anchor="start">
+      <tspan x="60.0" dy="0">MY LOANS       Outstanding       Overdue</tspan>
+      <tspan x="60.0" dy="25.0">501                 $550.00          $250.00</tspan>
+      <tspan x="60.0" dy="25.0">502                 $200.00              $0.00</tspan>
+      <tspan x="60.0" dy="25.0">Total               $750.00          $250.00</tspan>
+    </text>
+  </g>
+  <g data-cell-id="b.payment">
+    <text x="60.0" y="717.5" font-family="DejaVu Sans" font-size="20.0" fill="#183247" text-anchor="start">
+      <tspan x="60.0" dy="0">Selected loan 501 → schedule / payment allocations</tspan>
+      <tspan x="60.0" dy="25.0">Repayment amount [____]       [Post repayment]</tspan>
+      <tspan x="60.0" dy="25.0">A payment affects this selected loan only.</tspan>
+    </text>
+  </g>
+  <g data-cell-id="b.result">
+    <text x="60.0" y="840.5" font-family="DejaVu Sans" font-size="18.0" fill="#183247" text-anchor="start">
+      <tspan x="60.0" dy="0">Result area: committed receipt / useful error.</tspan>
+      <tspan x="60.0" dy="22.5">Unknown outcome → check result / retry same payment.</tspan>
+    </text>
+  </g>
+  <g data-cell-id="l">
+    <rect stroke="#235983" fill="#f7fafc" stroke-width="1.5" x="820.0" y="175.0" width="740.0" height="740.0" />
+  </g>
+  <g data-cell-id="l.title">
+    <text x="838.0" y="218.875" font-family="DejaVu Sans" font-size="25.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="838.0" dy="0">LENDER · public requests and own loans</tspan>
+    </text>
+  </g>
+  <g data-cell-id="l.filter">
+    <text x="840.0" y="277.5" font-family="DejaVu Sans" font-size="20.0" fill="#183247" text-anchor="start">
+      <tspan x="840.0" dy="0">Filters: principal [min] [max]    installments [all]</tspan>
+      <tspan x="840.0" dy="25.0">Eligible requests ordered by funding deadline</tspan>
+    </text>
+  </g>
+  <g data-cell-id="l.list">
+    <text x="840.0" y="385.0" font-family="DejaVu Sans" font-size="20.0" fill="#183247" text-anchor="start">
+      <tspan x="840.0" dy="0">REQUEST     Alias        Principal       Remaining</tspan>
+      <tspan x="840.0" dy="25.0">103           alias4         $300.00         $200.00</tspan>
+      <tspan x="840.0" dy="25.0">104           alias7         $300.00         $300.00</tspan>
+      <tspan x="840.0" dy="25.0">Private income, contact and inputs are absent.</tspan>
+    </text>
+  </g>
+  <g data-cell-id="l.fund">
+    <text x="840.0" y="537.5" font-family="DejaVu Sans" font-size="20.0" fill="#183247" text-anchor="start">
+      <tspan x="840.0" dy="0">Request 103: contribution [100.00]</tspan>
+      <tspan x="840.0" dy="25.0">Each new contribution receives a new reference.</tspan>
+    </text>
+  </g>
+  <g data-cell-id="l.contribute">
+    <rect stroke="#235983" fill="#eef5f9" stroke-width="1.5" x="840.0" y="590.0" width="210.0" height="48.0" />
+    <text x="945.0" y="620.75" font-family="DejaVu Sans" font-size="18.0" fill="#183247" text-anchor="middle" font-weight="bold">
+      <tspan x="945.0" dy="0">Contribute</tspan>
+    </text>
+  </g>
+  <g data-cell-id="l.loans">
+    <text x="840.0" y="710.0" font-family="DejaVu Sans" font-size="20.0" fill="#183247" text-anchor="start">
+      <tspan x="840.0" dy="0">MY FUNDED LOANS · example: Lender 2</tspan>
+      <tspan x="840.0" dy="25.0">Loan 501 / Borrower 1 · overdue $250.00</tspan>
+      <tspan x="840.0" dy="25.0">[Full schedule]  [Repayments]  [Delinquency]</tspan>
+      <tspan x="840.0" dy="25.0">Loan 502 is absent: this lender did not fund it.</tspan>
+    </text>
+  </g>
+  <g data-cell-id="l.result">
+    <text x="840.0" y="843.0" font-family="DejaVu Sans" font-size="18.0" fill="#183247" text-anchor="start">
+      <tspan x="840.0" dy="0">Repeat contribution is permitted while eligible/open.</tspan>
+      <tspan x="840.0" dy="22.5">Repeated participation never duplicates loan totals.</tspan>
+    </text>
+  </g>
+  <g data-cell-id="o">
+    <rect stroke="#235983" fill="#f7fafc" stroke-width="1.5" x="40.0" y="960.0" width="1520.0" height="390.0" />
+  </g>
+  <g data-cell-id="o.title">
+    <text x="58.0" y="1003.875" font-family="DejaVu Sans" font-size="25.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="58.0" dy="0">OVERSIGHT · Administrator or read-only Auditor</tspan>
+    </text>
+  </g>
+  <g data-cell-id="o.review">
+    <text x="65.0" y="1092.5" font-family="DejaVu Sans" font-size="20.0" fill="#183247" text-anchor="start">
+      <tspan x="65.0" dy="0">ADMINISTRATOR</tspan>
+      <tspan x="65.0" dy="25.0">Review queue → authorized inputs and check results</tspan>
+      <tspan x="65.0" dy="25.0">[Approve] [Reject + reason]   [Append follow-up note]</tspan>
+      <tspan x="65.0" dy="25.0">Accounts → [Restrict] / role management</tspan>
+      <tspan x="65.0" dy="25.0">No editing past payments, assessments or audit events.</tspan>
+    </text>
+  </g>
+  <g data-cell-id="o.audit">
+    <text x="825.0" y="1092.5" font-family="DejaVu Sans" font-size="20.0" fill="#183247" text-anchor="start">
+      <tspan x="825.0" dy="0">ADMINISTRATOR + AUDITOR</tspan>
+      <tspan x="825.0" dy="25.0">Loan-scoped delinquency → schedule / history</tspan>
+      <tspan x="825.0" dy="25.0">Monthly reports → totals over authorized records</tspan>
+      <tspan x="825.0" dy="25.0">Audit history → event, actor, time, safe old/new values</tspan>
+      <tspan x="825.0" dy="25.0">Auditor: no mutations or private financial inputs.</tspan>
+    </text>
+  </g>
+  <g data-cell-id="o.empty">
+    <text x="65.0" y="1288.0" font-family="DejaVu Sans" font-size="18.0" fill="#183247" text-anchor="start">
+      <tspan x="65.0" dy="0">Every workspace needs loading, empty, validation, denial, success and unknown-outcome states.</tspan>
+      <tspan x="65.0" dy="22.5">Buttons do not enforce permission: API + routines do. Label repayments as loan progress, never lender payouts.</tspan>
+    </text>
+  </g>
+  <g data-cell-id="ui.footer">
+    <text x="40.0" y="1410.25" font-family="DejaVu Sans" font-size="19.0" fill="#183247" text-anchor="start">
+      <tspan x="40.0" dy="0">Money is fictional and interest-free. UTC timestamps / calendar due dates. No wallet, payment provider or disbursement screen.</tspan>
+      <tspan x="40.0" dy="23.75">Editable source + exports: Application_Design.drawio · API/session/field contracts: TDD §2.2.</tspan>
+    </text>
+  </g>
+</svg>

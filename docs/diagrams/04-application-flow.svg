@@ -1,0 +1,178 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1350" viewBox="0 0 1600 1350" data-source="Application_Design.drawio" data-source-sha256="6b8ff79fe0a55258e62cb696db57177951c47120a99483977f380f687696da3d" data-page-id="application-flow" role="img" aria-label="Application boundaries and transaction data flow">
+  <title>Application boundaries and transaction data flow</title>
+  <rect width="100%" height="100%" fill="#ffffff" />
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#235983" />
+    </marker>
+  </defs>
+  <g data-cell-id="flow.title">
+    <text x="40.0" y="58.75" font-family="DejaVu Sans" font-size="30.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="40.0" dy="0">Application boundaries · design contract</tspan>
+    </text>
+  </g>
+  <g data-cell-id="flow.sub">
+    <text x="40.0" y="105.25" font-family="DejaVu Sans" font-size="19.0" fill="#183247" text-anchor="start">
+      <tspan x="40.0" dy="0">Proposed single deployable service. Instructor confirmation of the microservices interpretation is still required.</tspan>
+      <tspan x="40.0" dy="23.75">No running API/UI or database implementation is represented here. TDD §§2, 6–8.</tspan>
+    </text>
+  </g>
+  <g data-cell-id="browser">
+    <rect stroke="#235983" fill="#eef5f9" stroke-width="1.5" x="40.0" y="190.0" width="360.0" height="170.0" />
+    <text x="220.0" y="242.0" font-family="DejaVu Sans" font-size="22.0" fill="#183247" text-anchor="middle" font-weight="bold">
+      <tspan x="220.0" dy="0">BROWSER</tspan>
+      <tspan x="220.0" dy="27.5">Same-origin UI</tspan>
+      <tspan x="220.0" dy="27.5">Session cookie + CSRF</tspan>
+      <tspan x="220.0" dy="27.5">No DB credentials or keys</tspan>
+    </text>
+  </g>
+  <g data-cell-id="service">
+    <rect stroke="#235983" fill="#eef5f9" stroke-width="1.5" x="570.0" y="190.0" width="470.0" height="170.0" />
+    <text x="805.0" y="242.0" font-family="DejaVu Sans" font-size="22.0" fill="#183247" text-anchor="middle" font-weight="bold">
+      <tspan x="805.0" dy="0">TRUSTED SERVICE</tspan>
+      <tspan x="805.0" dy="27.5">Command + Query modules</tspan>
+      <tspan x="805.0" dy="27.5">Identity, crypto, DB coordinator</tspan>
+      <tspan x="805.0" dy="27.5">One reserved connection per action</tspan>
+    </text>
+  </g>
+  <g data-cell-id="database">
+    <rect stroke="#235983" fill="#eef5f9" stroke-width="1.5" x="1190.0" y="190.0" width="370.0" height="170.0" />
+    <text x="1375.0" y="243.5" font-family="DejaVu Sans" font-size="21.0" fill="#183247" text-anchor="middle" font-weight="bold">
+      <tspan x="1375.0" dy="0">MYSQL / INNODB</tspan>
+      <tspan x="1375.0" dy="26.25">Restricted routines + triggers</tspan>
+      <tspan x="1375.0" dy="26.25">15 application tables</tspan>
+      <tspan x="1375.0" dy="26.25">Encrypted private columns</tspan>
+    </text>
+  </g>
+  <g data-cell-id="http">
+    <polyline stroke="#235983" fill="none" stroke-width="2" marker-end="url(#arrow)" points="400.0,250.0 570.0,250.0" />
+  </g>
+  <g data-cell-id="http.label">
+    <text x="484.5" y="226.375" font-family="DejaVu Sans" font-size="17.0" fill="#183247" text-anchor="middle">
+      <tspan x="484.5" dy="0">HTTPS / API</tspan>
+    </text>
+  </g>
+  <g data-cell-id="db">
+    <polyline stroke="#235983" fill="none" stroke-width="2" marker-end="url(#arrow)" points="1040.0,250.0 1190.0,250.0" />
+  </g>
+  <g data-cell-id="db.label">
+    <text x="1116.0" y="226.0" font-family="DejaVu Sans" font-size="16.0" fill="#183247" text-anchor="middle">
+      <tspan x="1116.0" dy="0">TLS / routines</tspan>
+    </text>
+  </g>
+  <g data-cell-id="worker">
+    <rect stroke="#235983" fill="#eef5f9" stroke-width="1.5" x="570.0" y="435.0" width="470.0" height="120.0" />
+    <text x="805.0" y="476.625" font-family="DejaVu Sans" font-size="21.0" fill="#183247" text-anchor="middle">
+      <tspan x="805.0" dy="0">WORKER</tspan>
+      <tspan x="805.0" dy="26.25">Assessment / expiry / delinquency</tspan>
+      <tspan x="805.0" dy="26.25">Same coordinator, worker credential</tspan>
+    </text>
+  </g>
+  <g data-cell-id="worker.call">
+    <polyline stroke="#235983" fill="none" stroke-width="2" marker-end="url(#arrow)" points="805.0,435.0 805.0,360.0" />
+  </g>
+  <g data-cell-id="keys">
+    <rect stroke="#235983" fill="white" stroke-width="1.5" x="40.0" y="435.0" width="430.0" height="120.0" />
+    <text x="255.0" y="477.5" font-family="DejaVu Sans" font-size="20.0" fill="#183247" text-anchor="middle">
+      <tspan x="255.0" dy="0">INJECTED SECRETS</tspan>
+      <tspan x="255.0" dy="25.0">Keys + separate runtime DB credentials</tspan>
+      <tspan x="255.0" dy="25.0">Never in browser, tables or audit</tspan>
+    </text>
+  </g>
+  <g data-cell-id="keys.call">
+    <polyline stroke="#235983" fill="none" stroke-width="2" marker-end="url(#arrow)" points="470.0,480.0 515.0,480.0 515.0,320.0 570.0,320.0" />
+  </g>
+  <g data-cell-id="scope">
+    <rect stroke="#235983" fill="#f7fafc" stroke-width="1.5" x="1130.0" y="420.0" width="430.0" height="155.0" />
+    <text x="1345.0" y="469.0" font-family="DejaVu Sans" font-size="19.0" fill="#183247" text-anchor="middle">
+      <tspan x="1345.0" dy="0">TRUST BOUNDARY</tspan>
+      <tspan x="1345.0" dy="23.75">Service may decrypt internally.</tspan>
+      <tspan x="1345.0" dy="23.75">Public responses use FRD allowlists.</tspan>
+      <tspan x="1345.0" dy="23.75">A lender sees only participating loans.</tspan>
+    </text>
+  </g>
+  <g data-cell-id="steps.title">
+    <text x="40.0" y="660.125" font-family="DejaVu Sans" font-size="27.0" fill="#183247" text-anchor="start" font-weight="bold">
+      <tspan x="40.0" dy="0">One mutation · one connection · one atomic result</tspan>
+    </text>
+  </g>
+  <g data-cell-id="prepare">
+    <rect stroke="#235983" fill="#eef5f9" stroke-width="1.5" x="40.0" y="710.0" width="450.0" height="170.0" />
+    <text x="265.0" y="765.0" font-family="DejaVu Sans" font-size="20.0" fill="#183247" text-anchor="middle">
+      <tspan x="265.0" dy="0">1  PREPARE / LOCK</tspan>
+      <tspan x="265.0" dy="25.0">Validate actor and receipt retry.</tspan>
+      <tspan x="265.0" dy="25.0">Lock Users → profile → requests</tspan>
+      <tspan x="265.0" dy="25.0">→ loans → installments; capture T.</tspan>
+    </text>
+  </g>
+  <g data-cell-id="decrypt">
+    <rect stroke="#235983" fill="#eef5f9" stroke-width="1.5" x="575.0" y="710.0" width="450.0" height="170.0" />
+    <text x="800.0" y="765.0" font-family="DejaVu Sans" font-size="20.0" fill="#183247" text-anchor="middle">
+      <tspan x="800.0" dy="0">2  DECRYPT / AUTHENTICATE</tspan>
+      <tspan x="800.0" dy="25.0">Read exact locked envelopes.</tspan>
+      <tspan x="800.0" dy="25.0">Decrypt locally with field-bound AAD.</tspan>
+      <tspan x="800.0" dy="25.0">Failure aborts the entire action.</tspan>
+    </text>
+  </g>
+  <g data-cell-id="calculate">
+    <rect stroke="#235983" fill="#eef5f9" stroke-width="1.5" x="1110.0" y="710.0" width="450.0" height="170.0" />
+    <text x="1335.0" y="765.0" font-family="DejaVu Sans" font-size="20.0" fill="#183247" text-anchor="middle">
+      <tspan x="1335.0" dy="0">3  CALCULATE IN SQL</tspan>
+      <tspan x="1335.0" dy="25.0">Bound decimal inputs; current burden.</tspan>
+      <tspan x="1335.0" dy="25.0">Check capacity, deadline, delinquency.</tspan>
+      <tspan x="1335.0" dy="25.0">Return authoritative check summary.</tspan>
+    </text>
+  </g>
+  <g data-cell-id="write">
+    <rect stroke="#235983" fill="#eef5f9" stroke-width="1.5" x="1110.0" y="970.0" width="450.0" height="170.0" />
+    <text x="1335.0" y="1025.0" font-family="DejaVu Sans" font-size="20.0" fill="#183247" text-anchor="middle">
+      <tspan x="1335.0" dy="0">4  WRITE + AUDIT</tspan>
+      <tspan x="1335.0" dy="25.0">Encrypt retained summary.</tspan>
+      <tspan x="1335.0" dy="25.0">Routine writes business effects.</tspan>
+      <tspan x="1335.0" dy="25.0">Trigger alone owns loan completion.</tspan>
+    </text>
+  </g>
+  <g data-cell-id="commit">
+    <rect stroke="#235983" fill="#eef5f9" stroke-width="1.5" x="575.0" y="970.0" width="450.0" height="170.0" />
+    <text x="800.0" y="1025.0" font-family="DejaVu Sans" font-size="20.0" fill="#183247" text-anchor="middle">
+      <tspan x="800.0" dy="0">5  COMMIT / RESPOND</tspan>
+      <tspan x="800.0" dy="25.0">Store original financial receipt.</tspan>
+      <tspan x="800.0" dy="25.0">Commit before reporting success.</tspan>
+      <tspan x="800.0" dy="25.0">Exact retry returns original result.</tspan>
+    </text>
+  </g>
+  <g data-cell-id="failure">
+    <rect stroke="#235983" fill="#eef5f9" stroke-width="1.5" x="40.0" y="970.0" width="450.0" height="170.0" />
+    <text x="265.0" y="1025.0" font-family="DejaVu Sans" font-size="20.0" fill="#183247" text-anchor="middle">
+      <tspan x="265.0" dy="0">6  ON FAILURE</tspan>
+      <tspan x="265.0" dy="25.0">Whole transaction rollback.</tspan>
+      <tspan x="265.0" dy="25.0">Separate failure evidence transaction.</tspan>
+      <tspan x="265.0" dy="25.0">Retry transient errors at most 3 tries.</tspan>
+    </text>
+  </g>
+  <g data-cell-id="p-d">
+    <polyline stroke="#235983" fill="none" stroke-width="2" marker-end="url(#arrow)" points="490.0,795.0 575.0,795.0" />
+  </g>
+  <g data-cell-id="d-c">
+    <polyline stroke="#235983" fill="none" stroke-width="2" marker-end="url(#arrow)" points="1025.0,795.0 1110.0,795.0" />
+  </g>
+  <g data-cell-id="c-w">
+    <polyline stroke="#235983" fill="none" stroke-width="2" marker-end="url(#arrow)" points="1335.0,880.0 1335.0,970.0" />
+  </g>
+  <g data-cell-id="w-commit">
+    <polyline stroke="#235983" fill="none" stroke-width="2" marker-end="url(#arrow)" points="1110.0,1055.0 1025.0,1055.0" />
+  </g>
+  <g data-cell-id="failure.branch">
+    <text x="40.0" y="1195.0" font-family="DejaVu Sans" font-size="20.0" fill="#183247" text-anchor="start">
+      <tspan x="40.0" dy="0">Failure branch from steps 1–5; step 6 is not executed after a confirmed successful commit.</tspan>
+    </text>
+  </g>
+  <g data-cell-id="flow.note">
+    <text x="40.0" y="1257.375" font-family="DejaVu Sans" font-size="19.0" fill="#183247" text-anchor="start">
+      <tspan x="40.0" dy="0">RQ-01 uses the same lock/decrypt/calculate boundary without writing evaluation history.</tspan>
+      <tspan x="40.0" dy="23.75">Other reports use one consistent snapshot and authorization scope. Session memory is operational, not another entity.</tspan>
+      <tspan x="40.0" dy="23.75">Editable source + exports: Application_Design.drawio · Explanation and API contracts: TDD §2.</tspan>
+    </text>
+  </g>
+</svg>

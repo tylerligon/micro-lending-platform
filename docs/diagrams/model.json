@@ -1,0 +1,1781 @@
+{
+  "version": "2.1",
+  "frd_version": "1.2",
+  "tdd_version": "1.2",
+  "entities": [
+    {
+      "name": "User",
+      "basis": "FR-01\u2013FR-04; BR-01, BR-03; SEC-01",
+      "purpose": "Application identity, account status, and the existing row used to serialize a borrower\u2019s exposure changes.",
+      "kind": "Strong",
+      "pk": "UserID",
+      "unique": "LoginName; PublicAlias",
+      "checks": "AccountStatus in Active/Restricted/Inactive; trimmed LoginName and DisplayName nonempty.",
+      "columns": [
+        {
+          "name": "UserID",
+          "type": "BIGINT UNSIGNED",
+          "nullable": "No",
+          "key": "PK; AUTO_INCREMENT",
+          "purpose": "Stable application identity; also exposed as BorrowerID when this user owns a request."
+        },
+        {
+          "name": "LoginName",
+          "type": "VARCHAR(80)",
+          "nullable": "No",
+          "key": "UNIQUE; binary collation",
+          "purpose": "Case-sensitive login; no uniqueness rule on private email."
+        },
+        {
+          "name": "DisplayName",
+          "type": "VARCHAR(120)",
+          "nullable": "No",
+          "key": "Nonblank",
+          "purpose": "Account display information, not the marketplace alias."
+        },
+        {
+          "name": "PublicAlias",
+          "type": "VARCHAR(40)",
+          "nullable": "No",
+          "key": "UNIQUE; nonblank",
+          "purpose": "Immutable random nonidentifying marketplace alias; also binds encrypted private email before UserID allocation. Never generated from email/name."
+        },
+        {
+          "name": "PrivateEmailCipher",
+          "type": "VARBINARY(512)",
+          "nullable": "No",
+          "key": "Authenticated-encryption envelope",
+          "purpose": "SEC-12 protected contact value."
+        },
+        {
+          "name": "PasswordHash",
+          "type": "VARCHAR(255)",
+          "nullable": "No",
+          "key": "Argon2id encoded hash",
+          "purpose": "Local sample-account sign-in; never a readable password or audit value."
+        },
+        {
+          "name": "AccountStatus",
+          "type": "VARCHAR(16)",
+          "nullable": "No",
+          "key": "CHECK; default Active",
+          "purpose": "Current account entitlement state."
+        },
+        {
+          "name": "CreatedAt",
+          "type": "DATETIME(6)",
+          "nullable": "No",
+          "key": "Server UTC",
+          "purpose": "Account creation time."
+        },
+        {
+          "name": "RowVersion",
+          "type": "BIGINT UNSIGNED",
+          "nullable": "No",
+          "key": "Default 0; increment on update",
+          "purpose": "Reject stale profile/account edit inputs and help validate preparation reads."
+        }
+      ],
+      "notes": "Administrative procedures audit account creation/status changes. UserID is never changed; no operational DELETE. The User row is locked even when no profile or loan exists, so first submissions have a stable lock target.",
+      "pk_columns": [
+        "UserID"
+      ],
+      "unique_groups": [
+        [
+          "LoginName"
+        ],
+        [
+          "PublicAlias"
+        ]
+      ],
+      "section": "4.1"
+    },
+    {
+      "name": "Role",
+      "basis": "FR-02; SEC-06, SEC-13",
+      "purpose": "The four human business roles.",
+      "kind": "Lookup/reference",
+      "pk": "RoleCode",
+      "unique": "None",
+      "checks": "RoleCode in Borrower/Lender/Administrator/Auditor.",
+      "columns": [
+        {
+          "name": "RoleCode",
+          "type": "VARCHAR(16)",
+          "nullable": "No",
+          "key": "PK; CHECK",
+          "purpose": "Canonical business role name."
+        },
+        {
+          "name": "Description",
+          "type": "VARCHAR(255)",
+          "nullable": "No",
+          "key": "Nonblank",
+          "purpose": "Responsibility described in FRD Section 4."
+        }
+      ],
+      "notes": "System operations is a technical identity, never a Role row. Role definitions are release-managed and immutable at runtime.",
+      "pk_columns": [
+        "RoleCode"
+      ],
+      "unique_groups": [],
+      "section": "4.2"
+    },
+    {
+      "name": "UserRole",
+      "basis": "FR-02; BR-01, BR-03; SEC-14",
+      "purpose": "Retained grant/revocation episodes with at most one active membership per pair.",
+      "kind": "Associative/history",
+      "pk": "UserRoleID",
+      "unique": "(UserID,RoleCode,ActiveMarker)",
+      "checks": "RevokedAt and RevokedByUserID both NULL or both present; RevokedAt >= GrantedAt.",
+      "columns": [
+        {
+          "name": "UserRoleID",
+          "type": "BIGINT UNSIGNED",
+          "nullable": "No",
+          "key": "PK; AUTO_INCREMENT",
+          "purpose": "Identity of one membership episode."
+        },
+        {
+          "name": "UserID",
+          "type": "BIGINT UNSIGNED",
+          "nullable": "No",
+          "key": "FK User.UserID",
+          "purpose": "Member."
+        },
+        {
+          "name": "RoleCode",
+          "type": "VARCHAR(16)",
+          "nullable": "No",
+          "key": "FK Role.RoleCode",
+          "purpose": "Assigned business role."
+        },
+        {
+          "name": "GrantedAt",
+          "type": "DATETIME(6)",
+          "nullable": "No",
+          "key": "Server UTC",
+          "purpose": "Assignment time."
+        },
+        {
+          "name": "GrantedByUserID",
+          "type": "BIGINT UNSIGNED",
+          "nullable": "Yes",
+          "key": "FK User.UserID",
+          "purpose": "Administrator; NULL only for documented initial bootstrap."
+        },
+        {
+          "name": "RevokedAt",
+          "type": "DATETIME(6)",
+          "nullable": "Yes",
+          "key": "Paired-null CHECK",
+          "purpose": "Revocation time; NULL means active membership."
+        },
+        {
+          "name": "RevokedByUserID",
+          "type": "BIGINT UNSIGNED",
+          "nullable": "Yes",
+          "key": "FK User.UserID",
+          "purpose": "Revoking Administrator."
+        },
+        {
+          "name": "ActiveMarker",
+          "type": "TINYINT",
+          "nullable": "Generated nullable",
+          "key": "VIRTUAL generated; UNIQUE component",
+          "purpose": "IF(RevokedAt IS NULL,1,NULL), allowing many revoked episodes and one active episode."
+        }
+      ],
+      "notes": "Forbidden role combinations and removal with outstanding participation are checked while locking the target User; a new grant creates a new episode, never erases an earlier one.",
+      "pk_columns": [
+        "UserRoleID"
+      ],
+      "unique_groups": [
+        [
+          "UserID",
+          "RoleCode",
+          "ActiveMarker"
+        ]
+      ],
+      "section": "4.3"
+    },
+    {
+      "name": "BorrowerProfile",
+      "basis": "FR-05; BR-01, BR-05; SEC-02, SEC-12",
+      "purpose": "Current protected income and external monthly obligations.",
+      "kind": "Dependent 1:1",
+      "pk": "UserID",
+      "unique": "None",
+      "checks": "Plaintext income > 0 and external obligations >= 0 validated before encryption; required envelopes nonempty.",
+      "columns": [
+        {
+          "name": "UserID",
+          "type": "BIGINT UNSIGNED",
+          "nullable": "No",
+          "key": "PK; FK User.UserID",
+          "purpose": "Exactly one current profile per user."
+        },
+        {
+          "name": "MonthlyIncomeCipher",
+          "type": "VARBINARY(128)",
+          "nullable": "No",
+          "key": "Encrypted decimal envelope",
+          "purpose": "Self-reported fictional monthly income."
+        },
+        {
+          "name": "ExternalObligationsCipher",
+          "type": "VARBINARY(128)",
+          "nullable": "No",
+          "key": "Encrypted decimal envelope",
+          "purpose": "Monthly obligations outside the platform only."
+        },
+        {
+          "name": "UpdatedAt",
+          "type": "DATETIME(6)",
+          "nullable": "No",
+          "key": "Server UTC",
+          "purpose": "Latest profile change."
+        },
+        {
+          "name": "RowVersion",
+          "type": "BIGINT UNSIGNED",
+          "nullable": "No",
+          "key": "Default 0",
+          "purpose": "Expected-version check prevents stale preparation/update."
+        }
+      ],
+      "notes": "No plaintext duplicate columns or searchable hashes of financial values. Profile creation requires Borrower role; current profile edits never alter RequestSnapshot.",
+      "pk_columns": [
+        "UserID"
+      ],
+      "unique_groups": [],
+      "section": "4.4"
+    },
+    {
+      "name": "LoanRequest",
+      "basis": "FR-06\u2013FR-16, FR-24; BR-04\u2013BR-13, BR-19",
+      "purpose": "A funding request with immutable submitted terms and private input snapshot.",
+      "kind": "Strong",
+      "pk": "RequestID",
+      "unique": "None; deliberately no unique BorrowerID",
+      "checks": "Principal between 100.00 and 2000.00; InstallmentCount in (3,6); fixed PolicyCode D1 on submission; lifecycle and snapshot-nullability rules.",
+      "columns": [
+        {
+          "name": "RequestID",
+          "type": "BIGINT UNSIGNED",
+          "nullable": "No",
+          "key": "PK; AUTO_INCREMENT",
+          "purpose": "Stable request identifier."
+        },
+        {
+          "name": "BorrowerID",
+          "type": "BIGINT UNSIGNED",
+          "nullable": "No",
+          "key": "FK User.UserID",
+          "purpose": "Owner; assigned from trusted session."
+        },
+        {
+          "name": "Purpose",
+          "type": "VARCHAR(1000)",
+          "nullable": "No",
+          "key": "Nonblank",
+          "purpose": "Borrower-supplied request purpose."
+        },
+        {
+          "name": "Principal",
+          "type": "DECIMAL(18,2)",
+          "nullable": "No",
+          "key": "CHECK 100.00 <= value <= 2000.00",
+          "purpose": "Requested principal, frozen after submission."
+        },
+        {
+          "name": "InstallmentCount",
+          "type": "SMALLINT UNSIGNED",
+          "nullable": "No",
+          "key": "CHECK in (3,6)",
+          "purpose": "Accepted repayment term."
+        },
+        {
+          "name": "PolicyCode",
+          "type": "VARCHAR(8)",
+          "nullable": "Yes",
+          "key": "CHECK NULL or D1",
+          "purpose": "NULL before submission; fixed D1 at submission. No policy-version FK."
+        },
+        {
+          "name": "RequestState",
+          "type": "VARCHAR(20)",
+          "nullable": "No",
+          "key": "CHECK; default Draft",
+          "purpose": "Draft/Submitted/PendingReview/OpenFunding/Funded/Rejected/Cancelled/Expired."
+        },
+        {
+          "name": "CreatedAt",
+          "type": "DATETIME(6)",
+          "nullable": "No",
+          "key": "Server UTC",
+          "purpose": "Request creation."
+        },
+        {
+          "name": "SubmittedAt",
+          "type": "DATETIME(6)",
+          "nullable": "Yes",
+          "key": "Set once by submission",
+          "purpose": "Snapshot time, not editable client time."
+        },
+        {
+          "name": "FundingDeadlineAt",
+          "type": "DATETIME(6)",
+          "nullable": "Yes",
+          "key": "Required for OpenFunding/Funded/Expired",
+          "purpose": "Approval timestamp + 14 days; no extension after eligibility blocking."
+        },
+        {
+          "name": "TerminalReason",
+          "type": "VARCHAR(1000)",
+          "nullable": "Yes",
+          "key": "Required for Cancelled/Rejected/Expired",
+          "purpose": "Controlled procedure supplies the reason; no financial correction."
+        },
+        {
+          "name": "RowVersion",
+          "type": "BIGINT UNSIGNED",
+          "nullable": "No",
+          "key": "Default 0",
+          "purpose": "Draft edit and stale-action detection."
+        },
+        {
+          "name": "SubmittedIncomeCipher",
+          "type": "VARBINARY(128)",
+          "nullable": "Yes",
+          "key": "Immutable after submission",
+          "purpose": "Frozen income, distinct from the mutable profile."
+        },
+        {
+          "name": "SubmittedObligationsCipher",
+          "type": "VARBINARY(128)",
+          "nullable": "Yes",
+          "key": "Immutable after submission",
+          "purpose": "Frozen external monthly obligations; platform burden is in each evaluation."
+        }
+      ],
+      "notes": "A Draft still obeys current D1 numeric/input validation; it may require a different effective policy at submission. A cancelled unsubmitted Draft may retain NULL policy/submission. A Submitted request must have exactly one RequestSnapshot and one Submission EligibilityCheck at commit, enforced by its transaction.",
+      "pk_columns": [
+        "RequestID"
+      ],
+      "unique_groups": [],
+      "section": "4.5"
+    },
+    {
+      "name": "RequestEvaluation",
+      "basis": "FR-07\u2013FR-09, FR-12; BR-04, BR-06, BR-07; AC-04, AC-29",
+      "purpose": "One retained submission, review, or funding check; summaries and final decision facts remain attributable.",
+      "kind": "Dependent/history",
+      "pk": "EvaluationID",
+      "unique": "(RequestID,EvaluationKind,AttemptNumber); (RequestID,FinalReviewMarker)",
+      "checks": "Submission attempt 0 only; other attempts >0; fixed two condition flags; one final Review decision per request; conditional completion/reviewer fields.",
+      "columns": [
+        {
+          "name": "EvaluationID",
+          "type": "BIGINT UNSIGNED",
+          "nullable": "No",
+          "key": "PK; AUTO_INCREMENT",
+          "purpose": "Stable check ID; public AssessmentID is the Submission EvaluationID."
+        },
+        {
+          "name": "RequestID",
+          "type": "BIGINT UNSIGNED",
+          "nullable": "No",
+          "key": "FK LoanRequest.RequestID; UNIQUE part",
+          "purpose": "Evaluated request; repeated attempts retained."
+        },
+        {
+          "name": "EvaluationKind",
+          "type": "VARCHAR(16)",
+          "nullable": "No",
+          "key": "CHECK Submission/Review/Funding; UNIQUE part",
+          "purpose": "Checkpoint; never a request lifecycle state."
+        },
+        {
+          "name": "AttemptNumber",
+          "type": "INT UNSIGNED",
+          "nullable": "No",
+          "key": "UNIQUE part; CHECK",
+          "purpose": "0 for Submission; positive sequence per request/kind otherwise."
+        },
+        {
+          "name": "EvaluatedAt",
+          "type": "DATETIME(6)",
+          "nullable": "No",
+          "key": "Server UTC",
+          "purpose": "Time when exposure/delinquency facts were observed."
+        },
+        {
+          "name": "PlatformBurdenCipher",
+          "type": "VARBINARY(128)",
+          "nullable": "No",
+          "key": "Encrypted decimal >= 0",
+          "purpose": "Retained total of other live requests and outstanding-loan burdens; no per-obligation history."
+        },
+        {
+          "name": "NoDelinquencyPass",
+          "type": "TINYINT UNSIGNED",
+          "nullable": "No",
+          "key": "CHECK in (0,1)",
+          "purpose": "Frozen no-outstanding-delinquency condition at observation time."
+        },
+        {
+          "name": "AffordabilityPass",
+          "type": "TINYINT UNSIGNED",
+          "nullable": "Yes",
+          "key": "CHECK in (0,1); set once",
+          "purpose": "NULL only for an unprocessed Submission; completed check compares all retained inputs."
+        },
+        {
+          "name": "CompletedAt",
+          "type": "DATETIME(6)",
+          "nullable": "Yes",
+          "key": "Set once; >= EvaluatedAt",
+          "purpose": "Assessment completion time for Submission; check completion otherwise."
+        },
+        {
+          "name": "Result",
+          "type": "VARCHAR(4)",
+          "nullable": "Generated nullable",
+          "key": "VIRTUAL generated Pass/Fail",
+          "purpose": "NULL until complete; Pass iff both condition flags are 1. No independently editable score."
+        },
+        {
+          "name": "AdministratorID",
+          "type": "BIGINT UNSIGNED",
+          "nullable": "Yes",
+          "key": "FK User.UserID",
+          "purpose": "Required on Review; NULL for Submission/Funding. Actor must have Administrator role."
+        },
+        {
+          "name": "Decision",
+          "type": "VARCHAR(8)",
+          "nullable": "Yes",
+          "key": "CHECK Approve/Reject",
+          "purpose": "Only a completed Review may record a final decision; blocked approval leaves NULL."
+        },
+        {
+          "name": "Reason",
+          "type": "VARCHAR(1000)",
+          "nullable": "Yes",
+          "key": "Required nonblank with Decision",
+          "purpose": "Human final-review explanation; failed machine conditions derive stable reason codes from flags."
+        },
+        {
+          "name": "DecidedAt",
+          "type": "DATETIME(6)",
+          "nullable": "Yes",
+          "key": "Paired with Decision; >= CompletedAt",
+          "purpose": "Final decision timestamp; approval starts funding window."
+        },
+        {
+          "name": "ContextID",
+          "type": "BINARY(16)",
+          "nullable": "No",
+          "key": "Correlation identifier",
+          "purpose": "Matches the operation/audit attempt, including a failed check."
+        },
+        {
+          "name": "FinalReviewMarker",
+          "type": "TINYINT",
+          "nullable": "Generated nullable",
+          "key": "VIRTUAL; UNIQUE part",
+          "purpose": "1 iff a final Review decision exists, otherwise NULL; preserves any number of blocked attempts."
+        }
+      ],
+      "section": "4.6"
+    },
+    {
+      "name": "OperationReceipt",
+      "basis": "FR-30; BR-20; AC-15, AC-16",
+      "purpose": "Caller-scoped identity of one committed funding/repayment action and its original response.",
+      "kind": "Technical/history",
+      "pk": "OperationID",
+      "unique": "(CallerUserID,OperationReference)",
+      "checks": "ActionCode in CommitFunding/PostRepayment; Reference length 1\u201364; response snapshot nonempty at commit.",
+      "columns": [
+        {
+          "name": "OperationID",
+          "type": "BIGINT UNSIGNED",
+          "nullable": "No",
+          "key": "PK; AUTO_INCREMENT",
+          "purpose": "Shared identity used by one financial event."
+        },
+        {
+          "name": "CallerUserID",
+          "type": "BIGINT UNSIGNED",
+          "nullable": "No",
+          "key": "FK User.UserID; UNIQUE component",
+          "purpose": "Authenticated Lender or Borrower."
+        },
+        {
+          "name": "OperationReference",
+          "type": "VARCHAR(64)",
+          "nullable": "No",
+          "key": "Binary collation; UNIQUE component",
+          "purpose": "Client-generated opaque reference, unique across both action kinds for this caller."
+        },
+        {
+          "name": "ActionCode",
+          "type": "VARCHAR(20)",
+          "nullable": "No",
+          "key": "CHECK",
+          "purpose": "Determines expected event table."
+        },
+        {
+          "name": "ReceiptSnapshot",
+          "type": "MEDIUMBLOB",
+          "nullable": "Yes until transaction finishes",
+          "key": "Immutable serialized response at commit",
+          "purpose": "Original receipt/summary for an exact retry; set once before commit."
+        }
+      ],
+      "notes": "No separately committed Pending receipt exists. Insert identity, create one event, then fill ReceiptSnapshot in one transaction. Event target/amount are compared through the immutable FundingCommitment or Repayment, not duplicated here. The opaque historical response is justified by exact-result replay; it is not a queryable replacement for normalized records. Runtime cannot edit it after the first fill.",
+      "pk_columns": [
+        "OperationID"
+      ],
+      "unique_groups": [
+        [
+          "CallerUserID",
+          "OperationReference"
+        ]
+      ],
+      "section": "4.7"
+    },
+    {
+      "name": "FundingCommitment",
+      "basis": "FR-12\u2013FR-16; BR-09\u2013BR-12, BR-20",
+      "purpose": "One initial or additional promise, not one row per lender/request pair.",
+      "kind": "Associative/event",
+      "pk": "CommitmentID",
+      "unique": "OperationID; EvaluationID; deliberately NOT (Lender,Request)",
+      "checks": "Amount > 0; state in Pending/Applied/Released; state/timestamp consistency.",
+      "columns": [
+        {
+          "name": "CommitmentID",
+          "type": "BIGINT UNSIGNED",
+          "nullable": "No",
+          "key": "PK; AUTO_INCREMENT",
+          "purpose": "Unique contribution event."
+        },
+        {
+          "name": "RequestID",
+          "type": "BIGINT UNSIGNED",
+          "nullable": "No",
+          "key": "FK LoanRequest.RequestID",
+          "purpose": "Request being funded."
+        },
+        {
+          "name": "OperationID",
+          "type": "BIGINT UNSIGNED",
+          "nullable": "No",
+          "key": "UNIQUE; FK OperationReceipt.OperationID",
+          "purpose": "Lender is derived from its CallerUserID; action must be CommitFunding."
+        },
+        {
+          "name": "EvaluationID",
+          "type": "BIGINT UNSIGNED",
+          "nullable": "No",
+          "key": "UNIQUE; FK RequestEvaluation.EvaluationID",
+          "purpose": "Matching completed, passing Funding evaluation."
+        },
+        {
+          "name": "Amount",
+          "type": "DECIMAL(18,2)",
+          "nullable": "No",
+          "key": "CHECK > 0",
+          "purpose": "Immutable contribution amount."
+        },
+        {
+          "name": "CommitmentState",
+          "type": "VARCHAR(8)",
+          "nullable": "No",
+          "key": "CHECK; default Pending",
+          "purpose": "Pending/Applied/Released."
+        },
+        {
+          "name": "CreatedAt",
+          "type": "DATETIME(6)",
+          "nullable": "No",
+          "key": "Server UTC",
+          "purpose": "Accepted contribution time."
+        },
+        {
+          "name": "AppliedAt",
+          "type": "DATETIME(6)",
+          "nullable": "Yes",
+          "key": "Only for Applied",
+          "purpose": "Activation timestamp."
+        },
+        {
+          "name": "ReleasedAt",
+          "type": "DATETIME(6)",
+          "nullable": "Yes",
+          "key": "Only for Released",
+          "purpose": "Parent cancellation/expiration time."
+        }
+      ],
+      "notes": "LenderID is a view/API alias for OperationReceipt.CallerUserID, avoiding a duplicate dependency. Procedures validate CheckID.RequestID and action/actor. Multiple events for the same lender/request remain valid and individually auditable.",
+      "pk_columns": [
+        "CommitmentID"
+      ],
+      "unique_groups": [
+        [
+          "OperationID"
+        ],
+        [
+          "CheckID"
+        ]
+      ],
+      "section": "4.8"
+    },
+    {
+      "name": "Loan",
+      "basis": "FR-14\u2013FR-22; BR-12\u2013BR-18",
+      "purpose": "One activated obligation, with lifecycle and latest observation.",
+      "kind": "Strong with required 1:1 origin",
+      "pk": "LoanID",
+      "unique": "RequestID",
+      "checks": "State Active/Repaid; completion NULL iff Active; observed condition Current/Delinquent.",
+      "columns": [
+        {
+          "name": "LoanID",
+          "type": "BIGINT UNSIGNED",
+          "nullable": "No",
+          "key": "PK; AUTO_INCREMENT",
+          "purpose": "Stable loan identity."
+        },
+        {
+          "name": "RequestID",
+          "type": "BIGINT UNSIGNED",
+          "nullable": "No",
+          "key": "UNIQUE; FK LoanRequest.RequestID",
+          "purpose": "One loan per fully funded request."
+        },
+        {
+          "name": "ActivatedAt",
+          "type": "DATETIME(6)",
+          "nullable": "No",
+          "key": "Server UTC",
+          "purpose": "Schedule origin."
+        },
+        {
+          "name": "LoanState",
+          "type": "VARCHAR(8)",
+          "nullable": "No",
+          "key": "CHECK; default Active",
+          "purpose": "Active or Repaid, never Delinquent as a lifecycle state."
+        },
+        {
+          "name": "CompletedAt",
+          "type": "DATETIME(6)",
+          "nullable": "Yes",
+          "key": "Paired with Repaid",
+          "purpose": "Set exactly once by repayment trigger."
+        },
+        {
+          "name": "ObservedCondition",
+          "type": "VARCHAR(16)",
+          "nullable": "No",
+          "key": "CHECK; initial Current",
+          "purpose": "Last detected payment condition."
+        },
+        {
+          "name": "LastEvaluatedAt",
+          "type": "DATETIME(6)",
+          "nullable": "No",
+          "key": "Initial activation time",
+          "purpose": "Observation freshness; current reports calculate condition anew."
+        }
+      ],
+      "notes": "Borrower, principal, installment count, and policy come from LoanRequest; no duplicate loan terms or current balance columns. Every committed loan has all required installments.",
+      "pk_columns": [
+        "LoanID"
+      ],
+      "unique_groups": [
+        [
+          "RequestID"
+        ]
+      ],
+      "section": "4.9"
+    },
+    {
+      "name": "Installment",
+      "basis": "FR-15, FR-18, FR-19; BR-13\u2013BR-17",
+      "purpose": "One immutable scheduled obligation identified within its loan.",
+      "kind": "Weak/dependent",
+      "pk": "(LoanID,InstallmentNumber)",
+      "unique": "(LoanID,DueDate)",
+      "checks": "InstallmentNumber > 0; ScheduledPrincipal > 0.",
+      "columns": [
+        {
+          "name": "LoanID",
+          "type": "BIGINT UNSIGNED",
+          "nullable": "No",
+          "key": "PK part; FK Loan.LoanID",
+          "purpose": "Identifying parent."
+        },
+        {
+          "name": "InstallmentNumber",
+          "type": "SMALLINT UNSIGNED",
+          "nullable": "No",
+          "key": "PK part; CHECK > 0",
+          "purpose": "Ordinal unique only within this loan."
+        },
+        {
+          "name": "DueDate",
+          "type": "DATE",
+          "nullable": "No",
+          "key": "UNIQUE within loan",
+          "purpose": "UTC calendar due date."
+        },
+        {
+          "name": "ScheduledPrincipal",
+          "type": "DECIMAL(18,2)",
+          "nullable": "No",
+          "key": "CHECK > 0",
+          "purpose": "Fixed installment obligation."
+        }
+      ],
+      "notes": "No global InstallmentID. Paid/remaining amounts and overdue condition are derived from allocations. Parent Loan cannot be deleted; schedule rows cannot be altered after activation.",
+      "pk_columns": [
+        "LoanID",
+        "InstallmentNumber"
+      ],
+      "unique_groups": [
+        [
+          "LoanID",
+          "DueDate"
+        ]
+      ],
+      "section": "4.10"
+    },
+    {
+      "name": "Repayment",
+      "basis": "FR-17\u2013FR-21, FR-30; BR-14\u2013BR-16, BR-20",
+      "purpose": "One posted payment against exactly one loan.",
+      "kind": "Event/dependent",
+      "pk": "(LoanID,RepaymentNumber)",
+      "unique": "OperationID",
+      "checks": "RepaymentNumber > 0; Amount > 0; no mutable repayment status.",
+      "columns": [
+        {
+          "name": "LoanID",
+          "type": "BIGINT UNSIGNED",
+          "nullable": "No",
+          "key": "PK part; FK Loan.LoanID",
+          "purpose": "Explicitly selected owned loan."
+        },
+        {
+          "name": "RepaymentNumber",
+          "type": "INT UNSIGNED",
+          "nullable": "No",
+          "key": "PK part; CHECK > 0",
+          "purpose": "Next local sequence allocated while Loan is locked."
+        },
+        {
+          "name": "OperationID",
+          "type": "BIGINT UNSIGNED",
+          "nullable": "No",
+          "key": "UNIQUE; FK OperationReceipt.OperationID",
+          "purpose": "Caller is the owning Borrower; action PostRepayment."
+        },
+        {
+          "name": "Amount",
+          "type": "DECIMAL(18,2)",
+          "nullable": "No",
+          "key": "CHECK > 0",
+          "purpose": "Immutable posted amount."
+        },
+        {
+          "name": "PostedAt",
+          "type": "DATETIME(6)",
+          "nullable": "No",
+          "key": "Server UTC",
+          "purpose": "Users cannot supply or change this time."
+        }
+      ],
+      "notes": "The public FRD RepaymentID is the stable composite identifier (LoanID,RepaymentNumber), rendered e.g. `501/2`. This is an identifier implementation, not a new business concept. Avoiding an additional global RepaymentID keeps allocation LoanID from becoming a redundant dependency. Receipts expose both components and the combined identifier.",
+      "pk_columns": [
+        "LoanID",
+        "RepaymentNumber"
+      ],
+      "unique_groups": [
+        [
+          "OperationID"
+        ]
+      ],
+      "section": "4.11"
+    },
+    {
+      "name": "RepaymentAllocation",
+      "basis": "FR-18, FR-21; BR-02, BR-15",
+      "purpose": "Amount of one repayment assigned to one installment of the same loan.",
+      "kind": "Associative/dependent",
+      "pk": "(LoanID,RepaymentNumber,InstallmentNumber)",
+      "unique": "None",
+      "checks": "AllocatedPrincipal > 0; total/cap checks in locked payment transaction.",
+      "columns": [
+        {
+          "name": "LoanID",
+          "type": "BIGINT UNSIGNED",
+          "nullable": "No",
+          "key": "PK part; shared component of both FKs",
+          "purpose": "Makes cross-loan linking impossible through the declared keys."
+        },
+        {
+          "name": "RepaymentNumber",
+          "type": "INT UNSIGNED",
+          "nullable": "No",
+          "key": "PK part; composite FK (LoanID,RepaymentNumber) to Repayment",
+          "purpose": "Paying event."
+        },
+        {
+          "name": "InstallmentNumber",
+          "type": "SMALLINT UNSIGNED",
+          "nullable": "No",
+          "key": "PK part; composite FK (LoanID,InstallmentNumber) to Installment",
+          "purpose": "Receiving obligation."
+        },
+        {
+          "name": "AllocatedPrincipal",
+          "type": "DECIMAL(18,2)",
+          "nullable": "No",
+          "key": "CHECK > 0",
+          "purpose": "Depends on the full repayment/installment pair."
+        }
+      ],
+      "notes": "The two composite FKs enforce same-loan integrity without a trigger or repeated borrower ID. Procedure ensures positive allocations sum to the payment and do not exceed installment remainders.",
+      "pk_columns": [
+        "LoanID",
+        "RepaymentNumber",
+        "InstallmentNumber"
+      ],
+      "unique_groups": [],
+      "section": "4.12"
+    },
+    {
+      "name": "OversightNote",
+      "basis": "FR-23; BR-25; SEC-06",
+      "purpose": "Append-only administrative follow-up or correction.",
+      "kind": "History",
+      "pk": "NoteID",
+      "unique": "None",
+      "checks": "Exactly one RequestID/LoanID non-NULL; NoteText nonblank. The procedure rejects self/cross-target correction; a CHECK does not refer to auto-increment NoteID.",
+      "columns": [
+        {
+          "name": "NoteID",
+          "type": "BIGINT UNSIGNED",
+          "nullable": "No",
+          "key": "PK; AUTO_INCREMENT",
+          "purpose": "Stable note."
+        },
+        {
+          "name": "RequestID",
+          "type": "BIGINT UNSIGNED",
+          "nullable": "Yes",
+          "key": "FK LoanRequest.RequestID; XOR target",
+          "purpose": "Request target."
+        },
+        {
+          "name": "LoanID",
+          "type": "BIGINT UNSIGNED",
+          "nullable": "Yes",
+          "key": "FK Loan.LoanID; XOR target",
+          "purpose": "Loan target."
+        },
+        {
+          "name": "AdministratorID",
+          "type": "BIGINT UNSIGNED",
+          "nullable": "No",
+          "key": "FK User.UserID",
+          "purpose": "Author."
+        },
+        {
+          "name": "CreatedAt",
+          "type": "DATETIME(6)",
+          "nullable": "No",
+          "key": "Server UTC",
+          "purpose": "Append time."
+        },
+        {
+          "name": "NoteText",
+          "type": "TEXT",
+          "nullable": "No",
+          "key": "Nonblank",
+          "purpose": "Internal follow-up; excluded from lender/borrower responses."
+        },
+        {
+          "name": "CorrectsNoteID",
+          "type": "BIGINT UNSIGNED",
+          "nullable": "Yes",
+          "key": "FK OversightNote.NoteID",
+          "purpose": "Earlier note on exactly the same target."
+        }
+      ],
+      "notes": "Same-target correction uses procedure validation because a self-FK alone does not ensure matching target. Never UPDATE an existing note.",
+      "pk_columns": [
+        "NoteID"
+      ],
+      "unique_groups": [],
+      "section": "4.13"
+    },
+    {
+      "name": "AuditEvent",
+      "basis": "FR-28; Section 9.2; SEC-08, SEC-10, SEC-11",
+      "purpose": "Append-only attributable event or observed failed/denied attempt.",
+      "kind": "Audit/history",
+      "pk": "AuditEventID",
+      "unique": "None",
+      "checks": "Outcome Success/Denied/Failed/Interrupted; actor/service context and subject type validated by catalogue.",
+      "columns": [
+        {
+          "name": "AuditEventID",
+          "type": "BIGINT UNSIGNED",
+          "nullable": "No",
+          "key": "PK; AUTO_INCREMENT",
+          "purpose": "Stable event ID; gaps after rollback are allowed."
+        },
+        {
+          "name": "OccurredAt",
+          "type": "DATETIME(6)",
+          "nullable": "No",
+          "key": "Server UTC",
+          "purpose": "Detection/event time, not an invented commit timestamp."
+        },
+        {
+          "name": "EventType",
+          "type": "VARCHAR(40)",
+          "nullable": "No",
+          "key": "CHECK from TDD \u00a78.1 catalogue",
+          "purpose": "Audited operation."
+        },
+        {
+          "name": "Outcome",
+          "type": "VARCHAR(12)",
+          "nullable": "No",
+          "key": "CHECK",
+          "purpose": "Success, Denied, Failed, or observed Interrupted."
+        },
+        {
+          "name": "ActorUserID",
+          "type": "BIGINT UNSIGNED",
+          "nullable": "Yes",
+          "key": "FK User.UserID",
+          "purpose": "Human actor; NULL for service or unauthenticated attempts."
+        },
+        {
+          "name": "ActingRoleCode",
+          "type": "VARCHAR(16)",
+          "nullable": "Yes",
+          "key": "FK Role.RoleCode",
+          "purpose": "Verified business role; NULL where no human role exists."
+        },
+        {
+          "name": "ServiceActor",
+          "type": "VARCHAR(24)",
+          "nullable": "Yes",
+          "key": "CHECK approved service names",
+          "purpose": "Automated actor such as assessment or activation."
+        },
+        {
+          "name": "InitiatingUserID",
+          "type": "BIGINT UNSIGNED",
+          "nullable": "Yes",
+          "key": "FK User.UserID",
+          "purpose": "Human initiating an automated action when applicable."
+        },
+        {
+          "name": "TechnicalAccount",
+          "type": "VARCHAR(288)",
+          "nullable": "No",
+          "key": "Trusted DB connection identity",
+          "purpose": "USER()/SESSION_USER(), not the definer returned by CURRENT_USER()."
+        },
+        {
+          "name": "SubjectType",
+          "type": "VARCHAR(32)",
+          "nullable": "No",
+          "key": "CHECK bounded subject catalogue",
+          "purpose": "Business record type or Attempt."
+        },
+        {
+          "name": "SubjectKey",
+          "type": "VARCHAR(128)",
+          "nullable": "No",
+          "key": "Canonical scalar/composite serialization",
+          "purpose": "Affected key or attempted target; intentionally not a polymorphic FK."
+        },
+        {
+          "name": "ContextID",
+          "type": "BINARY(16)",
+          "nullable": "No",
+          "key": "One value per attempt/action",
+          "purpose": "Groups business effects and failure observation."
+        },
+        {
+          "name": "OperationID",
+          "type": "BIGINT UNSIGNED",
+          "nullable": "Yes",
+          "key": "FK OperationReceipt.OperationID",
+          "purpose": "Committed funding/payment reference, when one exists."
+        },
+        {
+          "name": "AttemptedOperationReference",
+          "type": "VARCHAR(64)",
+          "nullable": "Yes",
+          "key": "Safe opaque value",
+          "purpose": "Reference for failed actions that have no committed receipt."
+        },
+        {
+          "name": "ReasonCode",
+          "type": "VARCHAR(40)",
+          "nullable": "Yes",
+          "key": "Bounded error/reason catalogue",
+          "purpose": "Safe outcome explanation without raw private values."
+        }
+      ],
+      "notes": "Success routines validate SubjectType/SubjectKey against the actual affected record. An attempted nonexistent target must remain loggable, so this field is explicitly not represented as an invalid multi-table FK. AuditChange carries individual safe prior/new values. No operational UPDATE/DELETE on either table.",
+      "pk_columns": [
+        "AuditEventID"
+      ],
+      "unique_groups": [],
+      "section": "4.14"
+    },
+    {
+      "name": "AuditChange",
+      "basis": "FRD Section 9.2; SEC-11, SEC-12",
+      "purpose": "Normalized changed-field context for an audit event.",
+      "kind": "Dependent/audit",
+      "pk": "(AuditEventID,FieldName)",
+      "unique": "None",
+      "checks": "FieldName from the event-specific allowlist; redacted private fields NULL on both sides; StatusReason bounded and access-protected (\u00a78.1).",
+      "columns": [
+        {
+          "name": "AuditEventID",
+          "type": "BIGINT UNSIGNED",
+          "nullable": "No",
+          "key": "PK part; FK AuditEvent.AuditEventID",
+          "purpose": "Owning event."
+        },
+        {
+          "name": "FieldName",
+          "type": "VARCHAR(64)",
+          "nullable": "No",
+          "key": "PK part; allowlist",
+          "purpose": "Meaning of the change, e.g. RequestState or Amount."
+        },
+        {
+          "name": "OldValue",
+          "type": "VARCHAR(1000)",
+          "nullable": "Yes",
+          "key": "Safe scalar encoding",
+          "purpose": "Old nonprivate value; NULL on creation or for sensitive fields."
+        },
+        {
+          "name": "NewValue",
+          "type": "VARCHAR(1000)",
+          "nullable": "Yes",
+          "key": "Safe scalar encoding",
+          "purpose": "New scalar value; protected StatusReason follows \u00a78.1; amounts/IDs remain in source records too."
+        }
+      ],
+      "notes": "No comma-separated ID lists or unstructured raw request bodies. Profile changes log field names only; historical private values remain in protected snapshots where required. Account-status explanations use StatusReason/NewValue (1\u20131000 characters), Administrator-only; Auditor receives NULL values. See \u00a78.1.",
+      "pk_columns": [
+        "AuditEventID",
+        "FieldName"
+      ],
+      "unique_groups": [],
+      "section": "4.15"
+    }
+  ],
+  "relationships": [
+    {
+      "id": "FK01",
+      "child": "UserRole",
+      "columns": [
+        "UserID"
+      ],
+      "parent": "User",
+      "references": [
+        "UserID"
+      ],
+      "label": "member",
+      "parents_per_child": "1",
+      "children_per_parent": "0..N",
+      "identifying": false,
+      "note": "",
+      "basis": "FR-02; BR-01, BR-03; SEC-14"
+    },
+    {
+      "id": "FK02",
+      "child": "UserRole",
+      "columns": [
+        "RoleCode"
+      ],
+      "parent": "Role",
+      "references": [
+        "RoleCode"
+      ],
+      "label": "assigned role",
+      "parents_per_child": "1",
+      "children_per_parent": "0..N",
+      "identifying": false,
+      "note": "",
+      "basis": "FR-02; BR-01, BR-03; SEC-14"
+    },
+    {
+      "id": "FK03",
+      "child": "UserRole",
+      "columns": [
+        "GrantedByUserID"
+      ],
+      "parent": "User",
+      "references": [
+        "UserID"
+      ],
+      "label": "granting administrator",
+      "parents_per_child": "0..1",
+      "children_per_parent": "0..N",
+      "identifying": false,
+      "note": "NULL only for documented bootstrap; actor role is checked procedurally.",
+      "basis": "FR-02; BR-01, BR-03; SEC-14"
+    },
+    {
+      "id": "FK04",
+      "child": "UserRole",
+      "columns": [
+        "RevokedByUserID"
+      ],
+      "parent": "User",
+      "references": [
+        "UserID"
+      ],
+      "label": "revoking administrator",
+      "parents_per_child": "0..1",
+      "children_per_parent": "0..N",
+      "identifying": false,
+      "note": "Paired with RevokedAt; NULL for active episode.",
+      "basis": "FR-02; BR-01, BR-03; SEC-14"
+    },
+    {
+      "id": "FK05",
+      "child": "BorrowerProfile",
+      "columns": [
+        "UserID"
+      ],
+      "parent": "User",
+      "references": [
+        "UserID"
+      ],
+      "label": "profile owner",
+      "parents_per_child": "1",
+      "children_per_parent": "0..1",
+      "identifying": true,
+      "note": "Required before submission, optional for other users.",
+      "basis": "FR-05; BR-01, BR-05; SEC-02, SEC-12"
+    },
+    {
+      "id": "FK06",
+      "child": "LoanRequest",
+      "columns": [
+        "BorrowerID"
+      ],
+      "parent": "User",
+      "references": [
+        "UserID"
+      ],
+      "label": "borrowing owner",
+      "parents_per_child": "1",
+      "children_per_parent": "0..N",
+      "identifying": false,
+      "note": "Many simultaneous requests and loans permitted; owner has Borrower role.",
+      "basis": "FR-06\u2013FR-16, FR-24; BR-04\u2013BR-13, BR-19"
+    },
+    {
+      "child": "RequestEvaluation",
+      "columns": [
+        "RequestID"
+      ],
+      "parent": "LoanRequest",
+      "references": [
+        "RequestID"
+      ],
+      "label": "evaluated request",
+      "parents_per_child": "1",
+      "children_per_parent": "0..N",
+      "identifying": false,
+      "note": "",
+      "basis": "FR-07\u2013FR-09, FR-12; BR-04, BR-06, BR-07; AC-04, AC-29",
+      "id": "FK07"
+    },
+    {
+      "child": "RequestEvaluation",
+      "columns": [
+        "AdministratorID"
+      ],
+      "parent": "User",
+      "references": [
+        "UserID"
+      ],
+      "label": "reviewing administrator",
+      "parents_per_child": "0..1",
+      "children_per_parent": "0..N",
+      "identifying": false,
+      "note": "",
+      "basis": "FR-07\u2013FR-09, FR-12; BR-04, BR-06, BR-07; AC-04, AC-29",
+      "id": "FK08"
+    },
+    {
+      "id": "FK09",
+      "child": "OperationReceipt",
+      "columns": [
+        "CallerUserID"
+      ],
+      "parent": "User",
+      "references": [
+        "UserID"
+      ],
+      "label": "authenticated caller",
+      "parents_per_child": "1",
+      "children_per_parent": "0..N",
+      "identifying": false,
+      "note": "Caller/reference unique across both funding and repayment action kinds.",
+      "basis": "FR-30; BR-20; AC-15, AC-16"
+    },
+    {
+      "id": "FK10",
+      "child": "FundingCommitment",
+      "columns": [
+        "RequestID"
+      ],
+      "parent": "LoanRequest",
+      "references": [
+        "RequestID"
+      ],
+      "label": "funding target",
+      "parents_per_child": "1",
+      "children_per_parent": "0..N",
+      "identifying": false,
+      "note": "Repeated lender/request pairs allowed; each event has a separate CommitmentID.",
+      "basis": "FR-12\u2013FR-16; BR-09\u2013BR-12, BR-20"
+    },
+    {
+      "id": "FK11",
+      "child": "FundingCommitment",
+      "columns": [
+        "OperationID"
+      ],
+      "parent": "OperationReceipt",
+      "references": [
+        "OperationID"
+      ],
+      "label": "funding receipt",
+      "parents_per_child": "1",
+      "children_per_parent": "0..1",
+      "identifying": false,
+      "note": "CommitFunding action; lender is receipt.CallerUserID. Receipt has exactly one event of one type at commit.",
+      "basis": "FR-12\u2013FR-16; BR-09\u2013BR-12, BR-20"
+    },
+    {
+      "child": "FundingCommitment",
+      "columns": [
+        "EvaluationID"
+      ],
+      "parent": "RequestEvaluation",
+      "references": [
+        "EvaluationID"
+      ],
+      "label": "accepted funding check",
+      "parents_per_child": "1",
+      "children_per_parent": "0..1",
+      "identifying": false,
+      "note": "",
+      "basis": "FR-12\u2013FR-16; BR-09\u2013BR-12, BR-20",
+      "id": "FK12"
+    },
+    {
+      "id": "FK13",
+      "child": "Loan",
+      "columns": [
+        "RequestID"
+      ],
+      "parent": "LoanRequest",
+      "references": [
+        "RequestID"
+      ],
+      "label": "fully funded origin",
+      "parents_per_child": "1",
+      "children_per_parent": "0..1",
+      "identifying": false,
+      "note": "Every loan has exactly one origin. The limit is per request, never per borrower.",
+      "basis": "FR-14\u2013FR-22; BR-12\u2013BR-18"
+    },
+    {
+      "id": "FK14",
+      "child": "Installment",
+      "columns": [
+        "LoanID"
+      ],
+      "parent": "Loan",
+      "references": [
+        "LoanID"
+      ],
+      "label": "identifying loan",
+      "parents_per_child": "1",
+      "children_per_parent": "3 or 6",
+      "identifying": true,
+      "note": "Approved installment count required atomically at activation; FK alone does not enforce child count.",
+      "basis": "FR-15, FR-18, FR-19; BR-13\u2013BR-17"
+    },
+    {
+      "id": "FK15",
+      "child": "Repayment",
+      "columns": [
+        "LoanID"
+      ],
+      "parent": "Loan",
+      "references": [
+        "LoanID"
+      ],
+      "label": "payment for loan",
+      "parents_per_child": "1",
+      "children_per_parent": "0..N",
+      "identifying": true,
+      "note": "",
+      "basis": "FR-17\u2013FR-21, FR-30; BR-14\u2013BR-16, BR-20"
+    },
+    {
+      "id": "FK16",
+      "child": "Repayment",
+      "columns": [
+        "OperationID"
+      ],
+      "parent": "OperationReceipt",
+      "references": [
+        "OperationID"
+      ],
+      "label": "repayment receipt",
+      "parents_per_child": "1",
+      "children_per_parent": "0..1",
+      "identifying": false,
+      "note": "PostRepayment action; caller must own loan. XOR with FundingCommitment at commit.",
+      "basis": "FR-17\u2013FR-21, FR-30; BR-14\u2013BR-16, BR-20"
+    },
+    {
+      "id": "FK17",
+      "child": "RepaymentAllocation",
+      "columns": [
+        "LoanID",
+        "RepaymentNumber"
+      ],
+      "parent": "Repayment",
+      "references": [
+        "LoanID",
+        "RepaymentNumber"
+      ],
+      "label": "paying event",
+      "parents_per_child": "1",
+      "children_per_parent": "1..N",
+      "identifying": true,
+      "note": "Positive allocations must sum exactly to posted repayment at commit.",
+      "basis": "FR-18, FR-21; BR-02, BR-15"
+    },
+    {
+      "id": "FK18",
+      "child": "RepaymentAllocation",
+      "columns": [
+        "LoanID",
+        "InstallmentNumber"
+      ],
+      "parent": "Installment",
+      "references": [
+        "LoanID",
+        "InstallmentNumber"
+      ],
+      "label": "receiving installment",
+      "parents_per_child": "1",
+      "children_per_parent": "0..N",
+      "identifying": true,
+      "note": "Shared LoanID prevents allocations across loans. Installment cap and oldest-first order need transaction checks.",
+      "basis": "FR-18, FR-21; BR-02, BR-15"
+    },
+    {
+      "id": "FK19",
+      "child": "OversightNote",
+      "columns": [
+        "RequestID"
+      ],
+      "parent": "LoanRequest",
+      "references": [
+        "RequestID"
+      ],
+      "label": "request target",
+      "parents_per_child": "0..1",
+      "children_per_parent": "0..N",
+      "identifying": false,
+      "note": "Exactly one of RequestID and LoanID is non-NULL.",
+      "basis": "FR-23; BR-25; SEC-06"
+    },
+    {
+      "id": "FK20",
+      "child": "OversightNote",
+      "columns": [
+        "LoanID"
+      ],
+      "parent": "Loan",
+      "references": [
+        "LoanID"
+      ],
+      "label": "loan target",
+      "parents_per_child": "0..1",
+      "children_per_parent": "0..N",
+      "identifying": false,
+      "note": "Exactly one of RequestID and LoanID is non-NULL.",
+      "basis": "FR-23; BR-25; SEC-06"
+    },
+    {
+      "id": "FK21",
+      "child": "OversightNote",
+      "columns": [
+        "AdministratorID"
+      ],
+      "parent": "User",
+      "references": [
+        "UserID"
+      ],
+      "label": "note author",
+      "parents_per_child": "1",
+      "children_per_parent": "0..N",
+      "identifying": false,
+      "note": "Administrator only; append-only notes.",
+      "basis": "FR-23; BR-25; SEC-06"
+    },
+    {
+      "id": "FK22",
+      "child": "OversightNote",
+      "columns": [
+        "CorrectsNoteID"
+      ],
+      "parent": "OversightNote",
+      "references": [
+        "NoteID"
+      ],
+      "label": "corrected earlier note",
+      "parents_per_child": "0..1",
+      "children_per_parent": "0..N",
+      "identifying": false,
+      "note": "Self-reference; routine validates earlier note on the same target.",
+      "basis": "FR-23; BR-25; SEC-06"
+    },
+    {
+      "id": "FK23",
+      "child": "AuditEvent",
+      "columns": [
+        "ActorUserID"
+      ],
+      "parent": "User",
+      "references": [
+        "UserID"
+      ],
+      "label": "human actor",
+      "parents_per_child": "0..1",
+      "children_per_parent": "0..N",
+      "identifying": false,
+      "note": "May be NULL for a service or unauthenticated attempt.",
+      "basis": "FR-28; Section 9.2; SEC-08, SEC-10, SEC-11"
+    },
+    {
+      "id": "FK24",
+      "child": "AuditEvent",
+      "columns": [
+        "ActingRoleCode"
+      ],
+      "parent": "Role",
+      "references": [
+        "RoleCode"
+      ],
+      "label": "verified acting role",
+      "parents_per_child": "0..1",
+      "children_per_parent": "0..N",
+      "identifying": false,
+      "note": "NULL when no human role applies; verified entitlement is procedural.",
+      "basis": "FR-28; Section 9.2; SEC-08, SEC-10, SEC-11"
+    },
+    {
+      "id": "FK25",
+      "child": "AuditEvent",
+      "columns": [
+        "InitiatingUserID"
+      ],
+      "parent": "User",
+      "references": [
+        "UserID"
+      ],
+      "label": "initiating human",
+      "parents_per_child": "0..1",
+      "children_per_parent": "0..N",
+      "identifying": false,
+      "note": "Distinct from the actor of an automated effect.",
+      "basis": "FR-28; Section 9.2; SEC-08, SEC-10, SEC-11"
+    },
+    {
+      "id": "FK26",
+      "child": "AuditEvent",
+      "columns": [
+        "OperationID"
+      ],
+      "parent": "OperationReceipt",
+      "references": [
+        "OperationID"
+      ],
+      "label": "committed operation",
+      "parents_per_child": "0..1",
+      "children_per_parent": "0..N",
+      "identifying": false,
+      "note": "Failed attempts may have no committed receipt; use ContextID and safe attempted reference.",
+      "basis": "FR-28; Section 9.2; SEC-08, SEC-10, SEC-11"
+    },
+    {
+      "id": "FK27",
+      "child": "AuditChange",
+      "columns": [
+        "AuditEventID"
+      ],
+      "parent": "AuditEvent",
+      "references": [
+        "AuditEventID"
+      ],
+      "label": "owning audit event",
+      "parents_per_child": "1",
+      "children_per_parent": "0..N",
+      "identifying": true,
+      "note": "",
+      "basis": "FRD Section 9.2; SEC-11, SEC-12"
+    }
+  ],
+  "operational_entities": [
+    {
+      "name": "build_admin.BuildRun",
+      "basis": "C-05; build-script course material",
+      "purpose": "Separate operational evidence for one tagged build; not a lending entity.",
+      "kind": "Technical history",
+      "pk": "BuildRunID",
+      "unique": "None",
+      "checks": "Outcome Running/Succeeded/Failed; nonblank tag/target.",
+      "columns": [
+        {
+          "name": "BuildRunID",
+          "classification": "Technical Key",
+          "type": "BINARY(16)",
+          "nullable": "No",
+          "key": "PK",
+          "purpose": "Runner-generated UUID."
+        },
+        {
+          "name": "RequestedTag",
+          "classification": "Technical Metadata",
+          "type": "VARCHAR(100)",
+          "nullable": "No",
+          "key": "Nonblank",
+          "purpose": "Requested immutable release label."
+        },
+        {
+          "name": "ResolvedCommit",
+          "classification": "Technical Metadata",
+          "type": "CHAR(40)",
+          "nullable": "Yes",
+          "key": "Hex SHA when resolved",
+          "purpose": "NULL for failures before source retrieval; no fabricated commit."
+        },
+        {
+          "name": "TargetSchema",
+          "classification": "Technical Metadata",
+          "type": "VARCHAR(64)",
+          "nullable": "No",
+          "key": "Identifier allowlist",
+          "purpose": "Intended isolated database."
+        },
+        {
+          "name": "StartedAt",
+          "classification": "Technical Metadata",
+          "type": "DATETIME(6)",
+          "nullable": "No",
+          "key": "UTC",
+          "purpose": "Build start."
+        },
+        {
+          "name": "FinishedAt",
+          "classification": "Technical Metadata",
+          "type": "DATETIME(6)",
+          "nullable": "Yes",
+          "key": "Completion time",
+          "purpose": "NULL while running."
+        },
+        {
+          "name": "Outcome",
+          "classification": "Technical Metadata",
+          "type": "VARCHAR(12)",
+          "nullable": "No",
+          "key": "CHECK",
+          "purpose": "Running/Succeeded/Failed."
+        },
+        {
+          "name": "EnvironmentManifest",
+          "classification": "Technical Metadata",
+          "type": "TEXT",
+          "nullable": "No",
+          "key": "Redacted machine-readable evidence",
+          "purpose": "Exact server/client/tool versions and container digest; no secrets."
+        }
+      ],
+      "notes": "Created outside the target schema so a failed build/reset cannot erase its own evidence. File logs are authoritative fallback if build-log persistence is unavailable.",
+      "pk_columns": [
+        "BuildRunID"
+      ],
+      "unique_groups": [],
+      "section": "9"
+    },
+    {
+      "name": "build_admin.BuildStep",
+      "basis": "C-05; build-script course material",
+      "purpose": "Per-script execution evidence without repeating build metadata.",
+      "kind": "Technical dependent",
+      "pk": "(BuildRunID,StepNumber)",
+      "unique": "(BuildRunID,ScriptPath)",
+      "checks": "StepNumber > 0; Outcome Running/Succeeded/Failed.",
+      "columns": [
+        {
+          "name": "BuildRunID",
+          "classification": "Technical Key",
+          "type": "BINARY(16)",
+          "nullable": "No",
+          "key": "PK part; FK build_admin.BuildRun.BuildRunID",
+          "purpose": "Owning build."
+        },
+        {
+          "name": "StepNumber",
+          "classification": "Technical Key",
+          "type": "SMALLINT UNSIGNED",
+          "nullable": "No",
+          "key": "PK part; CHECK > 0",
+          "purpose": "Manifest order."
+        },
+        {
+          "name": "ScriptPath",
+          "classification": "Technical Metadata",
+          "type": "VARCHAR(255)",
+          "nullable": "No",
+          "key": "UNIQUE within build",
+          "purpose": "Validated relative path; no shell interpolation."
+        },
+        {
+          "name": "ScriptSHA256",
+          "classification": "Technical Metadata",
+          "type": "BINARY(32)",
+          "nullable": "No",
+          "key": "Exact content digest",
+          "purpose": "Identifies executed script bytes."
+        },
+        {
+          "name": "StartedAt",
+          "classification": "Technical Metadata",
+          "type": "DATETIME(6)",
+          "nullable": "No",
+          "key": "UTC",
+          "purpose": "Step start."
+        },
+        {
+          "name": "FinishedAt",
+          "classification": "Technical Metadata",
+          "type": "DATETIME(6)",
+          "nullable": "Yes",
+          "key": "Completion time",
+          "purpose": "NULL while running."
+        },
+        {
+          "name": "Outcome",
+          "classification": "Technical Metadata",
+          "type": "VARCHAR(12)",
+          "nullable": "No",
+          "key": "CHECK",
+          "purpose": "Step result."
+        },
+        {
+          "name": "SafeError",
+          "classification": "Technical Metadata",
+          "type": "TEXT",
+          "nullable": "Yes",
+          "key": "Redacted diagnostic",
+          "purpose": "Failure context without passwords/tokens or private binds."
+        }
+      ],
+      "notes": "",
+      "pk_columns": [
+        "BuildRunID",
+        "StepNumber"
+      ],
+      "unique_groups": [
+        [
+          "BuildRunID",
+          "ScriptPath"
+        ]
+      ],
+      "section": "9"
+    }
+  ],
+  "pages": [
+    {
+      "id": "conceptual",
+      "name": "01 Conceptual model",
+      "export": "01-conceptual.svg"
+    },
+    {
+      "id": "funding",
+      "name": "02 Accounts requests and funding",
+      "export": "02-accounts-funding.svg",
+      "entities": [
+        "User",
+        "Role",
+        "UserRole",
+        "BorrowerProfile",
+        "LoanRequest",
+        "RequestEvaluation",
+        "OperationReceipt",
+        "FundingCommitment"
+      ]
+    },
+    {
+      "id": "repayment",
+      "name": "03 Loans repayments and oversight",
+      "export": "03-repayments-oversight.svg",
+      "entities": [
+        "Loan",
+        "Installment",
+        "Repayment",
+        "RepaymentAllocation",
+        "OversightNote",
+        "AuditEvent",
+        "AuditChange"
+      ]
+    }
+  ],
+  "design_pages": [
+    {
+      "id": "application-flow",
+      "name": "Application boundaries and transaction data flow",
+      "export": "04-application-flow.svg"
+    },
+    {
+      "id": "wireframes",
+      "name": "Basic UI wireframes \u2014 design only",
+      "export": "05-wireframes.svg"
+    }
+  ]
+}

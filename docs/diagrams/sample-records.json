@@ -1,0 +1,3246 @@
+{
+  "description": "Complete fictional seed specification, including generated expected values. Encrypted/hash values are explicit materialization directives, not stored plaintext. materialize_fixture.py produces ordered SQL for a fresh constrained schema before triggers. SQL load and application acceptance tests remain unexecuted.",
+  "evaluation_date": "2026-10-19",
+  "User": [
+    {
+      "UserID": 1,
+      "LoginName": "demo1",
+      "PublicAlias": "alias1",
+      "AccountStatus": "Active",
+      "DisplayName": "Fictional User 1",
+      "PrivateEmailCipher": {
+        "encrypt": "demo1@example.invalid"
+      },
+      "PasswordHash": {
+        "hash_password_env": "FIXTURE_PASSWORD"
+      },
+      "CreatedAt": "2026-07-01T00:00:00Z",
+      "RowVersion": 0
+    },
+    {
+      "UserID": 2,
+      "LoginName": "demo2",
+      "PublicAlias": "alias2",
+      "AccountStatus": "Active",
+      "DisplayName": "Fictional User 2",
+      "PrivateEmailCipher": {
+        "encrypt": "demo2@example.invalid"
+      },
+      "PasswordHash": {
+        "hash_password_env": "FIXTURE_PASSWORD"
+      },
+      "CreatedAt": "2026-07-01T00:00:00Z",
+      "RowVersion": 0
+    },
+    {
+      "UserID": 3,
+      "LoginName": "demo3",
+      "PublicAlias": "alias3",
+      "AccountStatus": "Active",
+      "DisplayName": "Fictional User 3",
+      "PrivateEmailCipher": {
+        "encrypt": "demo3@example.invalid"
+      },
+      "PasswordHash": {
+        "hash_password_env": "FIXTURE_PASSWORD"
+      },
+      "CreatedAt": "2026-07-01T00:00:00Z",
+      "RowVersion": 0
+    },
+    {
+      "UserID": 4,
+      "LoginName": "demo4",
+      "PublicAlias": "alias4",
+      "AccountStatus": "Active",
+      "DisplayName": "Fictional User 4",
+      "PrivateEmailCipher": {
+        "encrypt": "demo4@example.invalid"
+      },
+      "PasswordHash": {
+        "hash_password_env": "FIXTURE_PASSWORD"
+      },
+      "CreatedAt": "2026-07-01T00:00:00Z",
+      "RowVersion": 0
+    },
+    {
+      "UserID": 5,
+      "LoginName": "demo5",
+      "PublicAlias": "alias5",
+      "AccountStatus": "Active",
+      "DisplayName": "Fictional User 5",
+      "PrivateEmailCipher": {
+        "encrypt": "demo5@example.invalid"
+      },
+      "PasswordHash": {
+        "hash_password_env": "FIXTURE_PASSWORD"
+      },
+      "CreatedAt": "2026-07-01T00:00:00Z",
+      "RowVersion": 0
+    },
+    {
+      "UserID": 6,
+      "LoginName": "demo6",
+      "PublicAlias": "alias6",
+      "AccountStatus": "Active",
+      "DisplayName": "Fictional User 6",
+      "PrivateEmailCipher": {
+        "encrypt": "demo6@example.invalid"
+      },
+      "PasswordHash": {
+        "hash_password_env": "FIXTURE_PASSWORD"
+      },
+      "CreatedAt": "2026-07-01T00:00:00Z",
+      "RowVersion": 0
+    },
+    {
+      "UserID": 7,
+      "LoginName": "demo7",
+      "PublicAlias": "alias7",
+      "AccountStatus": "Active",
+      "DisplayName": "Fictional User 7",
+      "PrivateEmailCipher": {
+        "encrypt": "demo7@example.invalid"
+      },
+      "PasswordHash": {
+        "hash_password_env": "FIXTURE_PASSWORD"
+      },
+      "CreatedAt": "2026-07-01T00:00:00Z",
+      "RowVersion": 4
+    }
+  ],
+  "LoanRequest": [
+    {
+      "RequestID": 101,
+      "BorrowerID": 1,
+      "Principal": "900.00",
+      "InstallmentCount": 3,
+      "RequestState": "Funded",
+      "PolicyCode": "D1",
+      "FundingDeadlineAt": "2026-08-10T00:00:00Z",
+      "Purpose": "Fictional equipment request 101",
+      "CreatedAt": "2026-07-27T00:00:00Z",
+      "SubmittedAt": "2026-07-27T00:00:00Z",
+      "TerminalReason": null,
+      "RowVersion": 4,
+      "SubmittedIncomeCipher": {
+        "encrypt": "1000.00"
+      },
+      "SubmittedObligationsCipher": {
+        "encrypt": "100.00"
+      }
+    },
+    {
+      "RequestID": 102,
+      "BorrowerID": 1,
+      "Principal": "600.00",
+      "InstallmentCount": 3,
+      "RequestState": "Funded",
+      "PolicyCode": "D1",
+      "FundingDeadlineAt": "2026-08-27T00:00:00Z",
+      "Purpose": "Fictional equipment request 102",
+      "CreatedAt": "2026-08-13T00:00:00Z",
+      "SubmittedAt": "2026-08-13T00:00:00Z",
+      "TerminalReason": null,
+      "RowVersion": 4,
+      "SubmittedIncomeCipher": {
+        "encrypt": "1000.00"
+      },
+      "SubmittedObligationsCipher": {
+        "encrypt": "100.00"
+      }
+    },
+    {
+      "RequestID": 103,
+      "BorrowerID": 4,
+      "Principal": "300.00",
+      "InstallmentCount": 3,
+      "RequestState": "OpenFunding",
+      "FundingDeadlineAt": "2026-11-01T00:00:00Z",
+      "PolicyCode": "D1",
+      "Purpose": "Fictional equipment request 103",
+      "CreatedAt": "2026-10-18T00:00:00Z",
+      "SubmittedAt": "2026-10-18T00:00:00Z",
+      "TerminalReason": null,
+      "RowVersion": 3,
+      "SubmittedIncomeCipher": {
+        "encrypt": "1000.00"
+      },
+      "SubmittedObligationsCipher": {
+        "encrypt": "100.00"
+      }
+    },
+    {
+      "RequestID": 104,
+      "BorrowerID": 7,
+      "Principal": "300.00",
+      "InstallmentCount": 3,
+      "RequestState": "OpenFunding",
+      "FundingDeadlineAt": "2026-11-01T00:00:00Z",
+      "PolicyCode": "D1",
+      "Purpose": "Fictional equipment request 104",
+      "CreatedAt": "2026-10-18T00:00:00Z",
+      "SubmittedAt": "2026-10-18T00:00:00Z",
+      "TerminalReason": null,
+      "RowVersion": 3,
+      "SubmittedIncomeCipher": {
+        "encrypt": "1000.00"
+      },
+      "SubmittedObligationsCipher": {
+        "encrypt": "100.00"
+      }
+    },
+    {
+      "RequestID": 105,
+      "BorrowerID": 4,
+      "Principal": "300.00",
+      "InstallmentCount": 3,
+      "RequestState": "Cancelled",
+      "PolicyCode": null,
+      "FundingDeadlineAt": null,
+      "Purpose": "Fictional cancelled draft 105",
+      "CreatedAt": "2026-07-08T10:00:00Z",
+      "SubmittedAt": null,
+      "TerminalReason": "Fictional draft no longer needed.",
+      "RowVersion": 1,
+      "SubmittedIncomeCipher": null,
+      "SubmittedObligationsCipher": null
+    },
+    {
+      "RequestID": 106,
+      "BorrowerID": 7,
+      "Principal": "300.00",
+      "InstallmentCount": 3,
+      "RequestState": "Cancelled",
+      "PolicyCode": null,
+      "FundingDeadlineAt": null,
+      "Purpose": "Fictional cancelled draft 106",
+      "CreatedAt": "2026-07-08T10:00:00Z",
+      "SubmittedAt": null,
+      "TerminalReason": "Fictional duplicate draft cancelled after review.",
+      "RowVersion": 1,
+      "SubmittedIncomeCipher": null,
+      "SubmittedObligationsCipher": null
+    }
+  ],
+  "Loan": [
+    {
+      "LoanID": 501,
+      "RequestID": 101,
+      "LoanState": "Active",
+      "ActivatedAt": "2026-08-01T00:00:00Z",
+      "CompletedAt": null,
+      "ObservedCondition": "Delinquent",
+      "LastEvaluatedAt": "2026-10-19T12:00:00Z"
+    },
+    {
+      "LoanID": 502,
+      "RequestID": 102,
+      "LoanState": "Active",
+      "ActivatedAt": "2026-08-15T00:00:00Z",
+      "CompletedAt": null,
+      "ObservedCondition": "Current",
+      "LastEvaluatedAt": "2026-10-19T12:00:00Z"
+    }
+  ],
+  "OperationReceipt": [
+    {
+      "OperationID": 1001,
+      "CallerUserID": 2,
+      "OperationReference": "fund-201",
+      "ActionCode": "CommitFunding",
+      "ReceiptSnapshot": "201\n{\"operationID\":\"1001\",\"commitmentID\":\"201\",\"requestID\":\"101\",\"amount\":\"300.00\",\"commitmentState\":\"Pending\",\"pendingTotal\":\"300.00\",\"remainingAmount\":\"600.00\",\"loanID\":null}"
+    },
+    {
+      "OperationID": 1002,
+      "CallerUserID": 2,
+      "OperationReference": "fund-202",
+      "ActionCode": "CommitFunding",
+      "ReceiptSnapshot": "201\n{\"operationID\":\"1002\",\"commitmentID\":\"202\",\"requestID\":\"101\",\"amount\":\"200.00\",\"commitmentState\":\"Pending\",\"pendingTotal\":\"500.00\",\"remainingAmount\":\"400.00\",\"loanID\":null}"
+    },
+    {
+      "OperationID": 1003,
+      "CallerUserID": 3,
+      "OperationReference": "fund-203",
+      "ActionCode": "CommitFunding",
+      "ReceiptSnapshot": "201\n{\"operationID\":\"1003\",\"commitmentID\":\"203\",\"requestID\":\"101\",\"amount\":\"400.00\",\"commitmentState\":\"Applied\",\"pendingTotal\":\"0.00\",\"remainingAmount\":\"0.00\",\"loanID\":\"501\"}"
+    },
+    {
+      "OperationID": 1004,
+      "CallerUserID": 3,
+      "OperationReference": "fund-204",
+      "ActionCode": "CommitFunding",
+      "ReceiptSnapshot": "201\n{\"operationID\":\"1004\",\"commitmentID\":\"204\",\"requestID\":\"102\",\"amount\":\"600.00\",\"commitmentState\":\"Applied\",\"pendingTotal\":\"0.00\",\"remainingAmount\":\"0.00\",\"loanID\":\"502\"}"
+    },
+    {
+      "OperationID": 1005,
+      "CallerUserID": 2,
+      "OperationReference": "fund-205",
+      "ActionCode": "CommitFunding",
+      "ReceiptSnapshot": "201\n{\"operationID\":\"1005\",\"commitmentID\":\"205\",\"requestID\":\"103\",\"amount\":\"100.00\",\"commitmentState\":\"Pending\",\"pendingTotal\":\"100.00\",\"remainingAmount\":\"200.00\",\"loanID\":null}"
+    },
+    {
+      "OperationID": 2001,
+      "CallerUserID": 1,
+      "OperationReference": "pay-501-1",
+      "ActionCode": "PostRepayment",
+      "ReceiptSnapshot": "201\n{\"operationID\":\"2001\",\"loanID\":\"501\",\"repaymentNumber\":1,\"amount\":\"100.00\",\"allocations\":[{\"installmentNumber\":1,\"amount\":\"100.00\"}],\"outstandingAfter\":\"800.00\",\"loanState\":\"Active\"}"
+    },
+    {
+      "OperationID": 2002,
+      "CallerUserID": 1,
+      "OperationReference": "pay-501-2",
+      "ActionCode": "PostRepayment",
+      "ReceiptSnapshot": "201\n{\"operationID\":\"2002\",\"loanID\":\"501\",\"repaymentNumber\":2,\"amount\":\"250.00\",\"allocations\":[{\"installmentNumber\":1,\"amount\":\"200.00\"},{\"installmentNumber\":2,\"amount\":\"50.00\"}],\"outstandingAfter\":\"550.00\",\"loanState\":\"Active\"}"
+    },
+    {
+      "OperationID": 2003,
+      "CallerUserID": 1,
+      "OperationReference": "pay-502-1",
+      "ActionCode": "PostRepayment",
+      "ReceiptSnapshot": "201\n{\"operationID\":\"2003\",\"loanID\":\"502\",\"repaymentNumber\":1,\"amount\":\"200.00\",\"allocations\":[{\"installmentNumber\":1,\"amount\":\"200.00\"}],\"outstandingAfter\":\"400.00\",\"loanState\":\"Active\"}"
+    },
+    {
+      "OperationID": 2004,
+      "CallerUserID": 1,
+      "OperationReference": "pay-502-2",
+      "ActionCode": "PostRepayment",
+      "ReceiptSnapshot": "201\n{\"operationID\":\"2004\",\"loanID\":\"502\",\"repaymentNumber\":2,\"amount\":\"200.00\",\"allocations\":[{\"installmentNumber\":2,\"amount\":\"200.00\"}],\"outstandingAfter\":\"200.00\",\"loanState\":\"Active\"}"
+    }
+  ],
+  "FundingCommitment": [
+    {
+      "CommitmentID": 201,
+      "RequestID": 101,
+      "OperationID": 1001,
+      "Amount": "300.00",
+      "CommitmentState": "Applied",
+      "EvaluationID": 3000,
+      "CreatedAt": "2026-08-01T00:00:00Z",
+      "AppliedAt": "2026-08-01T00:00:00Z",
+      "ReleasedAt": null
+    },
+    {
+      "CommitmentID": 202,
+      "RequestID": 101,
+      "OperationID": 1002,
+      "Amount": "200.00",
+      "CommitmentState": "Applied",
+      "EvaluationID": 3001,
+      "CreatedAt": "2026-08-01T00:00:00Z",
+      "AppliedAt": "2026-08-01T00:00:00Z",
+      "ReleasedAt": null
+    },
+    {
+      "CommitmentID": 203,
+      "RequestID": 101,
+      "OperationID": 1003,
+      "Amount": "400.00",
+      "CommitmentState": "Applied",
+      "EvaluationID": 3002,
+      "CreatedAt": "2026-08-01T00:00:00Z",
+      "AppliedAt": "2026-08-01T00:00:00Z",
+      "ReleasedAt": null
+    },
+    {
+      "CommitmentID": 204,
+      "RequestID": 102,
+      "OperationID": 1004,
+      "Amount": "600.00",
+      "CommitmentState": "Applied",
+      "EvaluationID": 3003,
+      "CreatedAt": "2026-08-15T00:00:00Z",
+      "AppliedAt": "2026-08-15T00:00:00Z",
+      "ReleasedAt": null
+    },
+    {
+      "CommitmentID": 205,
+      "RequestID": 103,
+      "OperationID": 1005,
+      "Amount": "100.00",
+      "CommitmentState": "Pending",
+      "EvaluationID": 3004,
+      "CreatedAt": "2026-10-19T00:00:00Z",
+      "AppliedAt": null,
+      "ReleasedAt": null
+    }
+  ],
+  "Installment": [
+    {
+      "LoanID": 501,
+      "InstallmentNumber": 1,
+      "DueDate": "2026-09-01",
+      "ScheduledPrincipal": "300.00"
+    },
+    {
+      "LoanID": 501,
+      "InstallmentNumber": 2,
+      "DueDate": "2026-10-01",
+      "ScheduledPrincipal": "300.00"
+    },
+    {
+      "LoanID": 501,
+      "InstallmentNumber": 3,
+      "DueDate": "2026-11-01",
+      "ScheduledPrincipal": "300.00"
+    },
+    {
+      "LoanID": 502,
+      "InstallmentNumber": 1,
+      "DueDate": "2026-09-15",
+      "ScheduledPrincipal": "200.00"
+    },
+    {
+      "LoanID": 502,
+      "InstallmentNumber": 2,
+      "DueDate": "2026-10-15",
+      "ScheduledPrincipal": "200.00"
+    },
+    {
+      "LoanID": 502,
+      "InstallmentNumber": 3,
+      "DueDate": "2026-11-15",
+      "ScheduledPrincipal": "200.00"
+    }
+  ],
+  "Repayment": [
+    {
+      "LoanID": 501,
+      "RepaymentNumber": 1,
+      "OperationID": 2001,
+      "Amount": "100.00",
+      "PostedAt": "2026-09-01T00:00:00Z"
+    },
+    {
+      "LoanID": 501,
+      "RepaymentNumber": 2,
+      "OperationID": 2002,
+      "Amount": "250.00",
+      "PostedAt": "2026-10-10T00:00:00Z"
+    },
+    {
+      "LoanID": 502,
+      "RepaymentNumber": 1,
+      "OperationID": 2003,
+      "Amount": "200.00",
+      "PostedAt": "2026-09-15T00:00:00Z"
+    },
+    {
+      "LoanID": 502,
+      "RepaymentNumber": 2,
+      "OperationID": 2004,
+      "Amount": "200.00",
+      "PostedAt": "2026-10-15T00:00:00Z"
+    }
+  ],
+  "RepaymentAllocation": [
+    {
+      "LoanID": 501,
+      "RepaymentNumber": 1,
+      "InstallmentNumber": 1,
+      "AllocatedPrincipal": "100.00"
+    },
+    {
+      "LoanID": 501,
+      "RepaymentNumber": 2,
+      "InstallmentNumber": 1,
+      "AllocatedPrincipal": "200.00"
+    },
+    {
+      "LoanID": 501,
+      "RepaymentNumber": 2,
+      "InstallmentNumber": 2,
+      "AllocatedPrincipal": "50.00"
+    },
+    {
+      "LoanID": 502,
+      "RepaymentNumber": 1,
+      "InstallmentNumber": 1,
+      "AllocatedPrincipal": "200.00"
+    },
+    {
+      "LoanID": 502,
+      "RepaymentNumber": 2,
+      "InstallmentNumber": 2,
+      "AllocatedPrincipal": "200.00"
+    }
+  ],
+  "Role": [
+    {
+      "RoleCode": "Borrower",
+      "Description": "Borrower"
+    },
+    {
+      "RoleCode": "Lender",
+      "Description": "Lender"
+    },
+    {
+      "RoleCode": "Administrator",
+      "Description": "Administrator"
+    },
+    {
+      "RoleCode": "Auditor",
+      "Description": "Auditor"
+    }
+  ],
+  "UserRole": [
+    {
+      "UserRoleID": 1,
+      "UserID": 1,
+      "RoleCode": "Borrower",
+      "GrantedByUserID": 5,
+      "RevokedByUserID": null,
+      "GrantedAt": "2026-07-01T00:00:00Z",
+      "RevokedAt": null,
+      "ActiveMarker": 1
+    },
+    {
+      "UserRoleID": 2,
+      "UserID": 2,
+      "RoleCode": "Lender",
+      "GrantedByUserID": 5,
+      "RevokedByUserID": null,
+      "GrantedAt": "2026-07-01T00:00:00Z",
+      "RevokedAt": null,
+      "ActiveMarker": 1
+    },
+    {
+      "UserRoleID": 3,
+      "UserID": 3,
+      "RoleCode": "Lender",
+      "GrantedByUserID": 5,
+      "RevokedByUserID": null,
+      "GrantedAt": "2026-07-01T00:00:00Z",
+      "RevokedAt": null,
+      "ActiveMarker": 1
+    },
+    {
+      "UserRoleID": 4,
+      "UserID": 4,
+      "RoleCode": "Borrower",
+      "GrantedByUserID": 5,
+      "RevokedByUserID": null,
+      "GrantedAt": "2026-07-01T00:00:00Z",
+      "RevokedAt": null,
+      "ActiveMarker": 1
+    },
+    {
+      "UserRoleID": 5,
+      "UserID": 5,
+      "RoleCode": "Administrator",
+      "GrantedByUserID": null,
+      "RevokedByUserID": null,
+      "GrantedAt": "2026-07-01T00:00:00Z",
+      "RevokedAt": null,
+      "ActiveMarker": 1
+    },
+    {
+      "UserRoleID": 6,
+      "UserID": 6,
+      "RoleCode": "Auditor",
+      "GrantedByUserID": 5,
+      "RevokedByUserID": null,
+      "GrantedAt": "2026-07-01T00:00:00Z",
+      "RevokedAt": null,
+      "ActiveMarker": 1
+    },
+    {
+      "UserRoleID": 7,
+      "UserID": 7,
+      "RoleCode": "Borrower",
+      "GrantedByUserID": 5,
+      "RevokedByUserID": null,
+      "GrantedAt": "2026-07-01T00:00:00Z",
+      "RevokedAt": null,
+      "ActiveMarker": 1
+    },
+    {
+      "UserRoleID": 8,
+      "UserID": 7,
+      "RoleCode": "Lender",
+      "GrantedByUserID": 5,
+      "RevokedByUserID": null,
+      "GrantedAt": "2026-07-01T00:00:00Z",
+      "RevokedAt": null,
+      "ActiveMarker": 1
+    }
+  ],
+  "BorrowerProfile": [
+    {
+      "UserID": 1,
+      "MonthlyIncomeCipher": {
+        "encrypt": "1000.00"
+      },
+      "ExternalObligationsCipher": {
+        "encrypt": "100.00"
+      },
+      "UpdatedAt": "2026-07-02T00:00:00Z",
+      "RowVersion": 0
+    },
+    {
+      "UserID": 4,
+      "MonthlyIncomeCipher": {
+        "encrypt": "1000.00"
+      },
+      "ExternalObligationsCipher": {
+        "encrypt": "100.00"
+      },
+      "UpdatedAt": "2026-07-02T00:00:00Z",
+      "RowVersion": 0
+    },
+    {
+      "UserID": 7,
+      "MonthlyIncomeCipher": {
+        "encrypt": "1000.00"
+      },
+      "ExternalObligationsCipher": {
+        "encrypt": "100.00"
+      },
+      "UpdatedAt": "2026-07-02T00:00:00Z",
+      "RowVersion": 0
+    }
+  ],
+  "RequestEvaluation": [
+    {
+      "EvaluationID": 1010,
+      "RequestID": 101,
+      "EvaluationKind": "Submission",
+      "AttemptNumber": 0,
+      "EvaluatedAt": "2026-07-27T00:00:00Z",
+      "NoDelinquencyPass": 1,
+      "AffordabilityPass": 1,
+      "CompletedAt": "2026-07-27T00:00:00Z",
+      "Result": "Pass",
+      "AdministratorID": null,
+      "Decision": null,
+      "Reason": null,
+      "DecidedAt": null,
+      "FinalReviewMarker": null,
+      "PlatformBurdenCipher": {
+        "encrypt": "0.00"
+      },
+      "ContextID": "844215f95ed75660a231d042dfa2a90f"
+    },
+    {
+      "EvaluationID": 1011,
+      "RequestID": 101,
+      "EvaluationKind": "Review",
+      "AttemptNumber": 1,
+      "EvaluatedAt": "2026-07-27T00:00:00Z",
+      "NoDelinquencyPass": 1,
+      "AffordabilityPass": 1,
+      "CompletedAt": "2026-07-27T00:00:00Z",
+      "Result": "Pass",
+      "AdministratorID": 5,
+      "Decision": "Approve",
+      "Reason": "D1 conditions pass.",
+      "DecidedAt": "2026-07-27T00:00:00Z",
+      "FinalReviewMarker": 1,
+      "PlatformBurdenCipher": {
+        "encrypt": "0.00"
+      },
+      "ContextID": "c962045fcc4658fea0cfbfcd993353f9"
+    },
+    {
+      "EvaluationID": 1020,
+      "RequestID": 102,
+      "EvaluationKind": "Submission",
+      "AttemptNumber": 0,
+      "EvaluatedAt": "2026-08-13T00:00:00Z",
+      "NoDelinquencyPass": 1,
+      "AffordabilityPass": 1,
+      "CompletedAt": "2026-08-13T00:00:00Z",
+      "Result": "Pass",
+      "AdministratorID": null,
+      "Decision": null,
+      "Reason": null,
+      "DecidedAt": null,
+      "FinalReviewMarker": null,
+      "PlatformBurdenCipher": {
+        "encrypt": "300.00"
+      },
+      "ContextID": "478f30bf43ca5a25b16f6796c8fa07a6"
+    },
+    {
+      "EvaluationID": 1021,
+      "RequestID": 102,
+      "EvaluationKind": "Review",
+      "AttemptNumber": 1,
+      "EvaluatedAt": "2026-08-13T00:00:00Z",
+      "NoDelinquencyPass": 1,
+      "AffordabilityPass": 1,
+      "CompletedAt": "2026-08-13T00:00:00Z",
+      "Result": "Pass",
+      "AdministratorID": 5,
+      "Decision": "Approve",
+      "Reason": "D1 conditions pass.",
+      "DecidedAt": "2026-08-13T00:00:00Z",
+      "FinalReviewMarker": 1,
+      "PlatformBurdenCipher": {
+        "encrypt": "300.00"
+      },
+      "ContextID": "48093fe95c3c54288f3381e2f6856aa0"
+    },
+    {
+      "EvaluationID": 1030,
+      "RequestID": 103,
+      "EvaluationKind": "Submission",
+      "AttemptNumber": 0,
+      "EvaluatedAt": "2026-10-18T00:00:00Z",
+      "NoDelinquencyPass": 1,
+      "AffordabilityPass": 1,
+      "CompletedAt": "2026-10-18T00:00:00Z",
+      "Result": "Pass",
+      "AdministratorID": null,
+      "Decision": null,
+      "Reason": null,
+      "DecidedAt": null,
+      "FinalReviewMarker": null,
+      "PlatformBurdenCipher": {
+        "encrypt": "0.00"
+      },
+      "ContextID": "3bf59e0234025524a687727b4d0b90f1"
+    },
+    {
+      "EvaluationID": 1031,
+      "RequestID": 103,
+      "EvaluationKind": "Review",
+      "AttemptNumber": 1,
+      "EvaluatedAt": "2026-10-18T00:00:00Z",
+      "NoDelinquencyPass": 1,
+      "AffordabilityPass": 1,
+      "CompletedAt": "2026-10-18T00:00:00Z",
+      "Result": "Pass",
+      "AdministratorID": 5,
+      "Decision": "Approve",
+      "Reason": "D1 conditions pass.",
+      "DecidedAt": "2026-10-18T00:00:00Z",
+      "FinalReviewMarker": 1,
+      "PlatformBurdenCipher": {
+        "encrypt": "0.00"
+      },
+      "ContextID": "2f864f5198d055efac253c09e1b6f4ef"
+    },
+    {
+      "EvaluationID": 3000,
+      "RequestID": 101,
+      "EvaluationKind": "Funding",
+      "AttemptNumber": 1,
+      "EvaluatedAt": "2026-08-01T00:00:00Z",
+      "NoDelinquencyPass": 1,
+      "AffordabilityPass": 1,
+      "CompletedAt": "2026-08-01T00:00:00Z",
+      "Result": "Pass",
+      "AdministratorID": null,
+      "Decision": null,
+      "Reason": null,
+      "DecidedAt": null,
+      "FinalReviewMarker": null,
+      "PlatformBurdenCipher": {
+        "encrypt": "0.00"
+      },
+      "ContextID": "be0412c24e64561e824859d1b2cc5dc0"
+    },
+    {
+      "EvaluationID": 3001,
+      "RequestID": 101,
+      "EvaluationKind": "Funding",
+      "AttemptNumber": 2,
+      "EvaluatedAt": "2026-08-01T00:00:00Z",
+      "NoDelinquencyPass": 1,
+      "AffordabilityPass": 1,
+      "CompletedAt": "2026-08-01T00:00:00Z",
+      "Result": "Pass",
+      "AdministratorID": null,
+      "Decision": null,
+      "Reason": null,
+      "DecidedAt": null,
+      "FinalReviewMarker": null,
+      "PlatformBurdenCipher": {
+        "encrypt": "0.00"
+      },
+      "ContextID": "087339a29af6549499cbb0db659fed47"
+    },
+    {
+      "EvaluationID": 3002,
+      "RequestID": 101,
+      "EvaluationKind": "Funding",
+      "AttemptNumber": 3,
+      "EvaluatedAt": "2026-08-01T00:00:00Z",
+      "NoDelinquencyPass": 1,
+      "AffordabilityPass": 1,
+      "CompletedAt": "2026-08-01T00:00:00Z",
+      "Result": "Pass",
+      "AdministratorID": null,
+      "Decision": null,
+      "Reason": null,
+      "DecidedAt": null,
+      "FinalReviewMarker": null,
+      "PlatformBurdenCipher": {
+        "encrypt": "0.00"
+      },
+      "ContextID": "bf2689230f755287a4f118baba103caa"
+    },
+    {
+      "EvaluationID": 3003,
+      "RequestID": 102,
+      "EvaluationKind": "Funding",
+      "AttemptNumber": 1,
+      "EvaluatedAt": "2026-08-15T00:00:00Z",
+      "NoDelinquencyPass": 1,
+      "AffordabilityPass": 1,
+      "CompletedAt": "2026-08-15T00:00:00Z",
+      "Result": "Pass",
+      "AdministratorID": null,
+      "Decision": null,
+      "Reason": null,
+      "DecidedAt": null,
+      "FinalReviewMarker": null,
+      "PlatformBurdenCipher": {
+        "encrypt": "300.00"
+      },
+      "ContextID": "b11d7d2108675ae9910b08647bd147a3"
+    },
+    {
+      "EvaluationID": 3004,
+      "RequestID": 103,
+      "EvaluationKind": "Funding",
+      "AttemptNumber": 1,
+      "EvaluatedAt": "2026-10-19T00:00:00Z",
+      "NoDelinquencyPass": 1,
+      "AffordabilityPass": 1,
+      "CompletedAt": "2026-10-19T00:00:00Z",
+      "Result": "Pass",
+      "AdministratorID": null,
+      "Decision": null,
+      "Reason": null,
+      "DecidedAt": null,
+      "FinalReviewMarker": null,
+      "PlatformBurdenCipher": {
+        "encrypt": "0.00"
+      },
+      "ContextID": "f7d6b39039835046baa38a574be79e7e"
+    },
+    {
+      "EvaluationID": 1040,
+      "RequestID": 104,
+      "EvaluationKind": "Submission",
+      "AttemptNumber": 0,
+      "EvaluatedAt": "2026-10-18T00:00:00Z",
+      "NoDelinquencyPass": 1,
+      "AffordabilityPass": 1,
+      "CompletedAt": "2026-10-18T00:00:00Z",
+      "Result": "Pass",
+      "AdministratorID": null,
+      "Decision": null,
+      "Reason": null,
+      "DecidedAt": null,
+      "FinalReviewMarker": null,
+      "PlatformBurdenCipher": {
+        "encrypt": "0.00"
+      },
+      "ContextID": "56c41e76b087505cb0f5b439d84778f7"
+    },
+    {
+      "EvaluationID": 1041,
+      "RequestID": 104,
+      "EvaluationKind": "Review",
+      "AttemptNumber": 1,
+      "EvaluatedAt": "2026-10-18T00:00:00Z",
+      "NoDelinquencyPass": 1,
+      "AffordabilityPass": 1,
+      "CompletedAt": "2026-10-18T00:00:00Z",
+      "Result": "Pass",
+      "AdministratorID": 5,
+      "Decision": "Approve",
+      "Reason": "D1 conditions pass.",
+      "DecidedAt": "2026-10-18T00:00:00Z",
+      "FinalReviewMarker": 1,
+      "PlatformBurdenCipher": {
+        "encrypt": "0.00"
+      },
+      "ContextID": "e6af472bf89f562e9a129f0b4de1d8d6"
+    }
+  ],
+  "OversightNote": [
+    {
+      "NoteID": 901,
+      "RequestID": null,
+      "LoanID": 501,
+      "AdministratorID": 5,
+      "CreatedAt": "2026-10-19T12:00:00Z",
+      "NoteText": "Follow up on overdue principal.",
+      "CorrectsNoteID": null
+    },
+    {
+      "NoteID": 902,
+      "RequestID": null,
+      "LoanID": 501,
+      "AdministratorID": 5,
+      "CreatedAt": "2026-10-19T12:10:00Z",
+      "NoteText": "Correction: use the current report amount of 250.00.",
+      "CorrectsNoteID": 901
+    }
+  ],
+  "AuditEvent": [
+    {
+      "AuditEventID": 801,
+      "OccurredAt": "2026-07-01T00:00:00Z",
+      "EventType": "UserCreated",
+      "Outcome": "Success",
+      "ActorUserID": null,
+      "ActingRoleCode": null,
+      "ServiceActor": "Bootstrap",
+      "InitiatingUserID": null,
+      "TechnicalAccount": "fixture_builder@localhost",
+      "SubjectType": "User",
+      "SubjectKey": "5",
+      "ContextID": "85ef3299bdbd5ff483c6131dde440b48",
+      "OperationID": null,
+      "AttemptedOperationReference": null,
+      "ReasonCode": null
+    },
+    {
+      "AuditEventID": 802,
+      "OccurredAt": "2026-07-01T00:00:00Z",
+      "EventType": "RoleGranted",
+      "Outcome": "Success",
+      "ActorUserID": null,
+      "ActingRoleCode": null,
+      "ServiceActor": "Bootstrap",
+      "InitiatingUserID": null,
+      "TechnicalAccount": "fixture_builder@localhost",
+      "SubjectType": "UserRole",
+      "SubjectKey": "5",
+      "ContextID": "337344922e2d531789d20c02484639be",
+      "OperationID": null,
+      "AttemptedOperationReference": null,
+      "ReasonCode": null
+    },
+    {
+      "AuditEventID": 803,
+      "OccurredAt": "2026-07-01T00:00:00Z",
+      "EventType": "UserCreated",
+      "Outcome": "Success",
+      "ActorUserID": 5,
+      "ActingRoleCode": "Administrator",
+      "ServiceActor": null,
+      "InitiatingUserID": null,
+      "TechnicalAccount": "fixture_builder@localhost",
+      "SubjectType": "User",
+      "SubjectKey": "1",
+      "ContextID": "f4d37f4a96b05c8e9f75a4480921e34a",
+      "OperationID": null,
+      "AttemptedOperationReference": null,
+      "ReasonCode": null
+    },
+    {
+      "AuditEventID": 804,
+      "OccurredAt": "2026-07-01T00:00:00Z",
+      "EventType": "UserCreated",
+      "Outcome": "Success",
+      "ActorUserID": 5,
+      "ActingRoleCode": "Administrator",
+      "ServiceActor": null,
+      "InitiatingUserID": null,
+      "TechnicalAccount": "fixture_builder@localhost",
+      "SubjectType": "User",
+      "SubjectKey": "2",
+      "ContextID": "bfb13bada9e8512b804f34ce9dd0de17",
+      "OperationID": null,
+      "AttemptedOperationReference": null,
+      "ReasonCode": null
+    },
+    {
+      "AuditEventID": 805,
+      "OccurredAt": "2026-07-01T00:00:00Z",
+      "EventType": "UserCreated",
+      "Outcome": "Success",
+      "ActorUserID": 5,
+      "ActingRoleCode": "Administrator",
+      "ServiceActor": null,
+      "InitiatingUserID": null,
+      "TechnicalAccount": "fixture_builder@localhost",
+      "SubjectType": "User",
+      "SubjectKey": "3",
+      "ContextID": "ed5e7f6e70d6588e924264e962c6a4a7",
+      "OperationID": null,
+      "AttemptedOperationReference": null,
+      "ReasonCode": null
+    },
+    {
+      "AuditEventID": 806,
+      "OccurredAt": "2026-07-01T00:00:00Z",
+      "EventType": "UserCreated",
+      "Outcome": "Success",
+      "ActorUserID": 5,
+      "ActingRoleCode": "Administrator",
+      "ServiceActor": null,
+      "InitiatingUserID": null,
+      "TechnicalAccount": "fixture_builder@localhost",
+      "SubjectType": "User",
+      "SubjectKey": "4",
+      "ContextID": "1de78ebbeea853ef84241ab63f160c2d",
+      "OperationID": null,
+      "AttemptedOperationReference": null,
+      "ReasonCode": null
+    },
+    {
+      "AuditEventID": 807,
+      "OccurredAt": "2026-07-01T00:00:00Z",
+      "EventType": "UserCreated",
+      "Outcome": "Success",
+      "ActorUserID": 5,
+      "ActingRoleCode": "Administrator",
+      "ServiceActor": null,
+      "InitiatingUserID": null,
+      "TechnicalAccount": "fixture_builder@localhost",
+      "SubjectType": "User",
+      "SubjectKey": "6",
+      "ContextID": "c50d0a4f45885898ad5886f881f50553",
+      "OperationID": null,
+      "AttemptedOperationReference": null,
+      "ReasonCode": null
+    },
+    {
+      "AuditEventID": 808,
+      "OccurredAt": "2026-07-01T00:00:00Z",
+      "EventType": "UserCreated",
+      "Outcome": "Success",
+      "ActorUserID": 5,
+      "ActingRoleCode": "Administrator",
+      "ServiceActor": null,
+      "InitiatingUserID": null,
+      "TechnicalAccount": "fixture_builder@localhost",
+      "SubjectType": "User",
+      "SubjectKey": "7",
+      "ContextID": "807d38095a9d5205a767785add07d257",
+      "OperationID": null,
+      "AttemptedOperationReference": null,
+      "ReasonCode": null
+    },
+    {
+      "AuditEventID": 809,
+      "OccurredAt": "2026-07-01T00:00:00Z",
+      "EventType": "RoleGranted",
+      "Outcome": "Success",
+      "ActorUserID": 5,
+      "ActingRoleCode": "Administrator",
+      "ServiceActor": null,
+      "InitiatingUserID": null,
+      "TechnicalAccount": "fixture_builder@localhost",
+      "SubjectType": "UserRole",
+      "SubjectKey": "1",
+      "ContextID": "5efd91f34c5f5a12815367149396add8",
+      "OperationID": null,
+      "AttemptedOperationReference": null,
+      "ReasonCode": null
+    },
+    {
+      "AuditEventID": 810,
+      "OccurredAt": "2026-07-01T00:00:00Z",
+      "EventType": "RoleGranted",
+      "Outcome": "Success",
+      "ActorUserID": 5,
+      "ActingRoleCode": "Administrator",
+      "ServiceActor": null,
+      "InitiatingUserID": null,
+      "TechnicalAccount": "fixture_builder@localhost",
+      "SubjectType": "UserRole",
+      "SubjectKey": "2",
+      "ContextID": "d4e7886c563c507d9a251225dfdb0163",
+      "OperationID": null,
+      "AttemptedOperationReference": null,
+      "ReasonCode": null
+    },
+    {
+      "AuditEventID": 811,
+      "OccurredAt": "2026-07-01T00:00:00Z",
+      "EventType": "RoleGranted",
+      "Outcome": "Success",
+      "ActorUserID": 5,
+      "ActingRoleCode": "Administrator",
+      "ServiceActor": null,
+      "InitiatingUserID": null,
+      "TechnicalAccount": "fixture_builder@localhost",
+      "SubjectType": "UserRole",
+      "SubjectKey": "3",
+      "ContextID": "87a412cd91065019a07b760d5340e51c",
+      "OperationID": null,
+      "AttemptedOperationReference": null,
+      "ReasonCode": null
+    },
+    {
+      "AuditEventID": 812,
+      "OccurredAt": "2026-07-01T00:00:00Z",
+      "EventType": "RoleGranted",
+      "Outcome": "Success",
+      "ActorUserID": 5,
+      "ActingRoleCode": "Administrator",
+      "ServiceActor": null,
+      "InitiatingUserID": null,
+      "TechnicalAccount": "fixture_builder@localhost",
+      "SubjectType": "UserRole",
+      "SubjectKey": "4",
+      "ContextID": "219f069c76c6572bae7eb3b0df4ace9b",
+      "OperationID": null,
+      "AttemptedOperationReference": null,
+      "ReasonCode": null
+    },
+    {
+      "AuditEventID": 813,
+      "OccurredAt": "2026-07-01T00:00:00Z",
+      "EventType": "RoleGranted",
+      "Outcome": "Success",
+      "ActorUserID": 5,
+      "ActingRoleCode": "Administrator",
+      "ServiceActor": null,
+      "InitiatingUserID": null,
+      "TechnicalAccount": "fixture_builder@localhost",
+      "SubjectType": "UserRole",
+      "SubjectKey": "6",
+      "ContextID": "6057ca87ccae59c4a6732de13326bc2e",
+      "OperationID": null,
+      "AttemptedOperationReference": null,
+      "ReasonCode": null
+    },
+    {
+      "AuditEventID": 814,
+      "OccurredAt": "2026-07-01T00:00:00Z",
+      "EventType": "RoleGranted",
+      "Outcome": "Success",
+      "ActorUserID": 5,
+      "ActingRoleCode": "Administrator",
+      "ServiceActor": null,
+      "InitiatingUserID": null,
+      "TechnicalAccount": "fixture_builder@localhost",
+      "SubjectType": "UserRole",
+      "SubjectKey": "7",
+      "ContextID": "001d4e0e39555543ba6c208d79c1fc79",
+      "OperationID": null,
+      "AttemptedOperationReference": null,
+      "ReasonCode": null
+    },
+    {
+      "AuditEventID": 815,
+      "OccurredAt": "2026-07-01T00:00:00Z",
+      "EventType": "RoleGranted",
+      "Outcome": "Success",
+      "ActorUserID": 5,
+      "ActingRoleCode": "Administrator",
+      "ServiceActor": null,
+      "InitiatingUserID": null,
+      "TechnicalAccount": "fixture_builder@localhost",
+      "SubjectType": "UserRole",
+      "SubjectKey": "8",
+      "ContextID": "9754745fcdaa5d88a0bdfe0f78672e35",
+      "OperationID": null,
+      "AttemptedOperationReference": null,
+      "ReasonCode": null
+    },
+    {
+      "AuditEventID": 816,
+      "OccurredAt": "2026-07-02T00:00:00Z",
+      "EventType": "ProfileSaved",
+      "Outcome": "Success",
+      "ActorUserID": 1,
+      "ActingRoleCode": "Borrower",
+      "ServiceActor": null,
+      "InitiatingUserID": null,
+      "TechnicalAccount": "fixture_builder@localhost",
+      "SubjectType": "BorrowerProfile",
+      "SubjectKey": "1",
+      "ContextID": "2aff827fcef851b29393c20d706c5d03",
+      "OperationID": null,
+      "AttemptedOperationReference": null,
+      "ReasonCode": null
+    },
+    {
+      "AuditEventID": 817,
+      "OccurredAt": "2026-07-02T00:00:00Z",
+      "EventType": "ProfileSaved",
+      "Outcome": "Success",
+      "ActorUserID": 4,
+      "ActingRoleCode": "Borrower",
+      "ServiceActor": null,
+      "InitiatingUserID": null,
+      "TechnicalAccount": "fixture_builder@localhost",
+      "SubjectType": "BorrowerProfile",
+      "SubjectKey": "4",
+      "ContextID": "2271a671d43052afaddd4d4182a4565b",
+      "OperationID": null,
+      "AttemptedOperationReference": null,
+      "ReasonCode": null
+    },
+    {
+      "AuditEventID": 818,
+      "OccurredAt": "2026-07-02T00:00:00Z",
+      "EventType": "ProfileSaved",
+      "Outcome": "Success",
+      "ActorUserID": 7,
+      "ActingRoleCode": "Borrower",
+      "ServiceActor": null,
+      "InitiatingUserID": null,
+      "TechnicalAccount": "fixture_builder@localhost",
+      "SubjectType": "BorrowerProfile",
+      "SubjectKey": "7",
+      "ContextID": "86fa6c80d8ff56679ba3ea9361cfc49e",
+      "OperationID": null,
+      "AttemptedOperationReference": null,
+      "ReasonCode": null
+    },
+    {
+      "AuditEventID": 854,
+      "OccurredAt": "2026-07-03T12:00:00Z",
+      "EventType": "AccountStatusChanged",
+      "Outcome": "Success",
+      "ActorUserID": 5,
+      "ActingRoleCode": "Administrator",
+      "ServiceActor": null,
+      "InitiatingUserID": null,
+      "TechnicalAccount": "fixture_builder@localhost",
+      "SubjectType": "User",
+      "SubjectKey": "7",
+      "ContextID": "f36af7c0ca985baf901f523a4ff47cb9",
+      "OperationID": null,
+      "AttemptedOperationReference": null,
+      "ReasonCode": "ADMIN_DECISION"
+    },
+    {
+      "AuditEventID": 855,
+      "OccurredAt": "2026-07-04T12:00:00Z",
+      "EventType": "AccountStatusChanged",
+      "Outcome": "Success",
+      "ActorUserID": 5,
+      "ActingRoleCode": "Administrator",
+      "ServiceActor": null,
+      "InitiatingUserID": null,
+      "TechnicalAccount": "fixture_builder@localhost",
+      "SubjectType": "User",
+      "SubjectKey": "7",
+      "ContextID": "2dd0e58f84fc519aa6716ec543d84afd",
+      "OperationID": null,
+      "AttemptedOperationReference": null,
+      "ReasonCode": "ADMIN_DECISION"
+    },
+    {
+      "AuditEventID": 856,
+      "OccurredAt": "2026-07-05T12:00:00Z",
+      "EventType": "AccountStatusChanged",
+      "Outcome": "Success",
+      "ActorUserID": 5,
+      "ActingRoleCode": "Administrator",
+      "ServiceActor": null,
+      "InitiatingUserID": null,
+      "TechnicalAccount": "fixture_builder@localhost",
+      "SubjectType": "User",
+      "SubjectKey": "7",
+      "ContextID": "46a4c3f6632556e2940be302f5dabf58",
+      "OperationID": null,
+      "AttemptedOperationReference": null,
+      "ReasonCode": "ADMIN_DECISION"
+    },
+    {
+      "AuditEventID": 857,
+      "OccurredAt": "2026-07-06T12:00:00Z",
+      "EventType": "AccountStatusChanged",
+      "Outcome": "Success",
+      "ActorUserID": 5,
+      "ActingRoleCode": "Administrator",
+      "ServiceActor": null,
+      "InitiatingUserID": null,
+      "TechnicalAccount": "fixture_builder@localhost",
+      "SubjectType": "User",
+      "SubjectKey": "7",
+      "ContextID": "91eb90f47c0955a687223f9370882e5a",
+      "OperationID": null,
+      "AttemptedOperationReference": null,
+      "ReasonCode": "ADMIN_DECISION"
+    },
+    {
+      "AuditEventID": 858,
+      "OccurredAt": "2026-07-08T10:00:00Z",
+      "EventType": "RequestSaved",
+      "Outcome": "Success",
+      "ActorUserID": 4,
+      "ActingRoleCode": "Borrower",
+      "ServiceActor": null,
+      "InitiatingUserID": null,
+      "TechnicalAccount": "fixture_builder@localhost",
+      "SubjectType": "LoanRequest",
+      "SubjectKey": "105",
+      "ContextID": "0089552c29495a6d9f8ccb6dd7436073",
+      "OperationID": null,
+      "AttemptedOperationReference": null,
+      "ReasonCode": null
+    },
+    {
+      "AuditEventID": 860,
+      "OccurredAt": "2026-07-08T10:00:00Z",
+      "EventType": "RequestSaved",
+      "Outcome": "Success",
+      "ActorUserID": 7,
+      "ActingRoleCode": "Borrower",
+      "ServiceActor": null,
+      "InitiatingUserID": null,
+      "TechnicalAccount": "fixture_builder@localhost",
+      "SubjectType": "LoanRequest",
+      "SubjectKey": "106",
+      "ContextID": "2437194fb2c9596491b357fb238d770b",
+      "OperationID": null,
+      "AttemptedOperationReference": null,
+      "ReasonCode": null
+    },
+    {
+      "AuditEventID": 859,
+      "OccurredAt": "2026-07-08T11:00:00Z",
+      "EventType": "RequestCancelled",
+      "Outcome": "Success",
+      "ActorUserID": 4,
+      "ActingRoleCode": "Borrower",
+      "ServiceActor": null,
+      "InitiatingUserID": null,
+      "TechnicalAccount": "fixture_builder@localhost",
+      "SubjectType": "LoanRequest",
+      "SubjectKey": "105",
+      "ContextID": "b96f5424d25d5ebb8a923b4b512c0f80",
+      "OperationID": null,
+      "AttemptedOperationReference": null,
+      "ReasonCode": "BORROWER_CANCELLED"
+    },
+    {
+      "AuditEventID": 861,
+      "OccurredAt": "2026-07-08T11:00:00Z",
+      "EventType": "RequestCancelled",
+      "Outcome": "Success",
+      "ActorUserID": 5,
+      "ActingRoleCode": "Administrator",
+      "ServiceActor": null,
+      "InitiatingUserID": null,
+      "TechnicalAccount": "fixture_builder@localhost",
+      "SubjectType": "LoanRequest",
+      "SubjectKey": "106",
+      "ContextID": "4bf7bc7a5b315dadaf6629754a922e5b",
+      "OperationID": null,
+      "AttemptedOperationReference": null,
+      "ReasonCode": "ADMIN_DECISION"
+    },
+    {
+      "AuditEventID": 819,
+      "OccurredAt": "2026-07-27T00:00:00Z",
+      "EventType": "RequestSaved",
+      "Outcome": "Success",
+      "ActorUserID": 1,
+      "ActingRoleCode": "Borrower",
+      "ServiceActor": null,
+      "InitiatingUserID": null,
+      "TechnicalAccount": "fixture_builder@localhost",
+      "SubjectType": "LoanRequest",
+      "SubjectKey": "101",
+      "ContextID": "bca0c19ecafc54ebb9d540c5c342117c",
+      "OperationID": null,
+      "AttemptedOperationReference": null,
+      "ReasonCode": null
+    },
+    {
+      "AuditEventID": 820,
+      "OccurredAt": "2026-07-27T00:00:00Z",
+      "EventType": "RequestSubmitted",
+      "Outcome": "Success",
+      "ActorUserID": 1,
+      "ActingRoleCode": "Borrower",
+      "ServiceActor": null,
+      "InitiatingUserID": null,
+      "TechnicalAccount": "fixture_builder@localhost",
+      "SubjectType": "LoanRequest",
+      "SubjectKey": "101",
+      "ContextID": "844215f95ed75660a231d042dfa2a90f",
+      "OperationID": null,
+      "AttemptedOperationReference": null,
+      "ReasonCode": null
+    },
+    {
+      "AuditEventID": 821,
+      "OccurredAt": "2026-07-27T00:00:00Z",
+      "EventType": "AssessmentCompleted",
+      "Outcome": "Success",
+      "ActorUserID": null,
+      "ActingRoleCode": null,
+      "ServiceActor": "Assessment",
+      "InitiatingUserID": null,
+      "TechnicalAccount": "fixture_builder@localhost",
+      "SubjectType": "RequestEvaluation",
+      "SubjectKey": "1010",
+      "ContextID": "a1fc067cfa175dbaba9f08455ae1bafc",
+      "OperationID": null,
+      "AttemptedOperationReference": null,
+      "ReasonCode": null
+    },
+    {
+      "AuditEventID": 822,
+      "OccurredAt": "2026-07-27T00:00:00Z",
+      "EventType": "ReviewApproved",
+      "Outcome": "Success",
+      "ActorUserID": 5,
+      "ActingRoleCode": "Administrator",
+      "ServiceActor": null,
+      "InitiatingUserID": null,
+      "TechnicalAccount": "fixture_builder@localhost",
+      "SubjectType": "RequestEvaluation",
+      "SubjectKey": "1011",
+      "ContextID": "c962045fcc4658fea0cfbfcd993353f9",
+      "OperationID": null,
+      "AttemptedOperationReference": null,
+      "ReasonCode": "ADMIN_DECISION"
+    },
+    {
+      "AuditEventID": 823,
+      "OccurredAt": "2026-08-01T00:00:00Z",
+      "EventType": "CommitmentAccepted",
+      "Outcome": "Success",
+      "ActorUserID": 2,
+      "ActingRoleCode": "Lender",
+      "ServiceActor": null,
+      "InitiatingUserID": null,
+      "TechnicalAccount": "fixture_builder@localhost",
+      "SubjectType": "FundingCommitment",
+      "SubjectKey": "201",
+      "ContextID": "be0412c24e64561e824859d1b2cc5dc0",
+      "OperationID": 1001,
+      "AttemptedOperationReference": null,
+      "ReasonCode": null
+    },
+    {
+      "AuditEventID": 824,
+      "OccurredAt": "2026-08-01T00:00:00Z",
+      "EventType": "CommitmentAccepted",
+      "Outcome": "Success",
+      "ActorUserID": 2,
+      "ActingRoleCode": "Lender",
+      "ServiceActor": null,
+      "InitiatingUserID": null,
+      "TechnicalAccount": "fixture_builder@localhost",
+      "SubjectType": "FundingCommitment",
+      "SubjectKey": "202",
+      "ContextID": "087339a29af6549499cbb0db659fed47",
+      "OperationID": 1002,
+      "AttemptedOperationReference": null,
+      "ReasonCode": null
+    },
+    {
+      "AuditEventID": 825,
+      "OccurredAt": "2026-08-01T00:00:00Z",
+      "EventType": "CommitmentAccepted",
+      "Outcome": "Success",
+      "ActorUserID": 3,
+      "ActingRoleCode": "Lender",
+      "ServiceActor": null,
+      "InitiatingUserID": null,
+      "TechnicalAccount": "fixture_builder@localhost",
+      "SubjectType": "FundingCommitment",
+      "SubjectKey": "203",
+      "ContextID": "bf2689230f755287a4f118baba103caa",
+      "OperationID": 1003,
+      "AttemptedOperationReference": null,
+      "ReasonCode": null
+    },
+    {
+      "AuditEventID": 826,
+      "OccurredAt": "2026-08-01T00:00:00Z",
+      "EventType": "CommitmentApplied",
+      "Outcome": "Success",
+      "ActorUserID": null,
+      "ActingRoleCode": null,
+      "ServiceActor": "Activation",
+      "InitiatingUserID": 3,
+      "TechnicalAccount": "fixture_builder@localhost",
+      "SubjectType": "FundingCommitment",
+      "SubjectKey": "201",
+      "ContextID": "bf2689230f755287a4f118baba103caa",
+      "OperationID": 1003,
+      "AttemptedOperationReference": null,
+      "ReasonCode": null
+    },
+    {
+      "AuditEventID": 827,
+      "OccurredAt": "2026-08-01T00:00:00Z",
+      "EventType": "CommitmentApplied",
+      "Outcome": "Success",
+      "ActorUserID": null,
+      "ActingRoleCode": null,
+      "ServiceActor": "Activation",
+      "InitiatingUserID": 3,
+      "TechnicalAccount": "fixture_builder@localhost",
+      "SubjectType": "FundingCommitment",
+      "SubjectKey": "202",
+      "ContextID": "bf2689230f755287a4f118baba103caa",
+      "OperationID": 1003,
+      "AttemptedOperationReference": null,
+      "ReasonCode": null
+    },
+    {
+      "AuditEventID": 828,
+      "OccurredAt": "2026-08-01T00:00:00Z",
+      "EventType": "CommitmentApplied",
+      "Outcome": "Success",
+      "ActorUserID": null,
+      "ActingRoleCode": null,
+      "ServiceActor": "Activation",
+      "InitiatingUserID": 3,
+      "TechnicalAccount": "fixture_builder@localhost",
+      "SubjectType": "FundingCommitment",
+      "SubjectKey": "203",
+      "ContextID": "bf2689230f755287a4f118baba103caa",
+      "OperationID": 1003,
+      "AttemptedOperationReference": null,
+      "ReasonCode": null
+    },
+    {
+      "AuditEventID": 829,
+      "OccurredAt": "2026-08-01T00:00:00Z",
+      "EventType": "LoanActivated",
+      "Outcome": "Success",
+      "ActorUserID": null,
+      "ActingRoleCode": null,
+      "ServiceActor": "Activation",
+      "InitiatingUserID": 3,
+      "TechnicalAccount": "fixture_builder@localhost",
+      "SubjectType": "Loan",
+      "SubjectKey": "501",
+      "ContextID": "bf2689230f755287a4f118baba103caa",
+      "OperationID": 1003,
+      "AttemptedOperationReference": null,
+      "ReasonCode": null
+    },
+    {
+      "AuditEventID": 830,
+      "OccurredAt": "2026-08-13T00:00:00Z",
+      "EventType": "RequestSaved",
+      "Outcome": "Success",
+      "ActorUserID": 1,
+      "ActingRoleCode": "Borrower",
+      "ServiceActor": null,
+      "InitiatingUserID": null,
+      "TechnicalAccount": "fixture_builder@localhost",
+      "SubjectType": "LoanRequest",
+      "SubjectKey": "102",
+      "ContextID": "c1432c98029759e9bf114c3fc07174c4",
+      "OperationID": null,
+      "AttemptedOperationReference": null,
+      "ReasonCode": null
+    },
+    {
+      "AuditEventID": 831,
+      "OccurredAt": "2026-08-13T00:00:00Z",
+      "EventType": "RequestSubmitted",
+      "Outcome": "Success",
+      "ActorUserID": 1,
+      "ActingRoleCode": "Borrower",
+      "ServiceActor": null,
+      "InitiatingUserID": null,
+      "TechnicalAccount": "fixture_builder@localhost",
+      "SubjectType": "LoanRequest",
+      "SubjectKey": "102",
+      "ContextID": "478f30bf43ca5a25b16f6796c8fa07a6",
+      "OperationID": null,
+      "AttemptedOperationReference": null,
+      "ReasonCode": null
+    },
+    {
+      "AuditEventID": 832,
+      "OccurredAt": "2026-08-13T00:00:00Z",
+      "EventType": "AssessmentCompleted",
+      "Outcome": "Success",
+      "ActorUserID": null,
+      "ActingRoleCode": null,
+      "ServiceActor": "Assessment",
+      "InitiatingUserID": null,
+      "TechnicalAccount": "fixture_builder@localhost",
+      "SubjectType": "RequestEvaluation",
+      "SubjectKey": "1020",
+      "ContextID": "93bfd907360c5715b2a4f578f3a49ac7",
+      "OperationID": null,
+      "AttemptedOperationReference": null,
+      "ReasonCode": null
+    },
+    {
+      "AuditEventID": 833,
+      "OccurredAt": "2026-08-13T00:00:00Z",
+      "EventType": "ReviewApproved",
+      "Outcome": "Success",
+      "ActorUserID": 5,
+      "ActingRoleCode": "Administrator",
+      "ServiceActor": null,
+      "InitiatingUserID": null,
+      "TechnicalAccount": "fixture_builder@localhost",
+      "SubjectType": "RequestEvaluation",
+      "SubjectKey": "1021",
+      "ContextID": "48093fe95c3c54288f3381e2f6856aa0",
+      "OperationID": null,
+      "AttemptedOperationReference": null,
+      "ReasonCode": "ADMIN_DECISION"
+    },
+    {
+      "AuditEventID": 834,
+      "OccurredAt": "2026-08-15T00:00:00Z",
+      "EventType": "CommitmentAccepted",
+      "Outcome": "Success",
+      "ActorUserID": 3,
+      "ActingRoleCode": "Lender",
+      "ServiceActor": null,
+      "InitiatingUserID": null,
+      "TechnicalAccount": "fixture_builder@localhost",
+      "SubjectType": "FundingCommitment",
+      "SubjectKey": "204",
+      "ContextID": "b11d7d2108675ae9910b08647bd147a3",
+      "OperationID": 1004,
+      "AttemptedOperationReference": null,
+      "ReasonCode": null
+    },
+    {
+      "AuditEventID": 835,
+      "OccurredAt": "2026-08-15T00:00:00Z",
+      "EventType": "CommitmentApplied",
+      "Outcome": "Success",
+      "ActorUserID": null,
+      "ActingRoleCode": null,
+      "ServiceActor": "Activation",
+      "InitiatingUserID": 3,
+      "TechnicalAccount": "fixture_builder@localhost",
+      "SubjectType": "FundingCommitment",
+      "SubjectKey": "204",
+      "ContextID": "b11d7d2108675ae9910b08647bd147a3",
+      "OperationID": 1004,
+      "AttemptedOperationReference": null,
+      "ReasonCode": null
+    },
+    {
+      "AuditEventID": 836,
+      "OccurredAt": "2026-08-15T00:00:00Z",
+      "EventType": "LoanActivated",
+      "Outcome": "Success",
+      "ActorUserID": null,
+      "ActingRoleCode": null,
+      "ServiceActor": "Activation",
+      "InitiatingUserID": 3,
+      "TechnicalAccount": "fixture_builder@localhost",
+      "SubjectType": "Loan",
+      "SubjectKey": "502",
+      "ContextID": "b11d7d2108675ae9910b08647bd147a3",
+      "OperationID": 1004,
+      "AttemptedOperationReference": null,
+      "ReasonCode": null
+    },
+    {
+      "AuditEventID": 837,
+      "OccurredAt": "2026-09-01T00:00:00Z",
+      "EventType": "RepaymentPosted",
+      "Outcome": "Success",
+      "ActorUserID": 1,
+      "ActingRoleCode": "Borrower",
+      "ServiceActor": null,
+      "InitiatingUserID": null,
+      "TechnicalAccount": "fixture_builder@localhost",
+      "SubjectType": "Repayment",
+      "SubjectKey": "501/1",
+      "ContextID": "3e4e316e0dc05ee18b17d60660af6f3b",
+      "OperationID": 2001,
+      "AttemptedOperationReference": null,
+      "ReasonCode": null
+    },
+    {
+      "AuditEventID": 838,
+      "OccurredAt": "2026-09-02T00:00:00Z",
+      "EventType": "DelinquencyChanged",
+      "Outcome": "Success",
+      "ActorUserID": null,
+      "ActingRoleCode": null,
+      "ServiceActor": "Delinquency",
+      "InitiatingUserID": null,
+      "TechnicalAccount": "fixture_builder@localhost",
+      "SubjectType": "Loan",
+      "SubjectKey": "501",
+      "ContextID": "8240b4113fab58d89a5b75a0a8d9418e",
+      "OperationID": null,
+      "AttemptedOperationReference": null,
+      "ReasonCode": null
+    },
+    {
+      "AuditEventID": 839,
+      "OccurredAt": "2026-09-15T00:00:00Z",
+      "EventType": "RepaymentPosted",
+      "Outcome": "Success",
+      "ActorUserID": 1,
+      "ActingRoleCode": "Borrower",
+      "ServiceActor": null,
+      "InitiatingUserID": null,
+      "TechnicalAccount": "fixture_builder@localhost",
+      "SubjectType": "Repayment",
+      "SubjectKey": "502/1",
+      "ContextID": "2e8bf8079e8b556497dda91c093e9ac7",
+      "OperationID": 2003,
+      "AttemptedOperationReference": null,
+      "ReasonCode": null
+    },
+    {
+      "AuditEventID": 840,
+      "OccurredAt": "2026-10-10T00:00:00Z",
+      "EventType": "RepaymentPosted",
+      "Outcome": "Success",
+      "ActorUserID": 1,
+      "ActingRoleCode": "Borrower",
+      "ServiceActor": null,
+      "InitiatingUserID": null,
+      "TechnicalAccount": "fixture_builder@localhost",
+      "SubjectType": "Repayment",
+      "SubjectKey": "501/2",
+      "ContextID": "e8cbfe1f3e365d37b21aaabb90be0cbd",
+      "OperationID": 2002,
+      "AttemptedOperationReference": null,
+      "ReasonCode": null
+    },
+    {
+      "AuditEventID": 841,
+      "OccurredAt": "2026-10-15T00:00:00Z",
+      "EventType": "RepaymentPosted",
+      "Outcome": "Success",
+      "ActorUserID": 1,
+      "ActingRoleCode": "Borrower",
+      "ServiceActor": null,
+      "InitiatingUserID": null,
+      "TechnicalAccount": "fixture_builder@localhost",
+      "SubjectType": "Repayment",
+      "SubjectKey": "502/2",
+      "ContextID": "2f9e62f018b95a369035b239f6e63b21",
+      "OperationID": 2004,
+      "AttemptedOperationReference": null,
+      "ReasonCode": null
+    },
+    {
+      "AuditEventID": 842,
+      "OccurredAt": "2026-10-18T00:00:00Z",
+      "EventType": "RequestSaved",
+      "Outcome": "Success",
+      "ActorUserID": 4,
+      "ActingRoleCode": "Borrower",
+      "ServiceActor": null,
+      "InitiatingUserID": null,
+      "TechnicalAccount": "fixture_builder@localhost",
+      "SubjectType": "LoanRequest",
+      "SubjectKey": "103",
+      "ContextID": "d7a409a937ed553387125a1ba2b4ac21",
+      "OperationID": null,
+      "AttemptedOperationReference": null,
+      "ReasonCode": null
+    },
+    {
+      "AuditEventID": 843,
+      "OccurredAt": "2026-10-18T00:00:00Z",
+      "EventType": "RequestSaved",
+      "Outcome": "Success",
+      "ActorUserID": 7,
+      "ActingRoleCode": "Borrower",
+      "ServiceActor": null,
+      "InitiatingUserID": null,
+      "TechnicalAccount": "fixture_builder@localhost",
+      "SubjectType": "LoanRequest",
+      "SubjectKey": "104",
+      "ContextID": "6e0e49cdd40a538cad01de0c66c24cd2",
+      "OperationID": null,
+      "AttemptedOperationReference": null,
+      "ReasonCode": null
+    },
+    {
+      "AuditEventID": 844,
+      "OccurredAt": "2026-10-18T00:00:00Z",
+      "EventType": "RequestSubmitted",
+      "Outcome": "Success",
+      "ActorUserID": 4,
+      "ActingRoleCode": "Borrower",
+      "ServiceActor": null,
+      "InitiatingUserID": null,
+      "TechnicalAccount": "fixture_builder@localhost",
+      "SubjectType": "LoanRequest",
+      "SubjectKey": "103",
+      "ContextID": "3bf59e0234025524a687727b4d0b90f1",
+      "OperationID": null,
+      "AttemptedOperationReference": null,
+      "ReasonCode": null
+    },
+    {
+      "AuditEventID": 845,
+      "OccurredAt": "2026-10-18T00:00:00Z",
+      "EventType": "RequestSubmitted",
+      "Outcome": "Success",
+      "ActorUserID": 7,
+      "ActingRoleCode": "Borrower",
+      "ServiceActor": null,
+      "InitiatingUserID": null,
+      "TechnicalAccount": "fixture_builder@localhost",
+      "SubjectType": "LoanRequest",
+      "SubjectKey": "104",
+      "ContextID": "56c41e76b087505cb0f5b439d84778f7",
+      "OperationID": null,
+      "AttemptedOperationReference": null,
+      "ReasonCode": null
+    },
+    {
+      "AuditEventID": 846,
+      "OccurredAt": "2026-10-18T00:00:00Z",
+      "EventType": "AssessmentCompleted",
+      "Outcome": "Success",
+      "ActorUserID": null,
+      "ActingRoleCode": null,
+      "ServiceActor": "Assessment",
+      "InitiatingUserID": null,
+      "TechnicalAccount": "fixture_builder@localhost",
+      "SubjectType": "RequestEvaluation",
+      "SubjectKey": "1030",
+      "ContextID": "8c914a0e5e69534db806a6cd12fd02ea",
+      "OperationID": null,
+      "AttemptedOperationReference": null,
+      "ReasonCode": null
+    },
+    {
+      "AuditEventID": 847,
+      "OccurredAt": "2026-10-18T00:00:00Z",
+      "EventType": "AssessmentCompleted",
+      "Outcome": "Success",
+      "ActorUserID": null,
+      "ActingRoleCode": null,
+      "ServiceActor": "Assessment",
+      "InitiatingUserID": null,
+      "TechnicalAccount": "fixture_builder@localhost",
+      "SubjectType": "RequestEvaluation",
+      "SubjectKey": "1040",
+      "ContextID": "f02f17c766355f91b920f133bdb071b7",
+      "OperationID": null,
+      "AttemptedOperationReference": null,
+      "ReasonCode": null
+    },
+    {
+      "AuditEventID": 848,
+      "OccurredAt": "2026-10-18T00:00:00Z",
+      "EventType": "ReviewApproved",
+      "Outcome": "Success",
+      "ActorUserID": 5,
+      "ActingRoleCode": "Administrator",
+      "ServiceActor": null,
+      "InitiatingUserID": null,
+      "TechnicalAccount": "fixture_builder@localhost",
+      "SubjectType": "RequestEvaluation",
+      "SubjectKey": "1031",
+      "ContextID": "2f864f5198d055efac253c09e1b6f4ef",
+      "OperationID": null,
+      "AttemptedOperationReference": null,
+      "ReasonCode": "ADMIN_DECISION"
+    },
+    {
+      "AuditEventID": 849,
+      "OccurredAt": "2026-10-18T00:00:00Z",
+      "EventType": "ReviewApproved",
+      "Outcome": "Success",
+      "ActorUserID": 5,
+      "ActingRoleCode": "Administrator",
+      "ServiceActor": null,
+      "InitiatingUserID": null,
+      "TechnicalAccount": "fixture_builder@localhost",
+      "SubjectType": "RequestEvaluation",
+      "SubjectKey": "1041",
+      "ContextID": "e6af472bf89f562e9a129f0b4de1d8d6",
+      "OperationID": null,
+      "AttemptedOperationReference": null,
+      "ReasonCode": "ADMIN_DECISION"
+    },
+    {
+      "AuditEventID": 850,
+      "OccurredAt": "2026-10-19T00:00:00Z",
+      "EventType": "CommitmentAccepted",
+      "Outcome": "Success",
+      "ActorUserID": 2,
+      "ActingRoleCode": "Lender",
+      "ServiceActor": null,
+      "InitiatingUserID": null,
+      "TechnicalAccount": "fixture_builder@localhost",
+      "SubjectType": "FundingCommitment",
+      "SubjectKey": "205",
+      "ContextID": "f7d6b39039835046baa38a574be79e7e",
+      "OperationID": 1005,
+      "AttemptedOperationReference": null,
+      "ReasonCode": null
+    },
+    {
+      "AuditEventID": 851,
+      "OccurredAt": "2026-10-19T12:00:00Z",
+      "EventType": "NoteAppended",
+      "Outcome": "Success",
+      "ActorUserID": 5,
+      "ActingRoleCode": "Administrator",
+      "ServiceActor": null,
+      "InitiatingUserID": null,
+      "TechnicalAccount": "fixture_builder@localhost",
+      "SubjectType": "OversightNote",
+      "SubjectKey": "901",
+      "ContextID": "a7cc057a0bdf510fb2ab4bfc093a47b8",
+      "OperationID": null,
+      "AttemptedOperationReference": null,
+      "ReasonCode": null
+    },
+    {
+      "AuditEventID": 852,
+      "OccurredAt": "2026-10-19T12:05:00Z",
+      "EventType": "AttemptRejected",
+      "Outcome": "Denied",
+      "ActorUserID": 7,
+      "ActingRoleCode": "Lender",
+      "ServiceActor": null,
+      "InitiatingUserID": null,
+      "TechnicalAccount": "fixture_builder@localhost",
+      "SubjectType": "Attempt",
+      "SubjectKey": "CommitFunding/104",
+      "ContextID": "a8ff606c272b580b9ba38272dd9ad3fd",
+      "OperationID": null,
+      "AttemptedOperationReference": "dual-self-test",
+      "ReasonCode": "SELF_FUNDING"
+    },
+    {
+      "AuditEventID": 853,
+      "OccurredAt": "2026-10-19T12:10:00Z",
+      "EventType": "NoteAppended",
+      "Outcome": "Success",
+      "ActorUserID": 5,
+      "ActingRoleCode": "Administrator",
+      "ServiceActor": null,
+      "InitiatingUserID": null,
+      "TechnicalAccount": "fixture_builder@localhost",
+      "SubjectType": "OversightNote",
+      "SubjectKey": "902",
+      "ContextID": "a838540e8ff95308bccce6659dc31bd5",
+      "OperationID": null,
+      "AttemptedOperationReference": null,
+      "ReasonCode": null
+    }
+  ],
+  "AuditChange": [
+    {
+      "AuditEventID": 801,
+      "FieldName": "AccountStatus",
+      "OldValue": null,
+      "NewValue": "Active"
+    },
+    {
+      "AuditEventID": 801,
+      "FieldName": "PasswordHash",
+      "OldValue": null,
+      "NewValue": null
+    },
+    {
+      "AuditEventID": 801,
+      "FieldName": "PrivateEmailCipher",
+      "OldValue": null,
+      "NewValue": null
+    },
+    {
+      "AuditEventID": 802,
+      "FieldName": "RoleCode",
+      "OldValue": null,
+      "NewValue": "Administrator"
+    },
+    {
+      "AuditEventID": 802,
+      "FieldName": "UserID",
+      "OldValue": null,
+      "NewValue": "5"
+    },
+    {
+      "AuditEventID": 803,
+      "FieldName": "AccountStatus",
+      "OldValue": null,
+      "NewValue": "Active"
+    },
+    {
+      "AuditEventID": 803,
+      "FieldName": "PasswordHash",
+      "OldValue": null,
+      "NewValue": null
+    },
+    {
+      "AuditEventID": 803,
+      "FieldName": "PrivateEmailCipher",
+      "OldValue": null,
+      "NewValue": null
+    },
+    {
+      "AuditEventID": 804,
+      "FieldName": "AccountStatus",
+      "OldValue": null,
+      "NewValue": "Active"
+    },
+    {
+      "AuditEventID": 804,
+      "FieldName": "PasswordHash",
+      "OldValue": null,
+      "NewValue": null
+    },
+    {
+      "AuditEventID": 804,
+      "FieldName": "PrivateEmailCipher",
+      "OldValue": null,
+      "NewValue": null
+    },
+    {
+      "AuditEventID": 805,
+      "FieldName": "AccountStatus",
+      "OldValue": null,
+      "NewValue": "Active"
+    },
+    {
+      "AuditEventID": 805,
+      "FieldName": "PasswordHash",
+      "OldValue": null,
+      "NewValue": null
+    },
+    {
+      "AuditEventID": 805,
+      "FieldName": "PrivateEmailCipher",
+      "OldValue": null,
+      "NewValue": null
+    },
+    {
+      "AuditEventID": 806,
+      "FieldName": "AccountStatus",
+      "OldValue": null,
+      "NewValue": "Active"
+    },
+    {
+      "AuditEventID": 806,
+      "FieldName": "PasswordHash",
+      "OldValue": null,
+      "NewValue": null
+    },
+    {
+      "AuditEventID": 806,
+      "FieldName": "PrivateEmailCipher",
+      "OldValue": null,
+      "NewValue": null
+    },
+    {
+      "AuditEventID": 807,
+      "FieldName": "AccountStatus",
+      "OldValue": null,
+      "NewValue": "Active"
+    },
+    {
+      "AuditEventID": 807,
+      "FieldName": "PasswordHash",
+      "OldValue": null,
+      "NewValue": null
+    },
+    {
+      "AuditEventID": 807,
+      "FieldName": "PrivateEmailCipher",
+      "OldValue": null,
+      "NewValue": null
+    },
+    {
+      "AuditEventID": 808,
+      "FieldName": "AccountStatus",
+      "OldValue": null,
+      "NewValue": "Active"
+    },
+    {
+      "AuditEventID": 808,
+      "FieldName": "PasswordHash",
+      "OldValue": null,
+      "NewValue": null
+    },
+    {
+      "AuditEventID": 808,
+      "FieldName": "PrivateEmailCipher",
+      "OldValue": null,
+      "NewValue": null
+    },
+    {
+      "AuditEventID": 809,
+      "FieldName": "RoleCode",
+      "OldValue": null,
+      "NewValue": "Borrower"
+    },
+    {
+      "AuditEventID": 809,
+      "FieldName": "UserID",
+      "OldValue": null,
+      "NewValue": "1"
+    },
+    {
+      "AuditEventID": 810,
+      "FieldName": "RoleCode",
+      "OldValue": null,
+      "NewValue": "Lender"
+    },
+    {
+      "AuditEventID": 810,
+      "FieldName": "UserID",
+      "OldValue": null,
+      "NewValue": "2"
+    },
+    {
+      "AuditEventID": 811,
+      "FieldName": "RoleCode",
+      "OldValue": null,
+      "NewValue": "Lender"
+    },
+    {
+      "AuditEventID": 811,
+      "FieldName": "UserID",
+      "OldValue": null,
+      "NewValue": "3"
+    },
+    {
+      "AuditEventID": 812,
+      "FieldName": "RoleCode",
+      "OldValue": null,
+      "NewValue": "Borrower"
+    },
+    {
+      "AuditEventID": 812,
+      "FieldName": "UserID",
+      "OldValue": null,
+      "NewValue": "4"
+    },
+    {
+      "AuditEventID": 813,
+      "FieldName": "RoleCode",
+      "OldValue": null,
+      "NewValue": "Auditor"
+    },
+    {
+      "AuditEventID": 813,
+      "FieldName": "UserID",
+      "OldValue": null,
+      "NewValue": "6"
+    },
+    {
+      "AuditEventID": 814,
+      "FieldName": "RoleCode",
+      "OldValue": null,
+      "NewValue": "Borrower"
+    },
+    {
+      "AuditEventID": 814,
+      "FieldName": "UserID",
+      "OldValue": null,
+      "NewValue": "7"
+    },
+    {
+      "AuditEventID": 815,
+      "FieldName": "RoleCode",
+      "OldValue": null,
+      "NewValue": "Lender"
+    },
+    {
+      "AuditEventID": 815,
+      "FieldName": "UserID",
+      "OldValue": null,
+      "NewValue": "7"
+    },
+    {
+      "AuditEventID": 816,
+      "FieldName": "ExternalObligationsCipher",
+      "OldValue": null,
+      "NewValue": null
+    },
+    {
+      "AuditEventID": 816,
+      "FieldName": "MonthlyIncomeCipher",
+      "OldValue": null,
+      "NewValue": null
+    },
+    {
+      "AuditEventID": 817,
+      "FieldName": "ExternalObligationsCipher",
+      "OldValue": null,
+      "NewValue": null
+    },
+    {
+      "AuditEventID": 817,
+      "FieldName": "MonthlyIncomeCipher",
+      "OldValue": null,
+      "NewValue": null
+    },
+    {
+      "AuditEventID": 818,
+      "FieldName": "ExternalObligationsCipher",
+      "OldValue": null,
+      "NewValue": null
+    },
+    {
+      "AuditEventID": 818,
+      "FieldName": "MonthlyIncomeCipher",
+      "OldValue": null,
+      "NewValue": null
+    },
+    {
+      "AuditEventID": 819,
+      "FieldName": "InstallmentCount",
+      "OldValue": null,
+      "NewValue": "3"
+    },
+    {
+      "AuditEventID": 819,
+      "FieldName": "Principal",
+      "OldValue": null,
+      "NewValue": "900.00"
+    },
+    {
+      "AuditEventID": 819,
+      "FieldName": "Purpose",
+      "OldValue": null,
+      "NewValue": "Fictional equipment request 101"
+    },
+    {
+      "AuditEventID": 819,
+      "FieldName": "RequestState",
+      "OldValue": null,
+      "NewValue": "Draft"
+    },
+    {
+      "AuditEventID": 820,
+      "FieldName": "EvaluationID",
+      "OldValue": null,
+      "NewValue": "1010"
+    },
+    {
+      "AuditEventID": 820,
+      "FieldName": "PolicyCode",
+      "OldValue": null,
+      "NewValue": "D1"
+    },
+    {
+      "AuditEventID": 820,
+      "FieldName": "RequestState",
+      "OldValue": "Draft",
+      "NewValue": "Submitted"
+    },
+    {
+      "AuditEventID": 820,
+      "FieldName": "SubmittedIncomeCipher",
+      "OldValue": null,
+      "NewValue": null
+    },
+    {
+      "AuditEventID": 820,
+      "FieldName": "SubmittedObligationsCipher",
+      "OldValue": null,
+      "NewValue": null
+    },
+    {
+      "AuditEventID": 821,
+      "FieldName": "AffordabilityPass",
+      "OldValue": null,
+      "NewValue": "1"
+    },
+    {
+      "AuditEventID": 821,
+      "FieldName": "NoDelinquencyPass",
+      "OldValue": null,
+      "NewValue": "1"
+    },
+    {
+      "AuditEventID": 821,
+      "FieldName": "RequestID",
+      "OldValue": null,
+      "NewValue": "101"
+    },
+    {
+      "AuditEventID": 821,
+      "FieldName": "RequestState",
+      "OldValue": "Submitted",
+      "NewValue": "PendingReview"
+    },
+    {
+      "AuditEventID": 821,
+      "FieldName": "Result",
+      "OldValue": null,
+      "NewValue": "Pass"
+    },
+    {
+      "AuditEventID": 822,
+      "FieldName": "Decision",
+      "OldValue": null,
+      "NewValue": "Approve"
+    },
+    {
+      "AuditEventID": 822,
+      "FieldName": "FundingDeadlineAt",
+      "OldValue": null,
+      "NewValue": "2026-08-10T00:00:00Z"
+    },
+    {
+      "AuditEventID": 822,
+      "FieldName": "RequestID",
+      "OldValue": null,
+      "NewValue": "101"
+    },
+    {
+      "AuditEventID": 822,
+      "FieldName": "RequestState",
+      "OldValue": "PendingReview",
+      "NewValue": "OpenFunding"
+    },
+    {
+      "AuditEventID": 823,
+      "FieldName": "Amount",
+      "OldValue": null,
+      "NewValue": "300.00"
+    },
+    {
+      "AuditEventID": 823,
+      "FieldName": "CommitmentState",
+      "OldValue": null,
+      "NewValue": "Pending"
+    },
+    {
+      "AuditEventID": 823,
+      "FieldName": "EvaluationID",
+      "OldValue": null,
+      "NewValue": "3000"
+    },
+    {
+      "AuditEventID": 823,
+      "FieldName": "PendingTotal",
+      "OldValue": null,
+      "NewValue": "300.00"
+    },
+    {
+      "AuditEventID": 823,
+      "FieldName": "RequestID",
+      "OldValue": null,
+      "NewValue": "101"
+    },
+    {
+      "AuditEventID": 824,
+      "FieldName": "Amount",
+      "OldValue": null,
+      "NewValue": "200.00"
+    },
+    {
+      "AuditEventID": 824,
+      "FieldName": "CommitmentState",
+      "OldValue": null,
+      "NewValue": "Pending"
+    },
+    {
+      "AuditEventID": 824,
+      "FieldName": "EvaluationID",
+      "OldValue": null,
+      "NewValue": "3001"
+    },
+    {
+      "AuditEventID": 824,
+      "FieldName": "PendingTotal",
+      "OldValue": null,
+      "NewValue": "500.00"
+    },
+    {
+      "AuditEventID": 824,
+      "FieldName": "RequestID",
+      "OldValue": null,
+      "NewValue": "101"
+    },
+    {
+      "AuditEventID": 825,
+      "FieldName": "Amount",
+      "OldValue": null,
+      "NewValue": "400.00"
+    },
+    {
+      "AuditEventID": 825,
+      "FieldName": "CommitmentState",
+      "OldValue": null,
+      "NewValue": "Pending"
+    },
+    {
+      "AuditEventID": 825,
+      "FieldName": "EvaluationID",
+      "OldValue": null,
+      "NewValue": "3002"
+    },
+    {
+      "AuditEventID": 825,
+      "FieldName": "PendingTotal",
+      "OldValue": null,
+      "NewValue": "900.00"
+    },
+    {
+      "AuditEventID": 825,
+      "FieldName": "RequestID",
+      "OldValue": null,
+      "NewValue": "101"
+    },
+    {
+      "AuditEventID": 826,
+      "FieldName": "AppliedAt",
+      "OldValue": null,
+      "NewValue": "2026-08-01T00:00:00Z"
+    },
+    {
+      "AuditEventID": 826,
+      "FieldName": "CommitmentState",
+      "OldValue": "Pending",
+      "NewValue": "Applied"
+    },
+    {
+      "AuditEventID": 826,
+      "FieldName": "LoanID",
+      "OldValue": null,
+      "NewValue": "501"
+    },
+    {
+      "AuditEventID": 827,
+      "FieldName": "AppliedAt",
+      "OldValue": null,
+      "NewValue": "2026-08-01T00:00:00Z"
+    },
+    {
+      "AuditEventID": 827,
+      "FieldName": "CommitmentState",
+      "OldValue": "Pending",
+      "NewValue": "Applied"
+    },
+    {
+      "AuditEventID": 827,
+      "FieldName": "LoanID",
+      "OldValue": null,
+      "NewValue": "501"
+    },
+    {
+      "AuditEventID": 828,
+      "FieldName": "AppliedAt",
+      "OldValue": null,
+      "NewValue": "2026-08-01T00:00:00Z"
+    },
+    {
+      "AuditEventID": 828,
+      "FieldName": "CommitmentState",
+      "OldValue": "Pending",
+      "NewValue": "Applied"
+    },
+    {
+      "AuditEventID": 828,
+      "FieldName": "LoanID",
+      "OldValue": null,
+      "NewValue": "501"
+    },
+    {
+      "AuditEventID": 829,
+      "FieldName": "ActivatedAt",
+      "OldValue": null,
+      "NewValue": "2026-08-01T00:00:00Z"
+    },
+    {
+      "AuditEventID": 829,
+      "FieldName": "InstallmentCount",
+      "OldValue": null,
+      "NewValue": "3"
+    },
+    {
+      "AuditEventID": 829,
+      "FieldName": "LoanState",
+      "OldValue": null,
+      "NewValue": "Active"
+    },
+    {
+      "AuditEventID": 829,
+      "FieldName": "Principal",
+      "OldValue": null,
+      "NewValue": "900.00"
+    },
+    {
+      "AuditEventID": 829,
+      "FieldName": "RequestID",
+      "OldValue": null,
+      "NewValue": "101"
+    },
+    {
+      "AuditEventID": 829,
+      "FieldName": "RequestState",
+      "OldValue": "OpenFunding",
+      "NewValue": "Funded"
+    },
+    {
+      "AuditEventID": 830,
+      "FieldName": "InstallmentCount",
+      "OldValue": null,
+      "NewValue": "3"
+    },
+    {
+      "AuditEventID": 830,
+      "FieldName": "Principal",
+      "OldValue": null,
+      "NewValue": "600.00"
+    },
+    {
+      "AuditEventID": 830,
+      "FieldName": "Purpose",
+      "OldValue": null,
+      "NewValue": "Fictional equipment request 102"
+    },
+    {
+      "AuditEventID": 830,
+      "FieldName": "RequestState",
+      "OldValue": null,
+      "NewValue": "Draft"
+    },
+    {
+      "AuditEventID": 831,
+      "FieldName": "EvaluationID",
+      "OldValue": null,
+      "NewValue": "1020"
+    },
+    {
+      "AuditEventID": 831,
+      "FieldName": "PolicyCode",
+      "OldValue": null,
+      "NewValue": "D1"
+    },
+    {
+      "AuditEventID": 831,
+      "FieldName": "RequestState",
+      "OldValue": "Draft",
+      "NewValue": "Submitted"
+    },
+    {
+      "AuditEventID": 831,
+      "FieldName": "SubmittedIncomeCipher",
+      "OldValue": null,
+      "NewValue": null
+    },
+    {
+      "AuditEventID": 831,
+      "FieldName": "SubmittedObligationsCipher",
+      "OldValue": null,
+      "NewValue": null
+    },
+    {
+      "AuditEventID": 832,
+      "FieldName": "AffordabilityPass",
+      "OldValue": null,
+      "NewValue": "1"
+    },
+    {
+      "AuditEventID": 832,
+      "FieldName": "NoDelinquencyPass",
+      "OldValue": null,
+      "NewValue": "1"
+    },
+    {
+      "AuditEventID": 832,
+      "FieldName": "RequestID",
+      "OldValue": null,
+      "NewValue": "102"
+    },
+    {
+      "AuditEventID": 832,
+      "FieldName": "RequestState",
+      "OldValue": "Submitted",
+      "NewValue": "PendingReview"
+    },
+    {
+      "AuditEventID": 832,
+      "FieldName": "Result",
+      "OldValue": null,
+      "NewValue": "Pass"
+    },
+    {
+      "AuditEventID": 833,
+      "FieldName": "Decision",
+      "OldValue": null,
+      "NewValue": "Approve"
+    },
+    {
+      "AuditEventID": 833,
+      "FieldName": "FundingDeadlineAt",
+      "OldValue": null,
+      "NewValue": "2026-08-27T00:00:00Z"
+    },
+    {
+      "AuditEventID": 833,
+      "FieldName": "RequestID",
+      "OldValue": null,
+      "NewValue": "102"
+    },
+    {
+      "AuditEventID": 833,
+      "FieldName": "RequestState",
+      "OldValue": "PendingReview",
+      "NewValue": "OpenFunding"
+    },
+    {
+      "AuditEventID": 834,
+      "FieldName": "Amount",
+      "OldValue": null,
+      "NewValue": "600.00"
+    },
+    {
+      "AuditEventID": 834,
+      "FieldName": "CommitmentState",
+      "OldValue": null,
+      "NewValue": "Pending"
+    },
+    {
+      "AuditEventID": 834,
+      "FieldName": "EvaluationID",
+      "OldValue": null,
+      "NewValue": "3003"
+    },
+    {
+      "AuditEventID": 834,
+      "FieldName": "PendingTotal",
+      "OldValue": null,
+      "NewValue": "600.00"
+    },
+    {
+      "AuditEventID": 834,
+      "FieldName": "RequestID",
+      "OldValue": null,
+      "NewValue": "102"
+    },
+    {
+      "AuditEventID": 835,
+      "FieldName": "AppliedAt",
+      "OldValue": null,
+      "NewValue": "2026-08-15T00:00:00Z"
+    },
+    {
+      "AuditEventID": 835,
+      "FieldName": "CommitmentState",
+      "OldValue": "Pending",
+      "NewValue": "Applied"
+    },
+    {
+      "AuditEventID": 835,
+      "FieldName": "LoanID",
+      "OldValue": null,
+      "NewValue": "502"
+    },
+    {
+      "AuditEventID": 836,
+      "FieldName": "ActivatedAt",
+      "OldValue": null,
+      "NewValue": "2026-08-15T00:00:00Z"
+    },
+    {
+      "AuditEventID": 836,
+      "FieldName": "InstallmentCount",
+      "OldValue": null,
+      "NewValue": "3"
+    },
+    {
+      "AuditEventID": 836,
+      "FieldName": "LoanState",
+      "OldValue": null,
+      "NewValue": "Active"
+    },
+    {
+      "AuditEventID": 836,
+      "FieldName": "Principal",
+      "OldValue": null,
+      "NewValue": "600.00"
+    },
+    {
+      "AuditEventID": 836,
+      "FieldName": "RequestID",
+      "OldValue": null,
+      "NewValue": "102"
+    },
+    {
+      "AuditEventID": 836,
+      "FieldName": "RequestState",
+      "OldValue": "OpenFunding",
+      "NewValue": "Funded"
+    },
+    {
+      "AuditEventID": 837,
+      "FieldName": "AllocationCount",
+      "OldValue": null,
+      "NewValue": "1"
+    },
+    {
+      "AuditEventID": 837,
+      "FieldName": "Amount",
+      "OldValue": null,
+      "NewValue": "100.00"
+    },
+    {
+      "AuditEventID": 837,
+      "FieldName": "OutstandingAfter",
+      "OldValue": null,
+      "NewValue": "800.00"
+    },
+    {
+      "AuditEventID": 837,
+      "FieldName": "OutstandingBefore",
+      "OldValue": null,
+      "NewValue": "900.00"
+    },
+    {
+      "AuditEventID": 838,
+      "FieldName": "LastEvaluatedAt",
+      "OldValue": "2026-09-01T00:00:00Z",
+      "NewValue": "2026-09-02T00:00:00Z"
+    },
+    {
+      "AuditEventID": 838,
+      "FieldName": "ObservedCondition",
+      "OldValue": "Current",
+      "NewValue": "Delinquent"
+    },
+    {
+      "AuditEventID": 838,
+      "FieldName": "OldestOverdueDueDate",
+      "OldValue": null,
+      "NewValue": "2026-09-01"
+    },
+    {
+      "AuditEventID": 838,
+      "FieldName": "OverduePrincipal",
+      "OldValue": "0.00",
+      "NewValue": "200.00"
+    },
+    {
+      "AuditEventID": 839,
+      "FieldName": "AllocationCount",
+      "OldValue": null,
+      "NewValue": "1"
+    },
+    {
+      "AuditEventID": 839,
+      "FieldName": "Amount",
+      "OldValue": null,
+      "NewValue": "200.00"
+    },
+    {
+      "AuditEventID": 839,
+      "FieldName": "OutstandingAfter",
+      "OldValue": null,
+      "NewValue": "400.00"
+    },
+    {
+      "AuditEventID": 839,
+      "FieldName": "OutstandingBefore",
+      "OldValue": null,
+      "NewValue": "600.00"
+    },
+    {
+      "AuditEventID": 840,
+      "FieldName": "AllocationCount",
+      "OldValue": null,
+      "NewValue": "2"
+    },
+    {
+      "AuditEventID": 840,
+      "FieldName": "Amount",
+      "OldValue": null,
+      "NewValue": "250.00"
+    },
+    {
+      "AuditEventID": 840,
+      "FieldName": "OutstandingAfter",
+      "OldValue": null,
+      "NewValue": "550.00"
+    },
+    {
+      "AuditEventID": 840,
+      "FieldName": "OutstandingBefore",
+      "OldValue": null,
+      "NewValue": "800.00"
+    },
+    {
+      "AuditEventID": 841,
+      "FieldName": "AllocationCount",
+      "OldValue": null,
+      "NewValue": "1"
+    },
+    {
+      "AuditEventID": 841,
+      "FieldName": "Amount",
+      "OldValue": null,
+      "NewValue": "200.00"
+    },
+    {
+      "AuditEventID": 841,
+      "FieldName": "OutstandingAfter",
+      "OldValue": null,
+      "NewValue": "200.00"
+    },
+    {
+      "AuditEventID": 841,
+      "FieldName": "OutstandingBefore",
+      "OldValue": null,
+      "NewValue": "400.00"
+    },
+    {
+      "AuditEventID": 842,
+      "FieldName": "InstallmentCount",
+      "OldValue": null,
+      "NewValue": "3"
+    },
+    {
+      "AuditEventID": 842,
+      "FieldName": "Principal",
+      "OldValue": null,
+      "NewValue": "300.00"
+    },
+    {
+      "AuditEventID": 842,
+      "FieldName": "Purpose",
+      "OldValue": null,
+      "NewValue": "Fictional equipment request 103"
+    },
+    {
+      "AuditEventID": 842,
+      "FieldName": "RequestState",
+      "OldValue": null,
+      "NewValue": "Draft"
+    },
+    {
+      "AuditEventID": 843,
+      "FieldName": "InstallmentCount",
+      "OldValue": null,
+      "NewValue": "3"
+    },
+    {
+      "AuditEventID": 843,
+      "FieldName": "Principal",
+      "OldValue": null,
+      "NewValue": "300.00"
+    },
+    {
+      "AuditEventID": 843,
+      "FieldName": "Purpose",
+      "OldValue": null,
+      "NewValue": "Fictional equipment request 104"
+    },
+    {
+      "AuditEventID": 843,
+      "FieldName": "RequestState",
+      "OldValue": null,
+      "NewValue": "Draft"
+    },
+    {
+      "AuditEventID": 844,
+      "FieldName": "EvaluationID",
+      "OldValue": null,
+      "NewValue": "1030"
+    },
+    {
+      "AuditEventID": 844,
+      "FieldName": "PolicyCode",
+      "OldValue": null,
+      "NewValue": "D1"
+    },
+    {
+      "AuditEventID": 844,
+      "FieldName": "RequestState",
+      "OldValue": "Draft",
+      "NewValue": "Submitted"
+    },
+    {
+      "AuditEventID": 844,
+      "FieldName": "SubmittedIncomeCipher",
+      "OldValue": null,
+      "NewValue": null
+    },
+    {
+      "AuditEventID": 844,
+      "FieldName": "SubmittedObligationsCipher",
+      "OldValue": null,
+      "NewValue": null
+    },
+    {
+      "AuditEventID": 845,
+      "FieldName": "EvaluationID",
+      "OldValue": null,
+      "NewValue": "1040"
+    },
+    {
+      "AuditEventID": 845,
+      "FieldName": "PolicyCode",
+      "OldValue": null,
+      "NewValue": "D1"
+    },
+    {
+      "AuditEventID": 845,
+      "FieldName": "RequestState",
+      "OldValue": "Draft",
+      "NewValue": "Submitted"
+    },
+    {
+      "AuditEventID": 845,
+      "FieldName": "SubmittedIncomeCipher",
+      "OldValue": null,
+      "NewValue": null
+    },
+    {
+      "AuditEventID": 845,
+      "FieldName": "SubmittedObligationsCipher",
+      "OldValue": null,
+      "NewValue": null
+    },
+    {
+      "AuditEventID": 846,
+      "FieldName": "AffordabilityPass",
+      "OldValue": null,
+      "NewValue": "1"
+    },
+    {
+      "AuditEventID": 846,
+      "FieldName": "NoDelinquencyPass",
+      "OldValue": null,
+      "NewValue": "1"
+    },
+    {
+      "AuditEventID": 846,
+      "FieldName": "RequestID",
+      "OldValue": null,
+      "NewValue": "103"
+    },
+    {
+      "AuditEventID": 846,
+      "FieldName": "RequestState",
+      "OldValue": "Submitted",
+      "NewValue": "PendingReview"
+    },
+    {
+      "AuditEventID": 846,
+      "FieldName": "Result",
+      "OldValue": null,
+      "NewValue": "Pass"
+    },
+    {
+      "AuditEventID": 847,
+      "FieldName": "AffordabilityPass",
+      "OldValue": null,
+      "NewValue": "1"
+    },
+    {
+      "AuditEventID": 847,
+      "FieldName": "NoDelinquencyPass",
+      "OldValue": null,
+      "NewValue": "1"
+    },
+    {
+      "AuditEventID": 847,
+      "FieldName": "RequestID",
+      "OldValue": null,
+      "NewValue": "104"
+    },
+    {
+      "AuditEventID": 847,
+      "FieldName": "RequestState",
+      "OldValue": "Submitted",
+      "NewValue": "PendingReview"
+    },
+    {
+      "AuditEventID": 847,
+      "FieldName": "Result",
+      "OldValue": null,
+      "NewValue": "Pass"
+    },
+    {
+      "AuditEventID": 848,
+      "FieldName": "Decision",
+      "OldValue": null,
+      "NewValue": "Approve"
+    },
+    {
+      "AuditEventID": 848,
+      "FieldName": "FundingDeadlineAt",
+      "OldValue": null,
+      "NewValue": "2026-11-01T00:00:00Z"
+    },
+    {
+      "AuditEventID": 848,
+      "FieldName": "RequestID",
+      "OldValue": null,
+      "NewValue": "103"
+    },
+    {
+      "AuditEventID": 848,
+      "FieldName": "RequestState",
+      "OldValue": "PendingReview",
+      "NewValue": "OpenFunding"
+    },
+    {
+      "AuditEventID": 849,
+      "FieldName": "Decision",
+      "OldValue": null,
+      "NewValue": "Approve"
+    },
+    {
+      "AuditEventID": 849,
+      "FieldName": "FundingDeadlineAt",
+      "OldValue": null,
+      "NewValue": "2026-11-01T00:00:00Z"
+    },
+    {
+      "AuditEventID": 849,
+      "FieldName": "RequestID",
+      "OldValue": null,
+      "NewValue": "104"
+    },
+    {
+      "AuditEventID": 849,
+      "FieldName": "RequestState",
+      "OldValue": "PendingReview",
+      "NewValue": "OpenFunding"
+    },
+    {
+      "AuditEventID": 850,
+      "FieldName": "Amount",
+      "OldValue": null,
+      "NewValue": "100.00"
+    },
+    {
+      "AuditEventID": 850,
+      "FieldName": "CommitmentState",
+      "OldValue": null,
+      "NewValue": "Pending"
+    },
+    {
+      "AuditEventID": 850,
+      "FieldName": "EvaluationID",
+      "OldValue": null,
+      "NewValue": "3004"
+    },
+    {
+      "AuditEventID": 850,
+      "FieldName": "PendingTotal",
+      "OldValue": null,
+      "NewValue": "100.00"
+    },
+    {
+      "AuditEventID": 850,
+      "FieldName": "RequestID",
+      "OldValue": null,
+      "NewValue": "103"
+    },
+    {
+      "AuditEventID": 851,
+      "FieldName": "CorrectsNoteID",
+      "OldValue": null,
+      "NewValue": null
+    },
+    {
+      "AuditEventID": 851,
+      "FieldName": "LoanID",
+      "OldValue": null,
+      "NewValue": "501"
+    },
+    {
+      "AuditEventID": 853,
+      "FieldName": "CorrectsNoteID",
+      "OldValue": null,
+      "NewValue": "901"
+    },
+    {
+      "AuditEventID": 853,
+      "FieldName": "LoanID",
+      "OldValue": null,
+      "NewValue": "501"
+    },
+    {
+      "AuditEventID": 854,
+      "FieldName": "AccountStatus",
+      "OldValue": "Active",
+      "NewValue": "Restricted"
+    },
+    {
+      "AuditEventID": 854,
+      "FieldName": "StatusReason",
+      "OldValue": null,
+      "NewValue": "Fictional administrative review pending."
+    },
+    {
+      "AuditEventID": 855,
+      "FieldName": "AccountStatus",
+      "OldValue": "Restricted",
+      "NewValue": "Active"
+    },
+    {
+      "AuditEventID": 855,
+      "FieldName": "StatusReason",
+      "OldValue": null,
+      "NewValue": "Fictional review completed; restriction cleared."
+    },
+    {
+      "AuditEventID": 856,
+      "FieldName": "AccountStatus",
+      "OldValue": "Active",
+      "NewValue": "Inactive"
+    },
+    {
+      "AuditEventID": 856,
+      "FieldName": "StatusReason",
+      "OldValue": null,
+      "NewValue": "Fictional account closure requested; no live participation."
+    },
+    {
+      "AuditEventID": 857,
+      "FieldName": "AccountStatus",
+      "OldValue": "Inactive",
+      "NewValue": "Active"
+    },
+    {
+      "AuditEventID": 857,
+      "FieldName": "StatusReason",
+      "OldValue": null,
+      "NewValue": "Fictional account reopened after administrative review."
+    },
+    {
+      "AuditEventID": 858,
+      "FieldName": "InstallmentCount",
+      "OldValue": null,
+      "NewValue": "3"
+    },
+    {
+      "AuditEventID": 858,
+      "FieldName": "Principal",
+      "OldValue": null,
+      "NewValue": "300.00"
+    },
+    {
+      "AuditEventID": 858,
+      "FieldName": "Purpose",
+      "OldValue": null,
+      "NewValue": "Fictional cancelled draft 105"
+    },
+    {
+      "AuditEventID": 858,
+      "FieldName": "RequestState",
+      "OldValue": null,
+      "NewValue": "Draft"
+    },
+    {
+      "AuditEventID": 859,
+      "FieldName": "RequestState",
+      "OldValue": "Draft",
+      "NewValue": "Cancelled"
+    },
+    {
+      "AuditEventID": 859,
+      "FieldName": "TerminalReason",
+      "OldValue": null,
+      "NewValue": "Fictional draft no longer needed."
+    },
+    {
+      "AuditEventID": 860,
+      "FieldName": "InstallmentCount",
+      "OldValue": null,
+      "NewValue": "3"
+    },
+    {
+      "AuditEventID": 860,
+      "FieldName": "Principal",
+      "OldValue": null,
+      "NewValue": "300.00"
+    },
+    {
+      "AuditEventID": 860,
+      "FieldName": "Purpose",
+      "OldValue": null,
+      "NewValue": "Fictional cancelled draft 106"
+    },
+    {
+      "AuditEventID": 860,
+      "FieldName": "RequestState",
+      "OldValue": null,
+      "NewValue": "Draft"
+    },
+    {
+      "AuditEventID": 861,
+      "FieldName": "RequestState",
+      "OldValue": "Draft",
+      "NewValue": "Cancelled"
+    },
+    {
+      "AuditEventID": 861,
+      "FieldName": "TerminalReason",
+      "OldValue": null,
+      "NewValue": "Fictional duplicate draft cancelled after review."
+    }
+  ],
+  "calculation_examples": {
+    "income": "1000.00",
+    "external_obligations": "100.00",
+    "submission_burdens": {
+      "101": "0.00",
+      "102": "300.00",
+      "103": "0.00"
+    },
+    "concurrent_existing_burden": "300.00",
+    "concurrent_requests": [
+      {
+        "Principal": "1200.00",
+        "InstallmentCount": 3
+      },
+      {
+        "Principal": "1200.00",
+        "InstallmentCount": 3
+      }
+    ],
+    "expected_concurrent_results": [
+      "Pass",
+      "Fail"
+    ],
+    "expected_loans": {
+      "501": {
+        "repaid": "350.00",
+        "outstanding": "550.00",
+        "overdue": "250.00",
+        "days_past_due": 18
+      },
+      "502": {
+        "repaid": "400.00",
+        "outstanding": "200.00",
+        "overdue": "0.00",
+        "days_past_due": 0
+      }
+    },
+    "expected_lender_loans": {
+      "2": [
+        501
+      ],
+      "3": [
+        501,
+        502
+      ],
+      "7": []
+    },
+    "dual_role_self_funding": {
+      "actor": 7,
+      "requestID": 104,
+      "amount": "100.00",
+      "expected": "SELF_FUNDING",
+      "committed_effects": 0
+    }
+  },
+  "as_of": "2026-10-19T12:10:00Z",
+  "seed_order": [
+    "Role",
+    "User",
+    "UserRole",
+    "BorrowerProfile",
+    "LoanRequest",
+    "RequestEvaluation",
+    "OperationReceipt",
+    "FundingCommitment",
+    "Loan",
+    "Installment",
+    "Repayment",
+    "RepaymentAllocation",
+    "OversightNote",
+    "AuditEvent",
+    "AuditChange"
+  ]
+}
