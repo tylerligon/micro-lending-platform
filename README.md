@@ -3,8 +3,8 @@
 ## Current project documents
 
 Use the documents under `docs/` for review and implementation. This repository
-maintains one full copy of each current document. The root-level FRD and TDD
-are navigation notices; their earlier draft contents remain in Git history.
+maintains one copy of each current document in that directory. Superseded
+root-level drafts have been removed; their contents remain in Git history.
 
 | Review order | Current document | Purpose |
 | --- | --- | --- |
