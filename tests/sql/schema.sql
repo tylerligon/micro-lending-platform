@@ -314,7 +314,8 @@ VALUES ('AttemptRejected', 'Denied', SESSION_USER(), 'Attempt', 'ReadDetail/9999
 -- S70: blank retained status reason. Expected MySQL error 3819.
 -- INSERT INTO AuditChange VALUES (@example_audit, 'StatusReason', NULL, ' ');
 
--- S71: deleting a referenced request. Expected MySQL error 1451.
+-- S71: deleting a retained request. Expected error 1644 from trg_request_no_delete
+-- (before the FK check; the earlier schema-only expectation was 1451).
 -- DELETE FROM LoanRequest WHERE RequestID = @example_request;
 
 -- SECTION 2B: Deferred workflow rules. W01/W02 now fail under the snapshot trigger.

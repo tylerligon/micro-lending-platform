@@ -1,10 +1,11 @@
 # Implementation milestones
 
-Updated: October 20, 2026
+Updated: October 21, 2026
 
 This file records implementation progress, test evidence, and explanations for
 our professor walkthrough. It supplements the existing design documents; it is
-not a second copy of the TDD or a change to the requirements.
+not a second copy of the TDD or a change to the requirements. Older entries preserve
+historical command/file names; their local links now point to the maintained equivalents.
 
 The TDD and ERD guide remain at their committed design baseline for now. Their
 statements about implementation status describe that earlier snapshot. Use this
@@ -32,14 +33,14 @@ runtime permissions remain pending. Connection instructions are in the
 [README](../README.md#local-mysql-setup).
 
 Files: [database creation](../database/00_create_database.sql),
-[environment checks](../database/05_validation/000_environment.sql), and
+[environment checks](../tests/sql/environment.sql), and
 [setup runner](../build/setup_local.sh).
 
 ## Milestone 2: Account tables and SQL walkthrough
 
 Implemented on October 20, 2026: User, Role, and UserRole in
 [schema.sql](../database/schema.sql), plus
-[four role definitions](../database/04_seed/010_roles.sql).
+[four role definitions](../database/04_seed/010_reference_data.sql).
 Run `bash build/build_accounts.sh` once after local database creation. Each table
 must be absent; the scripts deliberately do not drop tables or hide existing ones
 with `IF NOT EXISTS`. The full tagged build remains a later deliverable.
@@ -116,8 +117,8 @@ The build and test runners passed Bash syntax checks. The existing design
 validator passed as well; its artifact checks are separate from the real MySQL
 constraint tests described above.
 
-Current files: [account build runner](../build/build_accounts.sh),
-[test runner](../build/test_accounts.sh), and [SQL examples](../database/tests.sql).
+Current files: [account build runner](../build/build_database.sh),
+[test runner](../build/test_database.sh), and [SQL examples](../tests/sql/accounts.sql).
 Milestone 4 combined the former fixture and positive checks into the SQL examples
 and replaced the automated Bash test framework with an explained walkthrough.
 
@@ -152,7 +153,7 @@ ERD guide are unchanged; no new security or audit behavior was added.
   variables, loops, arrays, pipelines, and the custom expected-error function.
 - Each script uses the existing local MySQL path and saved `cs437` connection.
   Run from the repository root; different computers may need a different path.
-- [tests.sql](../database/tests.sql) contains its own fictional setup, 27 labeled
+- [tests.sql](../tests/sql/accounts.sql) contains its own fictional setup, 27 labeled
   invalid statements, valid examples, expected results, and final rollback.
   The old separate fixture and positive-check files were removed.
 - Replaced temporary assertion tables with ordinary SELECT output. This makes the
@@ -376,7 +377,7 @@ validation layer. These column changes alone do not implement application sign-i
   for the existing database. It modifies only LoginName's collation without
   dropping tables, deleting users, or changing credentials. It is a separate
   one-time update, not part of the fresh-build runner.
-- Updated [tests.sql](../database/tests.sql): P03 now demonstrates a
+- Updated [tests.sql](../tests/sql/accounts.sql): P03 now demonstrates a
   case-insensitive lookup; the additional user has the distinct name demo_other.
   New N28 rejects a duplicate login with different capitalization (error 1062).
   All earlier invalid cases remain, including strict status and role capitalization.
@@ -406,20 +407,122 @@ no test records remained. Removed the disposable database after testing.
 Checked documentation links and whitespace and verified that the TDD and ERD
 contents did not change. No commit or push was made.
 
+## Milestone 7: Midterm request-management demonstration
+
+Implemented October 21, 2026 on top of pulled commit `a9303d5`. The README already
+reported a complete 15-table schema and early account/profile/Draft/submission
+operations; the numbered history in this file still ended at Milestone 6. Preserve
+that earlier history and use this entry for the current snapshot and new evidence.
+The original TDD and ERD artifacts are unchanged.
+
+### Chosen boundary and concrete implementation
+
+This is the team's chosen midterm scope, **not a confirmed instructor checklist**.
+Keep the existing schema/accounts/profiles/Draft/submission work. Stop before adding
+assessment, administrator review/approval, funding, activation, repayment allocation
+or an application UI/backend. Directly seeded later-stage records are explicitly
+historical classroom fixtures, not executed workflows. This boundary follows the
+user's supplied midterm plan; no professor approval is inferred.
+
+| File | Purpose / decision |
+| --- | --- |
+| [031_draft_cancellation.sql](../database/02_programmability/031_draft_cancellation.sql) | sp_cancel_draft checks a real current Borrower/Administrator role, account status, owner (Borrower), Draft state, expected version and 1–1000-character reason; locks Users in ID order then the request; commits state/version/reason and success audit together |
+| [041_request_delete_guard.sql](../database/02_programmability/041_request_delete_guard.sql) | BEFORE DELETE rejects any LoanRequest deletion, including an unreferenced Draft; cancellation is UPDATE |
+| [011_midterm_reports.sql](../database/02_programmability/011_midterm_reports.sql) | Administrative request, funding-progress and allocation-balance views, with child aggregation before joins |
+| [020_midterm_sample_data.sql](../database/04_seed/020_midterm_sample_data.sql) | Four existing Role rows plus 339 fictional rows reproduce the existing 343-row JSON fixture in a fresh dedicated DB; refuses existing data or a different DB name |
+| [demo_midterm.sh](../build/demo_midterm.sh) | Single presentation entry point: fresh dedicated DB, build, seed, SQL story/checks and technical privilege checks; preserves the DB for inspection |
+| [midterm_demo.sql](../tests/sql/midterm_demo.sql) | Create/read/edit/cancel, rejected actions, injected audit-failure rollback, reports, history and EXPLAIN; 44 assertions fail the command on mismatches |
+| [midterm_permissions.sql](../tests/sql/midterm_permissions.sql) | Locked test identity/default reporting role; DEFINER probe demonstrates real allowed SELECT, denied UPDATE and revoked SELECT, then removes its objects |
+| [upgrade_midterm.sh](../build/upgrade_midterm.sh) | One-time additive SQL upgrade from a9303d5; no DROP, replacement, table rebuild or seed load on dev |
+
+The object-type organization remains intact. The manifest and existing fresh-build /
+early-test runners now include the three new object files. The original 14 procedures,
+base schema and frozen-terms trigger are unchanged. Fresh builds now have 15 procedures,
+one function, four views and two triggers. There are still 15 tables, 114 columns,
+27 FKs and 52 CHECK constraints. The S71 commented invalid example now expects the
+request-delete trigger's 1644 before the foreign-key check, rather than 1451.
+
+### Explain the important choices
+
+- Restricted owners can cancel; inactive owners cannot. An Active Administrator can
+  cancel another user's Draft. A caller cannot merely claim an ungranted role. The
+  supplied actor ID is still a trusted-caller parameter, not proof of authentication.
+- Draft cancellation deliberately rejects other states and unexpected evaluation,
+  contribution or loan children. FR-10's broader cancellation/release workflow is
+  not complete. No pending contributions are released by this midterm routine.
+- A successful cancel creates RequestCancelled with BORROWER_CANCELLED or
+  ADMIN_DECISION, plus RequestState and TerminalReason old/new values. A failed audit
+  append rolls back the request update, version and reason as well as the event.
+  Rejections currently return errors without retaining separate denial-audit events.
+- Public actions own their transactions. Use them outside an existing transaction;
+  a later outer ROLLBACK cannot undo their committed results.
+- The fictional seed is a directly inserted historical dataset with opaque private
+  placeholders and unusable credential markers. It contains seeded loans, payments,
+  assessments/reviews, funding and audit examples; it proves no later-stage workflow.
+  The previous encrypted materializer is optional future tooling, not used by this
+  simple SQL classroom seed. All fixture fields except generated values are loaded;
+  generated values come from the schema.
+- Report views are administrative technical projections, not RQ-01–08 production
+  endpoints. SQL SECURITY DEFINER lets the restricted reporting role read the explicit
+  view without base-table grants. Application ownership needs authenticated context
+  and separate checks. WHERE/EXISTS in a report does not implement that boundary.
+- Loan 501 remains 550 outstanding after 350 allocated; loan 502 remains 200 after 400.
+  Request 101 totals 900 despite repeated participation. Lender 2's distinct loan
+  balance is 550. On the declared date 2026-10-19, loan 501 has 250 overdue and 18 days
+  past due; a due date equal to the report date is not overdue. These are historical
+  fixture calculations, not a newly executed delinquency evaluation.
+- The EXPLAIN example is a primary-key point lookup: const / PRIMARY / one estimated
+  row was observed. Larger-data timing/index tuning and the marketplace lock-contention
+  benchmark remain future work; no performance improvement is claimed.
+
+### Verification actually performed
+
+Executed against a **separate Linux MySQL Community Server 8.4.6 instance**, with
+lower_case_table_names=0. This is distinct from the earlier Mac MySQL 26.7.0 evidence.
+The Mac/development connection was not accessed, upgraded, seeded or cleared.
+
+- Fresh build and all 343 fixture rows loaded with FK/CHECK/UNIQUE constraints enabled.
+- All **44** midterm assertions passed: retained cancellation terms/reason/version,
+  Borrower/Admin attribution, owner/role/status/state/version/reason rejections,
+  prohibited deletion of both referenced and unreferenced requests, maximum reason,
+  forced post-update audit failure with full rollback, joins/aggregation and balances.
+- Technical permission probe: SELECT returned rows; UPDATE returned **1142**. After
+  REVOKE, SELECT returned **1142**. No password was distributed; the locked test user,
+  role and probe were removed on success. This is not the final runtime privilege set.
+- Existing early_workflows.sql passed all **86** assertions, including submission
+  behavior and previous forced audit-failure checks, with the new objects installed.
+- Repeating the shell presentation runner stopped on existing DB error **1007** and
+  preserved rows. Repeating the seed stopped on guard error **3819** before writes.
+- Built the previous committed objects in another isolated DB, created an account,
+  profile and Draft, then applied the three additive files. Compared all existing
+  User/UserRole/BorrowerProfile/LoanRequest/AuditEvent/AuditChange values byte-for-byte:
+  unchanged. A seed attempt against that non-demo DB was also rejected without change.
+- Replayed the SQL presentation on the same dedicated demo dataset successfully.
+  It adds new fictional request/audit rows; it does not overwrite the initial fixture.
+- Live metadata confirmed the unchanged table/column/FK/CHECK inventory and the new
+  routine/view/trigger counts. Checked Bash syntax, whitespace and local links.
+
+Run [the README command and walkthrough](../README.md#midterm-request-management-and-database-demonstration)
+for the presentation. If a command fails, inspect the dedicated DB and any remaining
+helper/user/role before retrying. No automatic reset/delete is built into the runner.
+This increment is not the final exact-tag evaluator build or full FRD acceptance proof.
+
 ## Remaining implementation
 
-The other 12 application tables, full seed data, and final ordered/tagged build
-remain pending. Lending workflows, concurrent transactions, business-workflow
-rollback, application authorization/encryption integration, and a running API/UI
-have not been demonstrated. The professor's architecture feedback remains pending.
+The midterm request-management demonstration is implemented as described above.
+Full-release assessment, review/approval, funding/activation, repayment allocation,
+delinquency updates, scoped production reports, complete audit/immutability controls,
+application authentication/encryption, a running API/UI and the final tagged build
+remain unfinished. Larger-data performance and funding/repayment concurrency are not
+demonstrated. The professor's service-architecture interpretation remains open.
 
 ## Possible design-document updates for later review
 
 These are notes to consider later, not changes applied to the design documents:
 
 - Record the actual local MySQL version and decide the final supported baseline.
-- Update implementation-status statements and acceptance gates with the completed
-  three-table increment and its test evidence.
+- Update implementation-status statements and acceptance gates with the current
+  complete schema, early workflows and midterm demonstration evidence.
 - Record later enforcement decisions and results when they are implemented and
   reviewed. Structural table constraints alone do not complete the security and
   business requirements.

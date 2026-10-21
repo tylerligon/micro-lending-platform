@@ -24,7 +24,7 @@ WHERE TABLE_SCHEMA = DATABASE()
        OR (TABLE_NAME IN ('Role', 'UserRole') AND COLUMN_NAME = 'RoleCode'))
 ORDER BY TABLE_NAME, COLUMN_NAME;
 
--- After the full early-workflow build: 14 procedures, 1 function, 1 view, 1 trigger.
+-- After the full early-workflow build: 15 procedures, 1 function, 4 views, 2 triggers.
 SELECT ROUTINE_TYPE, COUNT(*) AS routine_count FROM information_schema.ROUTINES
 WHERE ROUTINE_SCHEMA = DATABASE() GROUP BY ROUTINE_TYPE ORDER BY ROUTINE_TYPE;
 SELECT COUNT(*) AS view_count FROM information_schema.VIEWS WHERE TABLE_SCHEMA = DATABASE();

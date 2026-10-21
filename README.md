@@ -2,6 +2,127 @@
 
 [SQL build order](database/manifest.txt) · [SQL walkthroughs and tests](tests/sql)
 
+## Midterm: request management and database demonstration
+
+This is **our chosen midterm boundary**, not a confirmed professor-issued checklist.
+Keep the existing schema, accounts/profiles, Draft creation/editing and submission.
+New lending workflows stop here: assessment, review/approval, funding, activation,
+repayment allocation and a UI/backend remain unfinished. Seeded finance is not proof
+that those operations work. The FRD/TDD remain the full-release design baseline;
+current implementation and test evidence live here and in [Milestones](docs/Milestones.md#milestone-7-midterm-request-management-demonstration).
+
+| Midterm item | Executable artifact | What it demonstrates |
+| --- | --- | --- |
+| Draft cancellation | [031_draft_cancellation.sql](database/02_programmability/031_draft_cancellation.sql) | Owner Borrower (Active/Restricted) or Active Administrator; Draft state, reason, expected RowVersion; atomic update/audit |
+| Prohibited deletion | [041_request_delete_guard.sql](database/02_programmability/041_request_delete_guard.sql) | Cancellation is an UPDATE; even an unreferenced Draft cannot be hard-deleted |
+| Repeatable fictional data | [020_midterm_sample_data.sql](database/04_seed/020_midterm_sample_data.sql) | The existing 343-row fixture, including four roles and seven users; refuses existing data and non-demo/test schemas |
+| Reports | [011_midterm_reports.sql](database/02_programmability/011_midterm_reports.sql) | Borrower requests, funding progress, allocation-based loan balances; explicit-date overdue query in the demo |
+| Permissions | [midterm_permissions.sql](tests/sql/midterm_permissions.sql) | Real report SELECT permission, denied UPDATE, then SELECT denial after REVOKE |
+| Presentation | [midterm_demo.sql](tests/sql/midterm_demo.sql) | Create → read → edit → cancel → rejected action → forced audit-failure rollback → reports/audit → EXPLAIN |
+
+**One presentation command**, from the repository root:
+
+```bash
+bash build/demo_midterm.sh
+```
+
+It creates **micro_lending_midterm_demo**, builds the objects, loads the fictional
+fixture, runs the presentation/assertions and the permission demonstration, and leaves
+the demo DB for inspection. It refuses an existing database; no DROP/reset is automatic.
+It never selects, seeds or clears **micro_lending_dev**. Use the existing private
+`cs437` administrator login. An administrator is needed for the temporary permission
+identities; no password is added to source or printed by the scripts.
+On another computer, `MYSQL_BIN` and `MYSQL_LOGIN_PATH` can select its client and
+saved connection. Those options do not change the fixed demo database name.
+
+For example, with a separately saved connection to an **isolated test server**:
+
+```bash
+MYSQL_BIN=/path/to/mysql MYSQL_LOGIN_PATH=isolated_midterm bash build/demo_midterm.sh
+```
+
+After a successful run, replay the SQL story without reloading fixtures:
+
+```bash
+/usr/local/mysql/bin/mysql --login-path=cs437 micro_lending_midterm_demo < tests/sql/midterm_demo.sql
+```
+
+This adds new fictional requests/history in the dedicated demo DB; it is not a reset.
+If a run fails, stop and inspect the error. Test helper objects or permission identities
+may remain; do not blindly rerun CREATE statements or delete existing users. A deliberate
+fresh repeat may drop **only your dedicated demo DB** after inspection, then rerun the
+presentation command. Never use the fresh-build/seed command to upgrade development.
+
+For a data-preserving **one-time upgrade from a9303d5**, after reviewing the three
+additive SQL files:
+
+```bash
+bash build/upgrade_midterm.sh
+```
+
+This creates only the cancellation procedure, delete trigger and three report views.
+It does not rebuild tables, replace old routines or load any fixture. DDL is not one
+atomic transaction; inspect a partial failure before retrying. The previous upgrade
+from 947ad55 remains a separate earlier step. Neither upgrade was applied
+to the Mac's development database during this work.
+
+Cancellation signature, using the actual request ID and current version:
+
+```sql
+CALL sp_cancel_draft(borrower_id, 'Borrower', request_id, expected_version, 'No longer needed');
+-- An Administrator uses their own verified actor ID and the Administrator role.
+```
+
+Call it outside an existing transaction. A successful call commits its own action;
+wrapping it in a later ROLLBACK does not undo that success. The SQL caller is trusted:
+passing a UserID is not authentication. The routine checks the stored role and owner,
+but a future authenticated service must supply the correct actor identity. Failed
+cancellation attempts currently return an error without a separate denial-audit event.
+
+**How to explain the presentation:**
+
+1. Create and read a Draft at version 0; edit it to version 1.
+2. Cancel to version 2, retaining terms and the reason. Inspect RequestCancelled and
+   its RequestState/TerminalReason AuditChange rows.
+3. Show cancelled-edit, duplicate-cancel and hard-delete rejection. A delete is denied
+   by the trigger even when there are no referencing rows; FK protection is separate.
+4. Force an AuditChange failure after the request update and AuditEvent insertion.
+   The procedure's handler restores the Draft, version and reason, and removes both
+   audit writes. Then continue with successful/denied owner, role and version cases.
+5. Explain the historical fixture: request 101 has three applied contributions totaling
+   900, including two by Lender 2. Loans 501/502 have outstanding principal 550/200.
+   On the explicit report date **2026-10-19**, loan 501 has 250 overdue, 18 days past due.
+   EXISTS keeps Lender 2's displayed loan balance at 550 rather than multiplying it.
+6. Read EXPLAIN for the RequestID lookup: the test observed **const / PRIMARY / 1 row**.
+   This is a useful primary-key example, not a measured index-tuning study.
+7. Show GRANT/REVOKE separately. A locked test account with a reporting role owns a
+   test-only DEFINER probe: SELECT is allowed, UPDATE is denied (1142), then REVOKE
+   makes SELECT fail too (1142). No login password is needed or distributed. The
+   probe/account/role are dropped on success; these are not production runtime grants.
+
+The three new report views expose explicit administrative reporting projections with
+SQL SECURITY DEFINER. The role can read the granted view without reading private base
+tables. They do **not** enforce borrower/lender ownership; WHERE/EXISTS in a demonstration
+query is not an application authorization boundary. RemainingToFund is an arithmetic
+funding gap, not an eligibility decision or permission to fund a terminal request.
+The existing v_installment_remaining remains SQL SECURITY INVOKER.
+
+**Fixture limitations:** protected fields use opaque X'01' placeholders and unusable
+credential markers, not valid encryption/password hashes. Advanced loan/payment/evaluation
+rows and their historical audits are loaded directly, not created through implemented
+assessment, funding, repayment or delinquency workflows. Reference values and relationships
+match [sample-records.json](docs/diagrams/sample-records.json); generated fields are omitted
+from INSERTs. Never use the fixture as application/security or workflow evidence.
+
+**Tested in this revision:** isolated Linux MySQL **8.4.6**, case-sensitive table names,
+44 midterm assertions, all **86 existing early-workflow assertions**, the allowed/denied
+and REVOKE privilege probes, all 343 seed rows, repeated-run/seed refusal, and a replay
+of the SQL presentation. An additive upgrade preserved an existing account/profile/Draft
+and audit records byte-for-byte in another isolated DB. Live schema: **15 tables, 114
+columns, 27 FKs, 52 CHECKs, 15 procedures, 1 function, 4 views and 2 triggers**.
+The Mac's previously recorded **26.7.0** results below are separate; this revision has
+not been executed there. No development database was accessed or changed.
+
 ## Local MySQL setup
 
 The current Mac has MySQL Community Server 26.7.0 and MySQL Workbench installed.
@@ -64,8 +185,8 @@ audit event/actor/subject matching have been removed from table CHECKs by user
 approval. Submission is now validated by the early workflow routines below; review
 and the remaining audit combinations still need controlled operations. Direct-table
 workflow validation remains reduced;
-it is not equivalent to the earlier 61-check schema. See
-[Milestone 10](docs/Milestones.md#milestone-10-basic-schema-checks) for the exact boundary.
+it is not equivalent to the earlier 61-check schema. See the
+[current implementation notes](docs/Milestones.md#milestone-7-midterm-request-management-demonstration) for the midterm boundary.
 
 | Area | Tables |
 | --- | --- |
@@ -88,9 +209,9 @@ triggers in order. It inserts the
 and does not drop or replace existing objects. DDL is not rolled back as a group;
 inspect any failed build before retrying.
 
-The existing development database has already been extended to all 15 tables,
-without rebuilding the original four. It contains only the four seeded Role rows;
-all other tables are empty. Do not rerun the fresh-build command against it.
+The previously reported development snapshot had been extended to all 15 tables,
+without rebuilding the original four, with only the four seeded Role rows.
+This revision did not inspect or alter that Mac database. Do not rerun the fresh-build command against it.
 The earlier username update is preserved in
 [alter_username_collation.sql](database/alter_username_collation.sql).
 
@@ -135,13 +256,14 @@ application values. A failed batch connection rolls back its uncommitted work;
 auto-increment IDs may still have gaps. Oversize-value cases expect strict SQL mode.
 
 Verified locally on MySQL 26.7.0: fresh build and role seed, all column/type/nullability
-and key mappings, valid walkthrough outputs, all **97** remaining documented invalid errors,
+and key mappings, valid walkthrough outputs, all **97** then-documented invalid errors (before the new delete guard),
 and rollback with no retained test rows. A separate disposable test loaded all 343
 fictional design-fixture rows with placeholder protected values and verified counts
 and generated values. This is structural fixture evidence, not encryption or
 application-security evidence. The repository scripts do not automatically run or
-grade the commented invalid cases. Detailed evidence is in
-[Milestones](docs/Milestones.md#milestone-8-complete-table-schema).
+grade the commented invalid cases. S71 now expects trigger error 1644 rather than
+FK error 1451; the midterm presentation verifies this updated rejection. Detailed evidence is in
+[Milestones](docs/Milestones.md#milestone-7-midterm-request-management-demonstration).
 
 Usernames compare case-insensitively under the database default, which is also
 accent-insensitive. Role/status codes remain case-sensitive. Future application
@@ -204,7 +326,7 @@ INVOKER uses the caller's database privileges. Runtime grants, failure auditing,
 Draft editing and submission are now implemented on the SQL side below. Monetary
 inputs are read as text and checked by fn_money before conversion to DECIMAL(18,2),
 so fractional cents are rejected instead of rounded.
-See [Milestone 11](docs/Milestones.md#milestone-11-first-stored-procedure).
+See [current implementation notes](docs/Milestones.md#milestone-7-midterm-request-management-demonstration).
 
 ## Account, profile, Draft editing, and submission operations
 
@@ -230,7 +352,10 @@ The SQL is grouped by object type:
 | [schema.sql](database/schema.sql) | All 15 tables and their constraints |
 | [010_views.sql](database/02_programmability/010_views.sql) | Remaining-installment view |
 | [020_functions.sql](database/02_programmability/020_functions.sql) | Money-validation function |
-| [030_procedures.sql](database/02_programmability/030_procedures.sql) | All 14 procedures, with helpers first |
+| [030_procedures.sql](database/02_programmability/030_procedures.sql) | Original 14 procedures, with helpers first |
+| [031_draft_cancellation.sql](database/02_programmability/031_draft_cancellation.sql) | Midterm Draft cancellation |
+| [011_midterm_reports.sql](database/02_programmability/011_midterm_reports.sql) | Three administrative report views |
+| [041_request_delete_guard.sql](database/02_programmability/041_request_delete_guard.sql) | Request hard-delete rejection |
 | [040_triggers.sql](database/02_programmability/040_triggers.sql) | Frozen-request guard trigger |
 | [010_reference_data.sql](database/04_seed/010_reference_data.sql) | Four business-role definitions |
 | [010_object_validation.sql](database/05_validation/010_object_validation.sql) | Table, key, routine, view and trigger overview |
@@ -238,8 +363,8 @@ The SQL is grouped by object type:
 [manifest.txt](database/manifest.txt) lists the current SQL build order, starting
 with database creation. setup_local.sh creates the empty database and checks the
 environment; build_database.sh runs the remaining files. Walkthroughs and test-only
-fixtures live under [tests/sql](tests/sql), separate from the build. Technical
-security grants, full sample data and the final release-tag build remain pending;
+fixtures live under [tests/sql](tests/sql), separate from the build. Production runtime
+security grants, production-safe encrypted sample materialization and the final release-tag build remain pending;
 no empty placeholder files are included for unfinished work.
 
 The table schema and SQL behavior are unchanged by this grouping. Internal helpers
@@ -310,7 +435,7 @@ service. The committed build and workflow tests require Bash/MySQL, not Python.
 Other evidence: fresh build/upgrade, repeated-upgrade safe stop, eight legacy
 frozen-field examples, original Draft walkthrough, original table walkthroughs,
 and a live two-connection submission race. The development database still contains
-only four Role rows. See [Milestone 12](docs/Milestones.md#milestone-12-account-profile-draft-editing-and-submission).
+only four Role rows. See [current implementation notes](docs/Milestones.md#milestone-7-midterm-request-management-demonstration).
 
 ## Current project documents
 
