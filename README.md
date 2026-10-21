@@ -32,7 +32,7 @@ client path or its own saved profile.
 Verified locally on October 20, 2026: MySQL 26.7.0, InnoDB, successful commit and
 rollback checks, and rejection of a repeated setup with error 1007 (database
 already exists). No permanent tables were left by those environment checks.
-The first three application tables were then created as described below; lending
+The full table schema was subsequently built as described below; lending
 workflows are still pending.
 
 Connect from Terminal:
@@ -49,70 +49,160 @@ To repeat only the temporary-table checks on an existing development database:
 /usr/local/mysql/bin/mysql --login-path=cs437 --database=micro_lending_dev < database/05_validation/000_environment.sql
 ```
 
-## First three tables
+## Complete table schema
 
-`User`, `Role`, and `UserRole` are implemented and tested on local MySQL 26.7.0.
-The four business-role definitions are loaded. No permanent sample users or
-memberships have been created yet.
+[schema.sql](database/schema.sql) now creates all **15 application tables, 114
+columns, and 27 foreign keys**, with 52 CHECK constraints. The table definitions
+are implemented; the full lending workflow and security implementation remain pending.
 
-After creating an empty development database, build these tables once:
+The schema now focuses on keys, valid values, financial bounds, basic consistency,
+and private-data redaction. Detailed submission/review field combinations and
+audit event/actor/subject matching have been removed from table CHECKs by user
+approval. Their validation belongs in future controlled operations, which are not
+yet implemented. This deliberately weakens direct-table workflow validation;
+it is not equivalent to the earlier 61-check schema. See
+[Milestone 10](docs/Milestones.md#milestone-10-basic-schema-checks) for the exact boundary.
+
+| Area | Tables |
+| --- | --- |
+| Accounts | User, Role, UserRole, BorrowerProfile |
+| Requests and assessment | LoanRequest, RequestEvaluation |
+| Funding and loans | OperationReceipt, FundingCommitment, Loan, Installment |
+| Payments | Repayment, RepaymentAllocation |
+| Oversight and audit | OversightNote, AuditEvent, AuditChange |
+
+From the repository root, after creating an empty development database, build once:
 
 ```bash
-bash build/build_accounts.sh
+bash build/build_database.sh
 ```
 
-Read [schema.sql](database/schema.sql): it creates `User`, `Role`, then
-`UserRole`, with comments explaining the design choices. The build runner loads
-the [four role definitions](database/04_seed/010_roles.sql) afterward. Existing tables cause an error;
-the script never drops or replaces them. DDL is not rolled back as a group, so a
-failed build can leave earlier tables in place and must be inspected before retrying.
+The runner creates the tables in dependency order, installs the Draft-creation
+procedure, inserts the
+[four role definitions](database/04_seed/010_roles.sql), then displays the
+[schema overview](database/05_validation/010_schema.sql). It stops on SQL errors
+and does not drop or replace existing objects. DDL is not rolled back as a group;
+inspect any failed build before retrying.
 
-Run the valid SQL examples on the existing tables:
+The existing development database has already been extended to all 15 tables,
+without rebuilding the original four. It contains only the four seeded Role rows;
+all other tables are empty. Do not rerun the fresh-build command against it.
+The earlier username update is preserved in
+[alter_username_collation.sql](database/alter_username_collation.sql).
+
+## SQL walkthroughs and tests
+
+Run the schema overview and valid examples against the existing database:
 
 ```bash
-bash build/test_accounts.sh
+bash build/test_database.sh
 ```
 
-The runner executes [tests.sql](database/tests.sql). Read its comments and compare
-the displayed query results: four roles, defaults of Active/0, an uppercase login
-lookup finding the existing lowercase account, UTC check = 1, two revoked Borrower
-episodes plus one active episode,
-and zero test rows after rollback. SQL execution errors stop the command;
-unexpected query values require you to notice the mismatch.
+The runners were renamed from build_accounts.sh/test_accounts.sh because their
+scope now covers the full database. They remain simple, direct MySQL commands.
 
-**Invalid examples are manual:** the 28 statements in Section 2 are commented out.
-In Workbench, select `micro_lending_dev` as the default schema. Run Section 1 to
-create the test records, stopping if setup reports any error. Select the SQL after
-`--` for one invalid example and execute it without the comment prefix. Compare
-its error with the expected code, then run `ROLLBACK;` in the same connection.
-Repeat Section 1 for each example. Do not run Section 3 during an invalid example.
+| File | Expected valid results | Commented invalid examples |
+| --- | --- | --- |
+| [tests.sql](database/tests.sql) | Account defaults, case-insensitive login lookup, UTC grants, retained membership history | 28 (N01–N28) |
+| [borrower_profile_tests.sql](database/borrower_profile_tests.sql) | Shared account/profile key, UTC/default version, explicit profile update | 10 (B01–B10) |
+| [schema_tests.sql](database/schema_tests.sql) | Two requests for one borrower, repeated contributions, final-review marker, weak installment keys, allocations, redacted audit fields | 59 (retained S IDs) |
 
-The examples reserve `demo_member`, `demo_admin`, and `demo_other`;
-existing conflicting names cause an error rather than being overwritten. Always
-roll back when running selected statements in Workbench, including after errors.
-A failed batch command closes its connection and rolls back uncommitted work.
-Auto-increment IDs may still have gaps. Dummy email/hash fields are not valid
-application credentials.
+Read each file's expected results and compare them with the displayed values.
+Execution errors stop the command, but unexpected query values require a person
+to notice the mismatch. Each full-file walkthrough ends in ROLLBACK.
 
-Verified on October 20, 2026: the simplified valid examples produced the expected
-results; each of the 28 invalid examples was separately executed and returned its
-expected error. Permanent row counts stayed User = 0, Role = 4, UserRole = 0.
-The new runner does not automatically execute or grade the invalid examples.
+**Invalid examples are manual:** select micro_lending_dev as the default schema in
+Workbench. Run Section 1 of the relevant file, stopping on any setup error. Select
+the SQL after `--` for ONE invalid statement and execute it without the comment
+prefix. Compare its error with the comment, then execute `ROLLBACK;` in the same
+connection. Repeat setup for each case; do not run Section 3 between setup and an
+invalid case. A rejected statement does not itself end the transaction.
 
-Usernames now use the database's case-insensitive default: `Alex` and `alex`
-identify the same account, and UNIQUE prevents both from being registered separately.
-The stored spelling is preserved. Role/status codes retain binary collations and
-reject incorrect capitalization. This database default is also accent-insensitive.
+Section 2B of schema_tests.sql has **12 deferred-rule examples W01–W12**. These
+now succeed at table level but are not valid application actions. They document
+the reduced enforcement, rather than pretending the previous tests still reject
+them. Inspect them individually with fresh setup and rollback. The future workflow
+must validate these cases before accepting real actions.
 
-Fresh builds use schema.sql. The existing development database was updated once
-using [alter_username_collation.sql](database/alter_username_collation.sql), after
-checking for conflicting names. Do not rebuild existing tables to apply this change.
+Reserved names are demo_member, demo_admin, demo_other, profile_demo, and the three
+schema_demo_ usernames. Existing conflicting names cause errors, not replacement.
+Dummy protected fields/credentials are constraint-test placeholders, not usable
+application values. A failed batch connection rolls back its uncommitted work;
+auto-increment IDs may still have gaps. Oversize-value cases expect strict SQL mode.
 
-For implementation progress and a SQL walkthrough, use
-[Milestones](docs/Milestones.md#milestone-2-account-tables-and-sql-walkthrough).
-These tables enforce structural rules; administrator authorization, allowed role
-combinations, immutable history, encryption/hashing, audit, and runtime grants
-still need their planned service/routine implementations.
+Verified locally on MySQL 26.7.0: fresh build and role seed, all column/type/nullability
+and key mappings, valid walkthrough outputs, all **97** remaining documented invalid errors,
+and rollback with no retained test rows. A separate disposable test loaded all 343
+fictional design-fixture rows with placeholder protected values and verified counts
+and generated values. This is structural fixture evidence, not encryption or
+application-security evidence. The repository scripts do not automatically run or
+grade the commented invalid cases. Detailed evidence is in
+[Milestones](docs/Milestones.md#milestone-8-complete-table-schema).
+
+Usernames compare case-insensitively under the database default, which is also
+accent-insensitive. Role/status codes remain case-sensitive. Future application
+code must use canonical codes and enforce permissions. The schema alone does not
+validate the deferred workflow combinations, encrypt data, authorize callers,
+freeze history, prevent concurrent overfunding,
+allocate repayments oldest-first, or append audit events for direct table writes.
+The Draft-creation procedure below records its own success audit. Other procedures,
+triggers, technical grants, full safe seed data, and workflow integration remain work.
+
+## First stored procedure: create a Draft
+
+[sp_create_loan_request](database/02_programmability/010_create_loan_request.sql)
+implements the creation part of FR-06. It checks the account is Active, its Borrower
+role is current, its profile exists, and its purpose, amount ($100–$2,000), and term
+(3 or 6 installments) are valid. It creates a Draft with version 0 and records one
+RequestSaved audit event plus four field changes in the same transaction. Any SQL
+error rolls back the entire action. It does not submit or evaluate the request.
+
+The procedure is already installed in micro_lending_dev. For another database with
+the existing tables but without this procedure, install it once:
+
+```bash
+/usr/local/mysql/bin/mysql --login-path=cs437 micro_lending_dev < database/02_programmability/010_create_loan_request.sql
+```
+
+Example, after an eligible borrower with UserID 1 actually exists:
+
+```sql
+CALL sp_create_loan_request(1, 'Equipment purchase', 300.00, 3);
+```
+
+It returns RequestID, RequestState = Draft, and RowVersion = 0. **Call it outside an
+existing transaction:** it starts and commits its own transaction; an outer
+ROLLBACK cannot undo the committed action. Never use guessed IDs in development.
+
+Run the separate procedure walkthrough without retaining demo data:
+
+```bash
+bash build/test_create_loan_request.sh
+```
+
+This creates micro_lending_procedure_test, installs tables/roles/procedure, runs
+three valid calls, displays their expected results, and drops that test database.
+It refuses to replace an existing database. If a later step fails, it stops and
+leaves the test database for inspection. The script checks execution errors;
+compare displayed values with comments. The 17 invalid calls and optional forced
+audit-failure demonstration in [procedure_tests.sql](database/procedure_tests.sql)
+are commented out for individual execution before the test database is dropped.
+To inspect those manually, run the runner's setup commands through procedure
+installation, then Section 1 of that file; run each desired example and finally
+drop only micro_lending_procedure_test.
+
+Verified separately: all 17 invalid calls and their messages, three successful
+calls, matching audit rows, and forced audit failure with complete rollback.
+The table walkthroughs also still pass; development retains only four Role rows.
+
+This is a local SQL demonstration, not completed application authorization.
+The future trusted caller must obtain BorrowerID from the authenticated session;
+the procedure cannot prove that a supplied ID belongs to the caller. SQL SECURITY
+INVOKER uses the caller's database privileges. Runtime grants, failure auditing,
+Draft editing, and submission are pending. DECIMAL(18,2) rounds extra fractional
+digits before the body runs; explicit rejection of fractional cents remains an
+integration requirement, so this does not complete AC-03.
+See [Milestone 11](docs/Milestones.md#milestone-11-first-stored-procedure).
 
 ## Current project documents
 
@@ -162,9 +252,9 @@ python3 docs/diagrams/tools/validate_erd.py
 ```
 
 These checks cover artifact consistency, fixture calculations, and audit contracts.
-Only the three account tables have real MySQL schema/constraint evidence so far.
-The remaining schema, a running API/UI, concurrent lending actions, and
-business-workflow rollback remain unverified. The local environment checks above
+All 15 table definitions have real MySQL schema/constraint evidence. A running
+API/UI, concurrent lending actions, controlled workflow authorization, and
+rollback for workflows beyond Draft creation remain unverified. The local environment checks above
 verify basic database connectivity, decimal storage, commit, and rollback.
 The [TDD acceptance gates](docs/Technical_Design_Document.md#101-fixture-and-implementation-acceptance-gates)
 identify the remaining implementation work and fixture materialization requirements.
