@@ -134,20 +134,22 @@ INSERT INTO AuditChange (AuditEventID, FieldName, OldValue, NewValue) VALUES
 INSERT INTO AuditEvent (EventType, Outcome, TechnicalAccount, SubjectType, SubjectKey, ContextID, ReasonCode)
 VALUES ('AttemptRejected', 'Denied', SESSION_USER(), 'Attempt', 'ReadDetail/999999', @example_context, 'NOT_AUTHENTICATED');
 
+-- With the workflow trigger installed, frozen-field edits below raise 1644 before
+-- table constraints run. A schema-only build retains the earlier errors noted.
 -- SECTION 2: Invalid examples. Each should fail; select ONE with fresh Section 1 setup.
 -- Execute the SQL after its -- prefix in Workbench, check the error, then ROLLBACK.
 -- Do not run Section 3 between setup and an invalid example. Large IDs do not exist.
 
--- S01: request below minimum. Expected MySQL error 3819.
+-- S01: request below minimum. Expected MySQL error 1644 with trigger; 3819 with schema only.
 -- UPDATE LoanRequest SET Principal = 99.99 WHERE RequestID = @example_request;
 
--- S02: request above maximum. Expected MySQL error 3819.
+-- S02: request above maximum. Expected MySQL error 1644 with trigger; 3819 with schema only.
 -- UPDATE LoanRequest SET Principal = 2000.01 WHERE RequestID = @example_request;
 
--- S03: unsupported installment count. Expected MySQL error 3819.
+-- S03: unsupported installment count. Expected MySQL error 1644 with trigger; 3819 with schema only.
 -- UPDATE LoanRequest SET InstallmentCount = 4 WHERE RequestID = @example_request;
 
--- S04: blank request purpose. Expected MySQL error 3819.
+-- S04: blank request purpose. Expected MySQL error 1644 with trigger; 3819 with schema only.
 -- UPDATE LoanRequest SET Purpose = ' ' WHERE RequestID = @example_request;
 
 -- S05: invalid request state. Expected MySQL error 3819.
@@ -156,10 +158,10 @@ VALUES ('AttemptRejected', 'Denied', SESSION_USER(), 'Attempt', 'ReadDetail/9999
 -- S06: wrong request-state capitalization. Expected MySQL error 3819.
 -- UPDATE LoanRequest SET RequestState = 'funded' WHERE RequestID = @example_request;
 
--- S09: unsupported policy. Expected MySQL error 3819.
+-- S09: unsupported policy. Expected MySQL error 1644 with trigger; 3819 with schema only.
 -- UPDATE LoanRequest SET PolicyCode = 'D2' WHERE RequestID = @example_request;
 
--- S12: nonexistent borrower. Expected MySQL error 1452.
+-- S12: nonexistent borrower. Expected MySQL error 1644 with trigger; 1452 with schema only.
 -- UPDATE LoanRequest SET BorrowerID = 18446744073709551615 WHERE RequestID = @example_request;
 
 -- S13: funding attempt zero. Expected MySQL error 3819.
@@ -315,15 +317,16 @@ VALUES ('AttemptRejected', 'Denied', SESSION_USER(), 'Attempt', 'ReadDetail/9999
 -- S71: deleting a referenced request. Expected MySQL error 1451.
 -- DELETE FROM LoanRequest WHERE RequestID = @example_request;
 
--- SECTION 2B: Deferred workflow rules. These statements NOW succeed at table level.
+-- SECTION 2B: Deferred workflow rules. W01/W02 now fail under the snapshot trigger.
+-- The remaining statements still succeed at table level.
 -- They are NOT valid application actions. Future controlled operations must reject them.
 -- To inspect one: run fresh Section 1, select the SQL after --, execute it, then ROLLBACK.
 -- The full-file runner skips these commented examples just like the invalid examples.
 
--- W01: missing submitted snapshot (formerly S07). Expected SQL success; workflow validation pending.
+-- W01: missing submitted snapshot (formerly S07). Expected error 1644 with trigger; success with schema only.
 -- UPDATE LoanRequest SET SubmittedIncomeCipher = NULL WHERE RequestID = @example_request;
 
--- W02: empty submitted snapshot (formerly S08). Expected SQL success; workflow validation pending.
+-- W02: empty submitted snapshot (formerly S08). Expected error 1644 with trigger; success with schema only.
 -- UPDATE LoanRequest SET SubmittedObligationsCipher = X'' WHERE RequestID = @example_request;
 
 -- W03: missing funding deadline (formerly S10). Expected SQL success; workflow validation pending.

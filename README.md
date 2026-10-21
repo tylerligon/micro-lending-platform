@@ -1,5 +1,7 @@
 # Micro-Lending Platform
 
+[SQL build order](database/manifest.txt) · [SQL walkthroughs and tests](tests/sql)
+
 ## Local MySQL setup
 
 The current Mac has MySQL Community Server 26.7.0 and MySQL Workbench installed.
@@ -32,8 +34,8 @@ client path or its own saved profile.
 Verified locally on October 20, 2026: MySQL 26.7.0, InnoDB, successful commit and
 rollback checks, and rejection of a repeated setup with error 1007 (database
 already exists). No permanent tables were left by those environment checks.
-The full table schema was subsequently built as described below; lending
-workflows are still pending.
+The full table schema and early account/request SQL operations are described below;
+assessment, funding, repayment, and application integration remain pending.
 
 Connect from Terminal:
 
@@ -46,20 +48,22 @@ schema `micro_lending_dev`; enter the password through Workbench's own prompt.
 To repeat only the temporary-table checks on an existing development database:
 
 ```bash
-/usr/local/mysql/bin/mysql --login-path=cs437 --database=micro_lending_dev < database/05_validation/000_environment.sql
+/usr/local/mysql/bin/mysql --login-path=cs437 --database=micro_lending_dev < tests/sql/environment.sql
 ```
 
 ## Complete table schema
 
 [schema.sql](database/schema.sql) now creates all **15 application tables, 114
 columns, and 27 foreign keys**, with 52 CHECK constraints. The table definitions
-are implemented; the full lending workflow and security implementation remain pending.
+and early account/request operations are implemented; the full lending workflow
+and application security remain pending.
 
 The schema now focuses on keys, valid values, financial bounds, basic consistency,
 and private-data redaction. Detailed submission/review field combinations and
 audit event/actor/subject matching have been removed from table CHECKs by user
-approval. Their validation belongs in future controlled operations, which are not
-yet implemented. This deliberately weakens direct-table workflow validation;
+approval. Submission is now validated by the early workflow routines below; review
+and the remaining audit combinations still need controlled operations. Direct-table
+workflow validation remains reduced;
 it is not equivalent to the earlier 61-check schema. See
 [Milestone 10](docs/Milestones.md#milestone-10-basic-schema-checks) for the exact boundary.
 
@@ -77,10 +81,10 @@ From the repository root, after creating an empty development database, build on
 bash build/build_database.sh
 ```
 
-The runner creates the tables in dependency order, installs the Draft-creation
-procedure, inserts the
-[four role definitions](database/04_seed/010_roles.sql), then displays the
-[schema overview](database/05_validation/010_schema.sql). It stops on SQL errors
+The runner creates the tables, then installs views, functions, procedures and
+triggers in order. It inserts the
+[four role definitions](database/04_seed/010_reference_data.sql), then displays the
+[schema overview](database/05_validation/010_object_validation.sql). It stops on SQL errors
 and does not drop or replace existing objects. DDL is not rolled back as a group;
 inspect any failed build before retrying.
 
@@ -103,9 +107,9 @@ scope now covers the full database. They remain simple, direct MySQL commands.
 
 | File | Expected valid results | Commented invalid examples |
 | --- | --- | --- |
-| [tests.sql](database/tests.sql) | Account defaults, case-insensitive login lookup, UTC grants, retained membership history | 28 (N01–N28) |
-| [borrower_profile_tests.sql](database/borrower_profile_tests.sql) | Shared account/profile key, UTC/default version, explicit profile update | 10 (B01–B10) |
-| [schema_tests.sql](database/schema_tests.sql) | Two requests for one borrower, repeated contributions, final-review marker, weak installment keys, allocations, redacted audit fields | 59 (retained S IDs) |
+| [accounts.sql](tests/sql/accounts.sql) | Account defaults, case-insensitive login lookup, UTC grants, retained membership history | 28 (N01–N28) |
+| [borrower_profile.sql](tests/sql/borrower_profile.sql) | Shared account/profile key, UTC/default version, explicit profile update | 10 (B01–B10) |
+| [schema.sql](tests/sql/schema.sql) | Two requests for one borrower, repeated contributions, final-review marker, weak installment keys, allocations, redacted audit fields | 59 (retained S IDs) |
 
 Read each file's expected results and compare them with the displayed values.
 Execution errors stop the command, but unexpected query values require a person
@@ -118,11 +122,11 @@ prefix. Compare its error with the comment, then execute `ROLLBACK;` in the same
 connection. Repeat setup for each case; do not run Section 3 between setup and an
 invalid case. A rejected statement does not itself end the transaction.
 
-Section 2B of schema_tests.sql has **12 deferred-rule examples W01–W12**. These
-now succeed at table level but are not valid application actions. They document
+Section 2B of tests/sql/schema.sql has **12 deferred-rule examples W01–W12**. W01/W02 now fail
+with error 1644 under the frozen-request trigger; the remaining ten still succeed
+at table level but are not valid application actions. They document
 the reduced enforcement, rather than pretending the previous tests still reject
-them. Inspect them individually with fresh setup and rollback. The future workflow
-must validate these cases before accepting real actions.
+them. Inspect them individually with fresh setup and rollback. The remaining future workflows must validate their cases before accepting real actions.
 
 Reserved names are demo_member, demo_admin, demo_other, profile_demo, and the three
 schema_demo_ usernames. Existing conflicting names cause errors, not replacement.
@@ -150,19 +154,16 @@ triggers, technical grants, full safe seed data, and workflow integration remain
 
 ## First stored procedure: create a Draft
 
-[sp_create_loan_request](database/02_programmability/010_create_loan_request.sql)
+[sp_create_loan_request](database/02_programmability/030_procedures.sql)
 implements the creation part of FR-06. It checks the account is Active, its Borrower
 role is current, its profile exists, and its purpose, amount ($100–$2,000), and term
 (3 or 6 installments) are valid. It creates a Draft with version 0 and records one
 RequestSaved audit event plus four field changes in the same transaction. Any SQL
 error rolls back the entire action. It does not submit or evaluate the request.
 
-The procedure is already installed in micro_lending_dev. For another database with
-the existing tables but without this procedure, install it once:
-
-```bash
-/usr/local/mysql/bin/mysql --login-path=cs437 micro_lending_dev < database/02_programmability/010_create_loan_request.sql
-```
+The procedure is already installed in micro_lending_dev. It is grouped with the
+other procedures in 030_procedures.sql. Use the complete fresh build or the
+one-time upgrade described below; this file depends on the views and function.
 
 Example, after an eligible borrower with UserID 1 actually exists:
 
@@ -180,15 +181,16 @@ Run the separate procedure walkthrough without retaining demo data:
 bash build/test_create_loan_request.sh
 ```
 
-This creates micro_lending_procedure_test, installs tables/roles/procedure, runs
+This creates micro_lending_procedure_test, installs the schema and SQL objects, loads
+roles, runs
 three valid calls, displays their expected results, and drops that test database.
 It refuses to replace an existing database. If a later step fails, it stops and
 leaves the test database for inspection. The script checks execution errors;
 compare displayed values with comments. The 17 invalid calls and optional forced
-audit-failure demonstration in [procedure_tests.sql](database/procedure_tests.sql)
+audit-failure demonstration in [create_loan_request.sql](tests/sql/create_loan_request.sql)
 are commented out for individual execution before the test database is dropped.
-To inspect those manually, run the runner's setup commands through procedure
-installation, then Section 1 of that file; run each desired example and finally
+To inspect those manually, run the runner's setup commands through role seed
+loading, then Section 1 of that file; run each desired example and finally
 drop only micro_lending_procedure_test.
 
 Verified separately: all 17 invalid calls and their messages, three successful
@@ -198,11 +200,117 @@ The table walkthroughs also still pass; development retains only four Role rows.
 This is a local SQL demonstration, not completed application authorization.
 The future trusted caller must obtain BorrowerID from the authenticated session;
 the procedure cannot prove that a supplied ID belongs to the caller. SQL SECURITY
-INVOKER uses the caller's database privileges. Runtime grants, failure auditing,
-Draft editing, and submission are pending. DECIMAL(18,2) rounds extra fractional
-digits before the body runs; explicit rejection of fractional cents remains an
-integration requirement, so this does not complete AC-03.
+INVOKER uses the caller's database privileges. Runtime grants, failure auditing, and application integration are pending.
+Draft editing and submission are now implemented on the SQL side below. Monetary
+inputs are read as text and checked by fn_money before conversion to DECIMAL(18,2),
+so fractional cents are rejected instead of rounded.
 See [Milestone 11](docs/Milestones.md#milestone-11-first-stored-procedure).
+
+## Account, profile, Draft editing, and submission operations
+
+The SQL side of steps 1–3 is implemented. These are trusted-caller building blocks;
+a sign-in system, runtime database grants, and the production encryption coordinator
+are still pending. Do not expose these routines directly to a browser or accept
+actor IDs, plaintext/ciphertext pairs, or prepared context from an untrusted client.
+
+| Operation | Routine | Main behavior |
+| --- | --- | --- |
+| Create account | sp_create_user | Active Administrator required; creates Active account and redacted audit |
+| Grant/revoke role | sp_set_role | Canonical roles, compatible combinations, retained membership history, live-participation protection |
+| Change status | sp_set_account_status | Administrator, current version, reason; protects live participation from deactivation |
+| Save profile | sp_save_profile | Own Borrower profile, valid income/obligations, encrypted values, version check; Restricted permitted |
+| Edit Draft | sp_update_loan_request | Active owner, Draft state, current version, valid terms, atomic audit |
+| Prepare submission | sp_prepare_submission | Starts transaction, locks borrower/profile/request, calculates exposure and delinquency, returns context and source envelopes |
+| Finish submission | sp_submit_request | Same connection/context/transaction, validated inputs, frozen D1 snapshot and incomplete Submission evaluation, atomic audit/commit |
+
+The SQL is grouped by object type:
+
+| Build file | Contents |
+| --- | --- |
+| [schema.sql](database/schema.sql) | All 15 tables and their constraints |
+| [010_views.sql](database/02_programmability/010_views.sql) | Remaining-installment view |
+| [020_functions.sql](database/02_programmability/020_functions.sql) | Money-validation function |
+| [030_procedures.sql](database/02_programmability/030_procedures.sql) | All 14 procedures, with helpers first |
+| [040_triggers.sql](database/02_programmability/040_triggers.sql) | Frozen-request guard trigger |
+| [010_reference_data.sql](database/04_seed/010_reference_data.sql) | Four business-role definitions |
+| [010_object_validation.sql](database/05_validation/010_object_validation.sql) | Table, key, routine, view and trigger overview |
+
+[manifest.txt](database/manifest.txt) lists the current SQL build order, starting
+with database creation. setup_local.sh creates the empty database and checks the
+environment; build_database.sh runs the remaining files. Walkthroughs and test-only
+fixtures live under [tests/sql](tests/sql), separate from the build. Technical
+security grants, full sample data and the final release-tag build remain pending;
+no empty placeholder files are included for unfinished work.
+
+The table schema and SQL behavior are unchanged by this grouping. Internal helpers
+do not commit. All public actions except preparation commit their own action.
+Call them outside an existing transaction.
+
+Example signatures, using IDs/versions retrieved from the actual database:
+
+```sql
+-- NULL expected profile version means create; 0 means update version 0.
+CALL sp_save_profile(borrower_id, NULL, '1000.00', '100.00', income_envelope, obligations_envelope);
+CALL sp_update_loan_request(borrower_id, request_id, current_version, 'Equipment', '600.00', 3);
+```
+
+For submission the trusted caller must keep one connection reserved:
+
+1. Call sp_prepare_submission with the authenticated borrower, owned request and
+   current request version. SQL retains the borrower lock and returns profile
+   envelopes, context, snapshot time, combined platform burden, and delinquency flag.
+2. Authenticate/decrypt the profile, validate its numeric values, and encrypt fresh
+   request-bound snapshots plus the calculated burden bound to
+   RequestID/Submission/ContextHex. Use the returned uppercase ContextHex consistently.
+   Keep keys out of SQL, source control, logs and audit values.
+3. Call sp_submit_request on that connection with the matching binary context,
+   decrypted income/obligations and prepared envelopes. It writes Submitted/D1,
+   freezes input envelopes/time, adds the incomplete Submission evaluation and audit,
+   then commits and clears context. On any coordinator failure, ROLLBACK and call
+   sp_clear_submission before returning/discarding the connection.
+
+Do not issue another command, commit/rollback, change connections, or wait for user
+input between preparation and finish. An intervening commit loses the savepoint and
+finish fails. Submission records eligibility inputs; **it does not perform assessment
+or approval**, and does not reject solely for insufficient income or delinquency.
+Later stages must use those retained facts. All future exposure writers must use the
+same borrower lock. The guard trigger freezes terms/snapshots after Draft, including
+case-only purpose edits; it does not implement every later lifecycle transition.
+
+For a fresh empty development database use build/build_database.sh. The existing
+local micro_lending_dev was upgraded without changing table data. To upgrade another
+copy still at commit 947ad55, run **once**, from the repository root:
+
+```bash
+bash build/upgrade_early_workflows.sh
+```
+
+It creates the view and function first, replaces only the old Draft routine to
+fix money rounding, then installs the grouped procedures and trigger. DDL is not
+atomic. It stops on errors; inspect a partial upgrade before retrying. A normal
+repeated run fails on the existing view before replacing the Draft routine. Do not rerun the fresh table build on
+an existing database.
+
+Run the automatic SQL checks in a disposable database:
+
+```bash
+bash build/test_early_workflows.sh
+```
+
+[early_workflows.sql](tests/sql/early_workflows.sql) contains **86 checks**
+that stop on mismatches, including expected rejections, ownership/version/state
+checks, redaction, and forced audit-failure rollback for all new writing actions.
+Its explicit bootstrap and fictional bytes are test-only. The shell runner refuses
+to overwrite an existing test DB, drops it on success, and leaves it on failure.
+A [two-connection walkthrough](tests/sql/submission_concurrency.sql) reproduces
+borrower-level submission ordering. Separately verified a real AES-256-GCM round trip
+using a temporary test coordinator; that check is not a production sign-in/encryption
+service. The committed build and workflow tests require Bash/MySQL, not Python.
+
+Other evidence: fresh build/upgrade, repeated-upgrade safe stop, eight legacy
+frozen-field examples, original Draft walkthrough, original table walkthroughs,
+and a live two-connection submission race. The development database still contains
+only four Role rows. See [Milestone 12](docs/Milestones.md#milestone-12-account-profile-draft-editing-and-submission).
 
 ## Current project documents
 
@@ -253,9 +361,10 @@ python3 docs/diagrams/tools/validate_erd.py
 
 These checks cover artifact consistency, fixture calculations, and audit contracts.
 All 15 table definitions have real MySQL schema/constraint evidence. A running
-API/UI, concurrent lending actions, controlled workflow authorization, and
-rollback for workflows beyond Draft creation remain unverified. The local environment checks above
-verify basic database connectivity, decimal storage, commit, and rollback.
+API/UI, funding/payment concurrency, complete application authorization, and
+rollback for workflows beyond these early account/request operations remain
+unverified. The local environment checks above verify basic database connectivity,
+decimal storage, commit, and rollback.
 The [TDD acceptance gates](docs/Technical_Design_Document.md#101-fixture-and-implementation-acceptance-gates)
 identify the remaining implementation work and fixture materialization requirements.
 

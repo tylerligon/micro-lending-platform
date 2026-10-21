@@ -1,5 +1,5 @@
 -- BorrowerProfile structural examples for FR-05 / BR-01 / BR-05 / SEC-12.
--- Use the same manual-test approach as tests.sql: read the expected results.
+-- Use the same manual-test approach as accounts.sql: read the expected results.
 -- Running the whole file skips the commented invalid examples and ends in rollback.
 -- Dummy bytes are not usable encrypted financial values. Never COMMIT this file.
 

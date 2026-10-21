@@ -8,4 +8,4 @@ set -e
 /usr/local/mysql/bin/mysql --login-path=cs437 < database/00_create_database.sql
 
 # The database name selects where the temporary environment checks run.
-/usr/local/mysql/bin/mysql --login-path=cs437 micro_lending_dev < database/05_validation/000_environment.sql
+/usr/local/mysql/bin/mysql --login-path=cs437 micro_lending_dev < tests/sql/environment.sql

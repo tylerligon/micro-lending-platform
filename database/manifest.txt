@@ -1,0 +1,12 @@
+# Micro-lending SQL build order (current implementation)
+# setup_local.sh runs 00_create_database.sql, then optional environment checks.
+# build_database.sh runs the remaining files against the empty database.
+# Workflow tests under tests/sql are separate from the application build.
+database/00_create_database.sql
+database/schema.sql
+database/02_programmability/010_views.sql
+database/02_programmability/020_functions.sql
+database/02_programmability/030_procedures.sql
+database/02_programmability/040_triggers.sql
+database/04_seed/010_reference_data.sql
+database/05_validation/010_object_validation.sql
