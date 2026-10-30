@@ -8,6 +8,7 @@ set -e
 /usr/local/mysql/bin/mysql --login-path=cs437 micro_lending_dev < database/02_programmability/010_views.sql
 /usr/local/mysql/bin/mysql --login-path=cs437 micro_lending_dev < database/02_programmability/011_midterm_reports.sql
 /usr/local/mysql/bin/mysql --login-path=cs437 micro_lending_dev < database/02_programmability/020_functions.sql
+/usr/local/mysql/bin/mysql --login-path=cs437 micro_lending_dev < database/02_programmability/025_entitlements.sql
 /usr/local/mysql/bin/mysql --login-path=cs437 micro_lending_dev < database/02_programmability/030_procedures.sql
 /usr/local/mysql/bin/mysql --login-path=cs437 micro_lending_dev < database/02_programmability/031_draft_cancellation.sql
 /usr/local/mysql/bin/mysql --login-path=cs437 micro_lending_dev < database/02_programmability/040_triggers.sql
@@ -15,4 +16,5 @@ set -e
 
 # Reference data and object validation complete the current build.
 /usr/local/mysql/bin/mysql --login-path=cs437 micro_lending_dev < database/04_seed/010_reference_data.sql
+/usr/local/mysql/bin/mysql --login-path=cs437 micro_lending_dev < database/04_seed/015_permissions.sql
 /usr/local/mysql/bin/mysql --login-path=cs437 micro_lending_dev < database/05_validation/010_object_validation.sql

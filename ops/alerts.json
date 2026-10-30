@@ -1,0 +1,45 @@
+{
+  "window_seconds": 60,
+  "rules": [
+    {
+      "name": "audit_evidence_lost",
+      "severity": "critical",
+      "metric": "audit_fallback_failures",
+      "threshold": 1,
+      "for_seconds": 0,
+      "route": "all protected administration operations"
+    },
+    {
+      "name": "audit_database_unavailable",
+      "severity": "high",
+      "metric": "audit_failures",
+      "threshold": 1,
+      "for_seconds": 0,
+      "route": "all protected administration operations"
+    },
+    {
+      "name": "database_errors",
+      "severity": "high",
+      "metric": "database_failures",
+      "threshold": 3,
+      "for_seconds": 5,
+      "route": "all protected administration operations"
+    },
+    {
+      "name": "repeated_denials",
+      "severity": "warning",
+      "metric": "denials",
+      "threshold": 10,
+      "for_seconds": 5,
+      "route": "all protected administration operations"
+    },
+    {
+      "name": "database_contention",
+      "severity": "warning",
+      "metric": "slow_database_calls",
+      "threshold": 3,
+      "for_seconds": 5,
+      "route": "all protected administration operations"
+    }
+  ]
+}

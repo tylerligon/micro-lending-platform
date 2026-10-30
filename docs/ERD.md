@@ -1,5 +1,8 @@
 # Micro-Lending ERD — compact study and implementation guide
 
+> **October 30 entitlement implementation extension (pending review):** [Current contract](Entitlements.md) adds configurable permissions, custom roles, scoped reads and a local administrator console. The original 15-table design/dictionary remains the historical baseline; the extended SQL model has 17 tables, 126 columns and 29 FKs. Earlier statements that no SQL implementation exists are historical and superseded by README/Milestones evidence.
+
+
 **Baseline:** FRD 1.2 · TDD 1.2 · October 19, 2026.  
 **Application model:** 15 entities, 114 attributes, 27 foreign-key constraints.  
 **Deliverable:** one editable draw.io file, three pages, three corresponding SVGs.
@@ -297,3 +300,13 @@ For a schema change, update FRD/TDD/model first. `build_erd.py` regenerates the 
 layout and **overwrites manual layout edits**; export and validate afterward. The prior
 11-file diagram set is superseded, not a second source of truth. Commit source, exports,
 dictionary, samples, and explanations together. No separate audit document is produced.
+
+## Current entitlement extension
+
+The three original pages and model.json describe the original 15-table baseline.
+Read them together with [Entitlements.drawio](diagrams/Entitlements.drawio) and
+[its SVG](diagrams/06-entitlements.svg) for the 17-table current schema. The extension
+adds RolePermission as an identifying associative entity with two required parents
+(Role and Permission), each with 0..N child grants. Role adds three non-null attributes;
+Permission adds six attributes and RolePermission three. No original FK is removed.
+Full field meanings and implementation constraints: [Entitlements](Entitlements.md).

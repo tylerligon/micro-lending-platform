@@ -8,3 +8,5 @@ INSERT INTO `Role` (RoleCode, Description) VALUES
     ('Auditor', 'Read permitted reports and redacted history without changing business records.');
 
 COMMIT;
+
+UPDATE `Role` SET RoleClass = RoleCode;

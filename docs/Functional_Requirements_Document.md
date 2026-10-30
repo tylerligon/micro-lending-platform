@@ -1,4 +1,7 @@
 # Functional Requirements Document
+
+> **October 30 entitlement implementation extension (pending review):** [Current contract](Entitlements.md) adds configurable permissions, custom roles, scoped reads and a local administrator console. The original 15-table design/dictionary remains the historical baseline; the extended SQL model has 17 tables, 126 columns and 29 FKs. Earlier statements that no SQL implementation exists are historical and superseded by README/Milestones evidence.
+
 ## Micro-Lending Platform
 
 ### 1. Project Identification
@@ -445,3 +448,38 @@ This matrix identifies the bridge to later design and evidence. It is not a clai
 | C-01 through C-10 | Later design, repository, SQL and test artifacts | Normalization, meaningful model, repeatable build, security and measured performance | AC-24 through AC-28; TDD, ERD, scripts, test evidence, final demo |
 
 
+
+### Entitlement amendment — October 30, 2026
+
+This amendment supersedes the closed four-role-name assumption in the original baseline.
+The four business categories remain fixed for separation of duties; administrators may
+create additional named roles within an immutable category.
+
+- ENT-01: Administrators with permission.manage may create, describe and retire roles;
+  retirement requires all memberships to be revoked first.
+- ENT-02: Administrators may grant/revoke supported actions and category-compatible
+  scopes. New capabilities, broader private-data projections and categories require code review.
+- ENT-03: Existing action procedures and new scoped reads shall recheck current grants.
+  No active session may retain a revoked permission for a subsequent protected action.
+- ENT-04: Configuration changes shall retain success audit atomically, reject stale
+  role versions, protect bootstrap access administration and preserve membership history.
+- ENT-05: A local operator console shall expose a permission matrix and configuration
+  controls. Its configured operator identity is not a general public account/login system.
+
+Detailed scope, evidence and limitations: [Entitlements](Entitlements.md).
+
+### Expanded administration acceptance — October 30, 2026
+
+- ENT-06: Two administrators shall authenticate with distinct User identities and retain
+  separate sessions, CSRF secrets, logout/expiry behavior and attributable audit records.
+- ENT-07: Concurrent same-role edits shall reject stale versions; concurrent independent
+  actions shall not share actor/connection state. Revocations apply to subsequent actions.
+- ENT-08: Observed authentication, permission, scope, input and database failures shall
+  produce safe correlated evidence after business rollback; unavailable database evidence
+  shall produce local fallback/alerts without promising host-crash durability.
+- ENT-09: Protected monitoring shall expose bounded counters, timing spans and local
+  firing/recovery events using documented alert thresholds. External messaging is not
+  enabled; hierarchy remains a proposal to confirm with the professor.
+
+These supersede ENT-05's initial single configured operator boundary. Session storage is
+single-process memory; a multi-instance deployment is outside this implementation.

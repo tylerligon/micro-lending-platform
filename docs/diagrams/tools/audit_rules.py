@@ -12,7 +12,7 @@ def audit_errors(data, catalogue, *, bootstrap_accounts=()):
     errors = []
     specs = {s['name']: s for s in catalogue['events']}
     key_fields = {name: key.split('/') for name, key in catalogue['subjects'].items() if name != 'Attempt'}
-    rows = {name: {'/'.join(str(r[k]) for k in keys): r for r in data[name]}
+    rows = {name: {'/'.join(str(r[k]) for k in keys): r for r in data.get(name,[])}
             for name, keys in key_fields.items()}
     users = {r['UserID']: r for r in data['User']}
     requests = {r['RequestID']: r for r in data['LoanRequest']}
@@ -120,7 +120,7 @@ def audit_errors(data, catalogue, *, bootstrap_accounts=()):
         actor = e['ActorUserID']; role = e['ActingRoleCode']; service = e['ServiceActor']; initiator = e['InitiatingUserID']
         kind = rule['kind']
         if kind == 'human':
-            return (actor is not None and role == rule['role'] and active_role(actor, role, e['OccurredAt'])
+            return (actor is not None and next((r.get('RoleClass',r['RoleCode']) for r in data['Role'] if r['RoleCode']==role),None) == rule['role'] and active_role(actor, role, e['OccurredAt'])
                     and service is None and initiator is None and binding_matches(rule, e, subject))
         if kind == 'verified_failure':
             return (actor in users and service is None and initiator is None

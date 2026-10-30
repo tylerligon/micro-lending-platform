@@ -1,13 +1,26 @@
 # Micro-Lending Platform
 
+> **October 30 administration implementation:** [Configurable entitlements and multiuser administration](docs/Entitlements.md) adds two permission tables, independent sessions, concurrent request handling, denial/failure evidence and local monitoring. The tested SQL model has 17 tables, 126 columns and 29 FKs; the original lending diagrams/dictionary plus the linked extension define it. The implementation and recorded acceptance evidence were approved for commit.
+
+
 [SQL build order](database/manifest.txt) · [SQL walkthroughs and tests](tests/sql)
+
+## Administration review build
+
+Run `python3 -m unittest discover -s tests/entitlements -v` for unit checks.
+For the full disposable-server test, set `MYSQLD_BIN` and `MYSQL_CLIENT_BIN` to installed
+MySQL 8.4 binaries, then run `python3 tests/entitlements/integration.py`.
+See [setup, migration and review instructions](docs/Entitlements.md#run-upgrade-and-test)
+for private credential provisioning, runtime grants, application startup and monitoring.
+No passwords or MySQL installation are included. The application binds loopback and
+uses independent sign-in sessions; it does not depend on ENTITLEMENTS_ACTOR_ID.
 
 ## Midterm: request management and database demonstration
 
 This is **our chosen midterm boundary**, not a confirmed professor-issued checklist.
 Keep the existing schema, accounts/profiles, Draft creation/editing and submission.
 New lending workflows stop here: assessment, review/approval, funding, activation,
-repayment allocation and a UI/backend remain unfinished. Seeded finance is not proof
+repayment allocation and the lending UI/backend remain unfinished. The separate administrator application is implemented above. Seeded finance is not proof
 that those operations work. The FRD/TDD remain the full-release design baseline;
 current implementation and test evidence live here and in [Milestones](docs/Milestones.md#milestone-7-midterm-request-management-demonstration).
 

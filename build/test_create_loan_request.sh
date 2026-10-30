@@ -8,10 +8,12 @@ set -e
 /usr/local/mysql/bin/mysql --login-path=cs437 micro_lending_procedure_test < database/02_programmability/010_views.sql
 /usr/local/mysql/bin/mysql --login-path=cs437 micro_lending_procedure_test < database/02_programmability/011_midterm_reports.sql
 /usr/local/mysql/bin/mysql --login-path=cs437 micro_lending_procedure_test < database/02_programmability/020_functions.sql
+/usr/local/mysql/bin/mysql --login-path=cs437 micro_lending_procedure_test < database/02_programmability/025_entitlements.sql
 /usr/local/mysql/bin/mysql --login-path=cs437 micro_lending_procedure_test < database/02_programmability/030_procedures.sql
 /usr/local/mysql/bin/mysql --login-path=cs437 micro_lending_procedure_test < database/02_programmability/031_draft_cancellation.sql
 /usr/local/mysql/bin/mysql --login-path=cs437 micro_lending_procedure_test < database/02_programmability/040_triggers.sql
 /usr/local/mysql/bin/mysql --login-path=cs437 micro_lending_procedure_test < database/02_programmability/041_request_delete_guard.sql
 /usr/local/mysql/bin/mysql --login-path=cs437 micro_lending_procedure_test < database/04_seed/010_reference_data.sql
+/usr/local/mysql/bin/mysql --login-path=cs437 micro_lending_procedure_test < database/04_seed/015_permissions.sql
 /usr/local/mysql/bin/mysql --login-path=cs437 micro_lending_procedure_test < tests/sql/create_loan_request.sql
 /usr/local/mysql/bin/mysql --login-path=cs437 --execute="DROP DATABASE micro_lending_procedure_test;"

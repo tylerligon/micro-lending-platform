@@ -6,9 +6,10 @@ DELIMITER //
 
 -- Internal helper: lock Administrator/target User rows in ascending ID order.
 CREATE PROCEDURE sp_lock_users(IN p_First BIGINT UNSIGNED, IN p_Second BIGINT UNSIGNED)
-SQL SECURITY INVOKER
+SQL SECURITY DEFINER
 BEGIN
     DECLARE v_ID BIGINT UNSIGNED DEFAULT NULL;
+    CALL sp_lock_policy();
     IF p_First IS NULL OR p_Second IS NULL THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'User IDs are required';
     END IF;
@@ -26,7 +27,7 @@ END //
 -- Internal helper: check current account eligibility and role while holding locks.
 CREATE PROCEDURE sp_require_role(IN p_UserID BIGINT UNSIGNED,
     IN p_Role VARCHAR(16), IN p_AllowRestricted BOOLEAN)
-SQL SECURITY INVOKER
+SQL SECURITY DEFINER
 BEGIN
     DECLARE v_Status VARCHAR(16) DEFAULT NULL;
     DECLARE v_RoleID BIGINT UNSIGNED DEFAULT NULL;
@@ -36,7 +37,9 @@ BEGIN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Account is not eligible for this action';
     END IF;
     SELECT UserRoleID INTO v_RoleID FROM UserRole
-    WHERE UserID = p_UserID AND RoleCode = p_Role AND ActiveMarker = 1 FOR UPDATE;
+    WHERE UserID = p_UserID AND ActiveMarker = 1 AND RoleCode IN
+        (SELECT RoleCode FROM `Role` WHERE RoleClass = p_Role AND IsActive = 1)
+    ORDER BY UserRoleID LIMIT 1 FOR UPDATE;
     IF v_RoleID IS NULL THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Required active role is missing';
     END IF;
@@ -44,7 +47,7 @@ END //
 
 -- Internal helper: do not strand live requests, commitments or loans (BR-03).
 CREATE PROCEDURE sp_require_no_live_participation(IN p_UserID BIGINT UNSIGNED)
-SQL SECURITY INVOKER
+SQL SECURITY DEFINER
 BEGIN
     IF EXISTS (SELECT 1 FROM LoanRequest WHERE BorrowerID = p_UserID
         AND RequestState IN ('Submitted', 'PendingReview', 'OpenFunding'))
@@ -64,12 +67,14 @@ END //
 CREATE PROCEDURE sp_early_audit(IN p_Event VARCHAR(40), IN p_Actor BIGINT UNSIGNED,
     IN p_Role VARCHAR(16), IN p_Subject VARCHAR(32), IN p_Key BIGINT UNSIGNED,
     IN p_Context BINARY(16), OUT p_AuditID BIGINT UNSIGNED)
-SQL SECURITY INVOKER
+SQL SECURITY DEFINER
 BEGIN
-    IF NOT ((BINARY p_Role = 'Administrator' AND
+    DECLARE v_Class VARCHAR(16);
+    SELECT RoleClass INTO v_Class FROM `Role` WHERE RoleCode = p_Role;
+    IF NOT ((BINARY v_Class = 'Administrator' AND
              ((p_Event IN ('UserCreated', 'AccountStatusChanged') AND p_Subject = 'User')
               OR (p_Event IN ('RoleGranted', 'RoleRevoked') AND p_Subject = 'UserRole')))
-        OR (BINARY p_Role = 'Borrower' AND
+        OR (BINARY v_Class = 'Borrower' AND
              ((p_Event = 'ProfileSaved' AND p_Subject = 'BorrowerProfile')
               OR (p_Event IN ('RequestSaved', 'RequestSubmitted') AND p_Subject = 'LoanRequest'))))
         OR p_Actor IS NULL OR p_Key IS NULL OR p_Context IS NULL THEN
@@ -87,7 +92,7 @@ END //
 CREATE PROCEDURE sp_submission_exposure(IN p_BorrowerID BIGINT UNSIGNED,
     IN p_RequestID BIGINT UNSIGNED, IN p_AsOf DATETIME(6),
     OUT p_Burden DECIMAL(18,2), OUT p_NoDelinquency BOOLEAN)
-SQL SECURITY INVOKER
+SQL SECURITY DEFINER
 BEGIN
     DECLARE v_RequestBurden DECIMAL(18,2);
     DECLARE v_LoanBurden DECIMAL(18,2);
@@ -124,8 +129,9 @@ CREATE PROCEDURE sp_create_loan_request (
     IN p_Principal TEXT,
     IN p_InstallmentCount INT
 )
-SQL SECURITY INVOKER
+SQL SECURITY DEFINER
 BEGIN
+    DECLARE v_ActingRole VARCHAR(16);
     DECLARE v_Principal DECIMAL(18,2);
     DECLARE v_AccountStatus VARCHAR(16) DEFAULT NULL;
     DECLARE v_UserRoleID BIGINT UNSIGNED DEFAULT NULL;
@@ -135,13 +141,23 @@ BEGIN
 
     -- Any SQL error, including our SIGNAL messages, undoes all writes and is returned.
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
-    BEGIN
-        ROLLBACK;
-        RESIGNAL;
-    END;
+ BEGIN
+  DECLARE v_Number INT; DECLARE v_Message TEXT; DECLARE v_Reason VARCHAR(40);
+  GET STACKED DIAGNOSTICS CONDITION 1 v_Number=MYSQL_ERRNO,v_Message=MESSAGE_TEXT;
+  ROLLBACK;
+  SET v_Reason=CASE WHEN v_Number=1213 THEN 'DB_DEADLOCK' WHEN v_Number=1205 THEN 'DB_LOCK_TIMEOUT'
+   WHEN v_Message LIKE '%version%' THEN 'STALE_VERSION' WHEN v_Message LIKE '%Owner%' OR v_Message LIKE '%Owned%' THEN 'OWNER_REQUIRED'
+   WHEN v_Message LIKE '%Participation%' THEN 'PARTICIPATION_REQUIRED' WHEN v_Message LIKE '%Permission%' THEN 'ROLE_REQUIRED'
+   WHEN LOWER(v_Message) LIKE '%audit%failure%' THEN 'INTEGRITY_FAILURE' WHEN v_Number=1644 THEN 'INVALID_INPUT' ELSE 'DB_ERROR' END;
+  BEGIN
+   DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET @ml_audit_failed=1;
+   CALL sp_record_failure(p_BorrowerID,'sp_create_loan_request',v_Reason,COALESCE(@ml_context,UUID_TO_BIN(UUID())),v_Number<>1644 OR v_Reason='INTEGRITY_FAILURE');
+  END;
+  RESIGNAL;
+ END;
 
     SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
-    START TRANSACTION;
+    START TRANSACTION; CALL sp_lock_policy();
 
     IF p_BorrowerID IS NULL THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Borrower ID is required';
@@ -168,13 +184,7 @@ BEGIN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Borrower account must be Active';
     END IF;
 
-    SELECT UserRoleID INTO v_UserRoleID
-    FROM UserRole
-    WHERE UserID = p_BorrowerID AND RoleCode = 'Borrower' AND ActiveMarker = 1
-    FOR UPDATE;
-    IF v_UserRoleID IS NULL THEN
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Active Borrower role is required';
-    END IF;
+    CALL sp_require_permission(p_BorrowerID, NULL, 'request.create', NULL, v_ActingRole);
 
     SELECT UserID INTO v_ProfileUserID
     FROM BorrowerProfile WHERE UserID = p_BorrowerID FOR UPDATE;
@@ -190,8 +200,8 @@ BEGIN
     -- The successful action and its safe audit details commit together.
     INSERT INTO AuditEvent (EventType, Outcome, ActorUserID, ActingRoleCode,
         TechnicalAccount, SubjectType, SubjectKey, ContextID)
-    VALUES ('RequestSaved', 'Success', p_BorrowerID, 'Borrower', SESSION_USER(),
-            'LoanRequest', CAST(v_RequestID AS CHAR), UUID_TO_BIN(UUID()));
+    VALUES ('RequestSaved', 'Success', p_BorrowerID, v_ActingRole, SESSION_USER(),
+            'LoanRequest', CAST(v_RequestID AS CHAR), COALESCE(@ml_context,UUID_TO_BIN(UUID())));
     SET v_AuditEventID = LAST_INSERT_ID();
 
     INSERT INTO AuditChange (AuditEventID, FieldName, OldValue, NewValue) VALUES
@@ -208,14 +218,29 @@ END //
 CREATE PROCEDURE sp_create_user(IN p_AdminID BIGINT UNSIGNED,
     IN p_LoginName TEXT, IN p_DisplayName TEXT, IN p_PublicAlias TEXT,
     IN p_EmailCipher BLOB, IN p_PasswordHash TEXT)
-SQL SECURITY INVOKER
+SQL SECURITY DEFINER
 BEGIN
+    DECLARE v_ActingRole VARCHAR(16);
     DECLARE v_UserID BIGINT UNSIGNED;
     DECLARE v_AuditID BIGINT UNSIGNED;
-    DECLARE EXIT HANDLER FOR SQLEXCEPTION BEGIN ROLLBACK; RESIGNAL; END;
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+ BEGIN
+  DECLARE v_Number INT; DECLARE v_Message TEXT; DECLARE v_Reason VARCHAR(40);
+  GET STACKED DIAGNOSTICS CONDITION 1 v_Number=MYSQL_ERRNO,v_Message=MESSAGE_TEXT;
+  ROLLBACK;
+  SET v_Reason=CASE WHEN v_Number=1213 THEN 'DB_DEADLOCK' WHEN v_Number=1205 THEN 'DB_LOCK_TIMEOUT'
+   WHEN v_Message LIKE '%version%' THEN 'STALE_VERSION' WHEN v_Message LIKE '%Owner%' OR v_Message LIKE '%Owned%' THEN 'OWNER_REQUIRED'
+   WHEN v_Message LIKE '%Participation%' THEN 'PARTICIPATION_REQUIRED' WHEN v_Message LIKE '%Permission%' THEN 'ROLE_REQUIRED'
+   WHEN LOWER(v_Message) LIKE '%audit%failure%' THEN 'INTEGRITY_FAILURE' WHEN v_Number=1644 THEN 'INVALID_INPUT' ELSE 'DB_ERROR' END;
+  BEGIN
+   DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET @ml_audit_failed=1;
+   CALL sp_record_failure(p_AdminID,'sp_create_user',v_Reason,COALESCE(@ml_context,UUID_TO_BIN(UUID())),v_Number<>1644 OR v_Reason='INTEGRITY_FAILURE');
+  END;
+  RESIGNAL;
+ END;
     SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
-    START TRANSACTION;
-    CALL sp_require_role(p_AdminID, 'Administrator', FALSE);
+    START TRANSACTION; CALL sp_lock_policy();
+    CALL sp_require_permission(p_AdminID, NULL, 'user.create', NULL, v_ActingRole);
     IF p_LoginName IS NULL OR CHAR_LENGTH(TRIM(p_LoginName)) = 0 OR CHAR_LENGTH(p_LoginName) > 80
        OR p_DisplayName IS NULL OR CHAR_LENGTH(TRIM(p_DisplayName)) = 0 OR CHAR_LENGTH(p_DisplayName) > 120
        OR p_PublicAlias IS NULL OR CHAR_LENGTH(TRIM(p_PublicAlias)) = 0 OR CHAR_LENGTH(p_PublicAlias) > 40
@@ -226,8 +251,8 @@ BEGIN
     INSERT INTO `User` (LoginName, DisplayName, PublicAlias, PrivateEmailCipher, PasswordHash)
     VALUES (TRIM(p_LoginName), TRIM(p_DisplayName), TRIM(p_PublicAlias), p_EmailCipher, p_PasswordHash);
     SET v_UserID = LAST_INSERT_ID();
-    CALL sp_early_audit('UserCreated', p_AdminID, 'Administrator', 'User', v_UserID,
-        UUID_TO_BIN(UUID()), v_AuditID);
+    CALL sp_early_audit('UserCreated', p_AdminID, v_ActingRole, 'User', v_UserID,
+        COALESCE(@ml_context,UUID_TO_BIN(UUID())), v_AuditID);
     INSERT INTO AuditChange (AuditEventID, FieldName, NewValue) VALUES
         (v_AuditID, 'LoginName', TRIM(p_LoginName)),
         (v_AuditID, 'PublicAlias', TRIM(p_PublicAlias)), (v_AuditID, 'AccountStatus', 'Active'),
@@ -239,18 +264,34 @@ END //
 -- FR-02: grant a new role episode or revoke the current one, preserving history.
 CREATE PROCEDURE sp_set_role(IN p_AdminID BIGINT UNSIGNED, IN p_UserID BIGINT UNSIGNED,
     IN p_RoleCode TEXT, IN p_Grant BOOLEAN)
-SQL SECURITY INVOKER
+SQL SECURITY DEFINER
 BEGIN
+    DECLARE v_ActingRole VARCHAR(16);
     DECLARE v_RoleID BIGINT UNSIGNED DEFAULT NULL;
     DECLARE v_AuditID BIGINT UNSIGNED;
     DECLARE v_Time DATETIME(6);
     DECLARE v_Status VARCHAR(16);
-    DECLARE EXIT HANDLER FOR SQLEXCEPTION BEGIN ROLLBACK; RESIGNAL; END;
+    DECLARE v_Class VARCHAR(16);
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+ BEGIN
+  DECLARE v_Number INT; DECLARE v_Message TEXT; DECLARE v_Reason VARCHAR(40);
+  GET STACKED DIAGNOSTICS CONDITION 1 v_Number=MYSQL_ERRNO,v_Message=MESSAGE_TEXT;
+  ROLLBACK;
+  SET v_Reason=CASE WHEN v_Number=1213 THEN 'DB_DEADLOCK' WHEN v_Number=1205 THEN 'DB_LOCK_TIMEOUT'
+   WHEN v_Message LIKE '%version%' THEN 'STALE_VERSION' WHEN v_Message LIKE '%Owner%' OR v_Message LIKE '%Owned%' THEN 'OWNER_REQUIRED'
+   WHEN v_Message LIKE '%Participation%' THEN 'PARTICIPATION_REQUIRED' WHEN v_Message LIKE '%Permission%' THEN 'ROLE_REQUIRED'
+   WHEN LOWER(v_Message) LIKE '%audit%failure%' THEN 'INTEGRITY_FAILURE' WHEN v_Number=1644 THEN 'INVALID_INPUT' ELSE 'DB_ERROR' END;
+  BEGIN
+   DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET @ml_audit_failed=1;
+   CALL sp_record_failure(p_AdminID,'sp_set_role',v_Reason,COALESCE(@ml_context,UUID_TO_BIN(UUID())),v_Number<>1644 OR v_Reason='INTEGRITY_FAILURE');
+  END;
+  RESIGNAL;
+ END;
     SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
-    START TRANSACTION;
+    START TRANSACTION; CALL sp_lock_policy();
     CALL sp_lock_users(p_AdminID, p_UserID);
-    CALL sp_require_role(p_AdminID, 'Administrator', FALSE);
-    IF p_RoleCode IS NULL OR BINARY p_RoleCode NOT IN ('Borrower', 'Lender', 'Administrator', 'Auditor')
+    CALL sp_require_permission(p_AdminID, NULL, 'role.assign', NULL, v_ActingRole);
+    IF p_RoleCode IS NULL OR NOT EXISTS (SELECT 1 FROM `Role` WHERE RoleCode = BINARY p_RoleCode AND IsActive = 1)
        OR p_Grant IS NULL OR p_Grant NOT IN (0, 1) THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Canonical role and grant flag 0 or 1 are required';
     END IF;
@@ -258,6 +299,11 @@ BEGIN
     SELECT UserRoleID INTO v_RoleID FROM UserRole
     WHERE UserID = p_UserID AND RoleCode = p_RoleCode AND ActiveMarker = 1 FOR UPDATE;
     SET v_Time = UTC_TIMESTAMP(6);
+    SELECT RoleClass INTO v_Class FROM `Role` WHERE RoleCode = p_RoleCode;
+    IF EXISTS(SELECT 1 FROM RolePermission WHERE RoleCode=p_RoleCode AND PermissionCode='permission.manage') THEN
+        CALL sp_require_permission(p_AdminID,NULL,'permission.manage',NULL,v_ActingRole);
+    END IF;
+    CALL sp_protect_access_admin(p_UserID, p_RoleCode, p_Grant);
     IF p_Grant = 1 THEN
         IF v_Status = 'Inactive' THEN
             SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Cannot grant a role to an Inactive account';
@@ -265,16 +311,16 @@ BEGIN
         IF v_RoleID IS NOT NULL THEN
             SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Role is already active';
         END IF;
-        IF EXISTS (SELECT 1 FROM UserRole WHERE UserID = p_UserID AND ActiveMarker = 1
-            AND ((p_RoleCode IN ('Borrower', 'Lender') AND RoleCode IN ('Administrator', 'Auditor'))
-                OR (p_RoleCode IN ('Administrator', 'Auditor')))) THEN
+        IF EXISTS (SELECT 1 FROM UserRole ur JOIN `Role` rr ON rr.RoleCode=ur.RoleCode WHERE ur.UserID = p_UserID AND ur.ActiveMarker = 1
+            AND ((v_Class IN ('Borrower', 'Lender') AND rr.RoleClass IN ('Administrator', 'Auditor'))
+                OR (v_Class IN ('Administrator', 'Auditor') AND rr.RoleClass <> v_Class))) THEN
             SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Role conflicts with existing participation or oversight role';
         END IF;
         INSERT INTO UserRole (UserID, RoleCode, GrantedAt, GrantedByUserID)
         VALUES (p_UserID, p_RoleCode, v_Time, p_AdminID);
         SET v_RoleID = LAST_INSERT_ID();
-        CALL sp_early_audit('RoleGranted', p_AdminID, 'Administrator', 'UserRole', v_RoleID,
-            UUID_TO_BIN(UUID()), v_AuditID);
+        CALL sp_early_audit('RoleGranted', p_AdminID, v_ActingRole, 'UserRole', v_RoleID,
+            COALESCE(@ml_context,UUID_TO_BIN(UUID())), v_AuditID);
         INSERT INTO AuditChange (AuditEventID, FieldName, NewValue) VALUES
             (v_AuditID, 'UserID', CAST(p_UserID AS CHAR)), (v_AuditID, 'RoleCode', p_RoleCode),
             (v_AuditID, 'GrantedAt', CAST(v_Time AS CHAR));
@@ -282,12 +328,12 @@ BEGIN
         IF v_RoleID IS NULL THEN
             SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Role is not active';
         END IF;
-        IF p_RoleCode IN ('Borrower', 'Lender') THEN
+        IF v_Class IN ('Borrower', 'Lender') THEN
             CALL sp_require_no_live_participation(p_UserID);
         END IF;
         -- Audit first, while the administrator's own role is still effective.
-        CALL sp_early_audit('RoleRevoked', p_AdminID, 'Administrator', 'UserRole', v_RoleID,
-            UUID_TO_BIN(UUID()), v_AuditID);
+        CALL sp_early_audit('RoleRevoked', p_AdminID, v_ActingRole, 'UserRole', v_RoleID,
+            COALESCE(@ml_context,UUID_TO_BIN(UUID())), v_AuditID);
         SELECT GREATEST(UTC_TIMESTAMP(6), DATE_ADD(OccurredAt, INTERVAL 1 MICROSECOND))
             INTO v_Time FROM AuditEvent WHERE AuditEventID = v_AuditID;
         INSERT INTO AuditChange (AuditEventID, FieldName, NewValue)
@@ -303,16 +349,31 @@ END //
 CREATE PROCEDURE sp_set_account_status(IN p_AdminID BIGINT UNSIGNED,
     IN p_UserID BIGINT UNSIGNED, IN p_ExpectedVersion BIGINT UNSIGNED,
     IN p_Status TEXT, IN p_Reason TEXT)
-SQL SECURITY INVOKER
+SQL SECURITY DEFINER
 BEGIN
+    DECLARE v_ActingRole VARCHAR(16);
     DECLARE v_OldStatus VARCHAR(16);
     DECLARE v_Version BIGINT UNSIGNED;
     DECLARE v_AuditID BIGINT UNSIGNED;
-    DECLARE EXIT HANDLER FOR SQLEXCEPTION BEGIN ROLLBACK; RESIGNAL; END;
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+ BEGIN
+  DECLARE v_Number INT; DECLARE v_Message TEXT; DECLARE v_Reason VARCHAR(40);
+  GET STACKED DIAGNOSTICS CONDITION 1 v_Number=MYSQL_ERRNO,v_Message=MESSAGE_TEXT;
+  ROLLBACK;
+  SET v_Reason=CASE WHEN v_Number=1213 THEN 'DB_DEADLOCK' WHEN v_Number=1205 THEN 'DB_LOCK_TIMEOUT'
+   WHEN v_Message LIKE '%version%' THEN 'STALE_VERSION' WHEN v_Message LIKE '%Owner%' OR v_Message LIKE '%Owned%' THEN 'OWNER_REQUIRED'
+   WHEN v_Message LIKE '%Participation%' THEN 'PARTICIPATION_REQUIRED' WHEN v_Message LIKE '%Permission%' THEN 'ROLE_REQUIRED'
+   WHEN LOWER(v_Message) LIKE '%audit%failure%' THEN 'INTEGRITY_FAILURE' WHEN v_Number=1644 THEN 'INVALID_INPUT' ELSE 'DB_ERROR' END;
+  BEGIN
+   DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET @ml_audit_failed=1;
+   CALL sp_record_failure(p_AdminID,'sp_set_account_status',v_Reason,COALESCE(@ml_context,UUID_TO_BIN(UUID())),v_Number<>1644 OR v_Reason='INTEGRITY_FAILURE');
+  END;
+  RESIGNAL;
+ END;
     SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
-    START TRANSACTION;
+    START TRANSACTION; CALL sp_lock_policy();
     CALL sp_lock_users(p_AdminID, p_UserID);
-    CALL sp_require_role(p_AdminID, 'Administrator', FALSE);
+    CALL sp_require_permission(p_AdminID, NULL, 'account.status', NULL, v_ActingRole);
     SELECT AccountStatus, RowVersion INTO v_OldStatus, v_Version FROM `User` WHERE UserID = p_UserID;
     IF p_ExpectedVersion IS NULL OR p_ExpectedVersion <> v_Version THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Stale account version';
@@ -324,11 +385,14 @@ BEGIN
     IF BINARY p_Status = BINARY v_OldStatus THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Account already has this status';
     END IF;
+    IF BINARY p_Status <> 'Active' THEN
+        CALL sp_protect_access_admin(p_UserID, 'Administrator', FALSE);
+    END IF;
     IF BINARY p_Status = 'Inactive' THEN
         CALL sp_require_no_live_participation(p_UserID);
     END IF;
-    CALL sp_early_audit('AccountStatusChanged', p_AdminID, 'Administrator', 'User', p_UserID,
-        UUID_TO_BIN(UUID()), v_AuditID);
+    CALL sp_early_audit('AccountStatusChanged', p_AdminID, v_ActingRole, 'User', p_UserID,
+        COALESCE(@ml_context,UUID_TO_BIN(UUID())), v_AuditID);
     INSERT INTO AuditChange (AuditEventID, FieldName, OldValue, NewValue) VALUES
         (v_AuditID, 'AccountStatus', v_OldStatus, p_Status),
         (v_AuditID, 'StatusReason', NULL, TRIM(p_Reason));
@@ -341,17 +405,32 @@ END //
 CREATE PROCEDURE sp_save_profile(IN p_BorrowerID BIGINT UNSIGNED,
     IN p_ExpectedVersion BIGINT UNSIGNED, IN p_Income TEXT, IN p_Obligations TEXT,
     IN p_IncomeCipher BLOB, IN p_ObligationsCipher BLOB)
-SQL SECURITY INVOKER
+SQL SECURITY DEFINER
 BEGIN
+    DECLARE v_ActingRole VARCHAR(16);
     DECLARE v_Version BIGINT UNSIGNED DEFAULT NULL;
     DECLARE v_Income DECIMAL(18,2);
     DECLARE v_Obligations DECIMAL(18,2);
     DECLARE v_AuditID BIGINT UNSIGNED;
-    DECLARE EXIT HANDLER FOR SQLEXCEPTION BEGIN ROLLBACK; RESIGNAL; END;
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+ BEGIN
+  DECLARE v_Number INT; DECLARE v_Message TEXT; DECLARE v_Reason VARCHAR(40);
+  GET STACKED DIAGNOSTICS CONDITION 1 v_Number=MYSQL_ERRNO,v_Message=MESSAGE_TEXT;
+  ROLLBACK;
+  SET v_Reason=CASE WHEN v_Number=1213 THEN 'DB_DEADLOCK' WHEN v_Number=1205 THEN 'DB_LOCK_TIMEOUT'
+   WHEN v_Message LIKE '%version%' THEN 'STALE_VERSION' WHEN v_Message LIKE '%Owner%' OR v_Message LIKE '%Owned%' THEN 'OWNER_REQUIRED'
+   WHEN v_Message LIKE '%Participation%' THEN 'PARTICIPATION_REQUIRED' WHEN v_Message LIKE '%Permission%' THEN 'ROLE_REQUIRED'
+   WHEN LOWER(v_Message) LIKE '%audit%failure%' THEN 'INTEGRITY_FAILURE' WHEN v_Number=1644 THEN 'INVALID_INPUT' ELSE 'DB_ERROR' END;
+  BEGIN
+   DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET @ml_audit_failed=1;
+   CALL sp_record_failure(p_BorrowerID,'sp_save_profile',v_Reason,COALESCE(@ml_context,UUID_TO_BIN(UUID())),v_Number<>1644 OR v_Reason='INTEGRITY_FAILURE');
+  END;
+  RESIGNAL;
+ END;
     SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
-    START TRANSACTION;
+    START TRANSACTION; CALL sp_lock_policy();
     -- Restricted borrowers may still maintain their own profile (BR-03).
-    CALL sp_require_role(p_BorrowerID, 'Borrower', TRUE);
+    CALL sp_require_permission(p_BorrowerID, NULL, 'profile.edit', p_BorrowerID, v_ActingRole);
     SET v_Income = fn_money(p_Income);
     SET v_Obligations = fn_money(p_Obligations);
     IF v_Income <= 0 OR p_IncomeCipher IS NULL OR OCTET_LENGTH(p_IncomeCipher) NOT BETWEEN 1 AND 128
@@ -375,8 +454,8 @@ BEGIN
             ExternalObligationsCipher = p_ObligationsCipher, UpdatedAt = UTC_TIMESTAMP(6),
             RowVersion = v_Version WHERE UserID = p_BorrowerID;
     END IF;
-    CALL sp_early_audit('ProfileSaved', p_BorrowerID, 'Borrower', 'BorrowerProfile', p_BorrowerID,
-        UUID_TO_BIN(UUID()), v_AuditID);
+    CALL sp_early_audit('ProfileSaved', p_BorrowerID, v_ActingRole, 'BorrowerProfile', p_BorrowerID,
+        COALESCE(@ml_context,UUID_TO_BIN(UUID())), v_AuditID);
     -- Field names only. Never put private plaintext, ciphertext or hashes in the audit feed.
     INSERT INTO AuditChange (AuditEventID, FieldName) VALUES
         (v_AuditID, 'MonthlyIncomeCipher'), (v_AuditID, 'ExternalObligationsCipher');
@@ -388,8 +467,9 @@ END //
 CREATE PROCEDURE sp_update_loan_request(IN p_BorrowerID BIGINT UNSIGNED,
     IN p_RequestID BIGINT UNSIGNED, IN p_ExpectedVersion BIGINT UNSIGNED,
     IN p_Purpose TEXT, IN p_Principal TEXT, IN p_InstallmentCount INT)
-SQL SECURITY INVOKER
+SQL SECURITY DEFINER
 BEGIN
+    DECLARE v_ActingRole VARCHAR(16);
     DECLARE v_Owner BIGINT UNSIGNED DEFAULT NULL;
     DECLARE v_State VARCHAR(20);
     DECLARE v_Version BIGINT UNSIGNED;
@@ -398,10 +478,24 @@ BEGIN
     DECLARE v_NewPrincipal DECIMAL(18,2);
     DECLARE v_Term INT;
     DECLARE v_AuditID BIGINT UNSIGNED;
-    DECLARE EXIT HANDLER FOR SQLEXCEPTION BEGIN ROLLBACK; RESIGNAL; END;
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+ BEGIN
+  DECLARE v_Number INT; DECLARE v_Message TEXT; DECLARE v_Reason VARCHAR(40);
+  GET STACKED DIAGNOSTICS CONDITION 1 v_Number=MYSQL_ERRNO,v_Message=MESSAGE_TEXT;
+  ROLLBACK;
+  SET v_Reason=CASE WHEN v_Number=1213 THEN 'DB_DEADLOCK' WHEN v_Number=1205 THEN 'DB_LOCK_TIMEOUT'
+   WHEN v_Message LIKE '%version%' THEN 'STALE_VERSION' WHEN v_Message LIKE '%Owner%' OR v_Message LIKE '%Owned%' THEN 'OWNER_REQUIRED'
+   WHEN v_Message LIKE '%Participation%' THEN 'PARTICIPATION_REQUIRED' WHEN v_Message LIKE '%Permission%' THEN 'ROLE_REQUIRED'
+   WHEN LOWER(v_Message) LIKE '%audit%failure%' THEN 'INTEGRITY_FAILURE' WHEN v_Number=1644 THEN 'INVALID_INPUT' ELSE 'DB_ERROR' END;
+  BEGIN
+   DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET @ml_audit_failed=1;
+   CALL sp_record_failure(p_BorrowerID,'sp_update_loan_request',v_Reason,COALESCE(@ml_context,UUID_TO_BIN(UUID())),v_Number<>1644 OR v_Reason='INTEGRITY_FAILURE');
+  END;
+  RESIGNAL;
+ END;
     SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
-    START TRANSACTION;
-    CALL sp_require_role(p_BorrowerID, 'Borrower', FALSE);
+    START TRANSACTION; CALL sp_lock_policy();
+    CALL sp_require_permission(p_BorrowerID, NULL, 'request.edit', p_RequestID, v_ActingRole);
     IF NOT EXISTS (SELECT 1 FROM BorrowerProfile WHERE UserID = p_BorrowerID) THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Borrower profile is required';
     END IF;
@@ -425,8 +519,8 @@ BEGIN
     END IF;
     UPDATE LoanRequest SET Purpose = TRIM(p_Purpose), Principal = v_NewPrincipal,
         InstallmentCount = p_InstallmentCount, RowVersion = RowVersion + 1 WHERE RequestID = p_RequestID;
-    CALL sp_early_audit('RequestSaved', p_BorrowerID, 'Borrower', 'LoanRequest', p_RequestID,
-        UUID_TO_BIN(UUID()), v_AuditID);
+    CALL sp_early_audit('RequestSaved', p_BorrowerID, v_ActingRole, 'LoanRequest', p_RequestID,
+        COALESCE(@ml_context,UUID_TO_BIN(UUID())), v_AuditID);
     INSERT INTO AuditChange (AuditEventID, FieldName, OldValue, NewValue) VALUES
         (v_AuditID, 'Purpose', v_Purpose, TRIM(p_Purpose)),
         (v_AuditID, 'Principal', CAST(v_Principal AS CHAR), CAST(v_NewPrincipal AS CHAR)),
@@ -437,7 +531,7 @@ END //
 
 -- Internal helper: clear connection-local submission preparation context.
 CREATE PROCEDURE sp_clear_submission()
-SQL SECURITY INVOKER
+SQL SECURITY DEFINER
 BEGIN
     SET @ml_submit_user = NULL, @ml_submit_request = NULL, @ml_submit_context = NULL,
         @ml_submit_profile_version = NULL, @ml_submit_request_version = NULL,
@@ -448,8 +542,9 @@ END //
 -- FR-07 prepare: start transaction, lock source records, retain context and SAVEPOINT.
 CREATE PROCEDURE sp_prepare_submission(IN p_BorrowerID BIGINT UNSIGNED,
     IN p_RequestID BIGINT UNSIGNED, IN p_ExpectedVersion BIGINT UNSIGNED)
-SQL SECURITY INVOKER
+SQL SECURITY DEFINER
 BEGIN
+    DECLARE v_ActingRole VARCHAR(16);
     DECLARE v_Owner BIGINT UNSIGNED DEFAULT NULL;
     DECLARE v_State VARCHAR(20);
     DECLARE v_Version BIGINT UNSIGNED;
@@ -460,11 +555,24 @@ BEGIN
     DECLARE v_Burden DECIMAL(18,2);
     DECLARE v_NoDelinquency BOOLEAN;
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
-    BEGIN ROLLBACK; CALL sp_clear_submission(); RESIGNAL; END;
+ BEGIN
+  DECLARE v_Number INT; DECLARE v_Message TEXT; DECLARE v_Reason VARCHAR(40);
+  GET STACKED DIAGNOSTICS CONDITION 1 v_Number=MYSQL_ERRNO,v_Message=MESSAGE_TEXT;
+  ROLLBACK; CALL sp_clear_submission();
+  SET v_Reason=CASE WHEN v_Number=1213 THEN 'DB_DEADLOCK' WHEN v_Number=1205 THEN 'DB_LOCK_TIMEOUT'
+   WHEN v_Message LIKE '%version%' THEN 'STALE_VERSION' WHEN v_Message LIKE '%Owner%' OR v_Message LIKE '%Owned%' THEN 'OWNER_REQUIRED'
+   WHEN v_Message LIKE '%Participation%' THEN 'PARTICIPATION_REQUIRED' WHEN v_Message LIKE '%Permission%' THEN 'ROLE_REQUIRED'
+   WHEN LOWER(v_Message) LIKE '%audit%failure%' THEN 'INTEGRITY_FAILURE' WHEN v_Number=1644 THEN 'INVALID_INPUT' ELSE 'DB_ERROR' END;
+  BEGIN
+   DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET @ml_audit_failed=1;
+   CALL sp_record_failure(p_BorrowerID,'sp_prepare_submission',v_Reason,COALESCE(@ml_context,UUID_TO_BIN(UUID())),v_Number<>1644 OR v_Reason='INTEGRITY_FAILURE');
+  END;
+  RESIGNAL;
+ END;
     CALL sp_clear_submission();
     SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
-    START TRANSACTION;
-    CALL sp_require_role(p_BorrowerID, 'Borrower', FALSE);
+    START TRANSACTION; CALL sp_lock_policy();
+    CALL sp_require_permission(p_BorrowerID, NULL, 'request.submit', p_RequestID, v_ActingRole);
     SELECT RowVersion, MonthlyIncomeCipher, ExternalObligationsCipher
         INTO v_ProfileVersion, v_Income, v_Obligations
     FROM BorrowerProfile WHERE UserID = p_BorrowerID FOR UPDATE;
@@ -485,7 +593,7 @@ BEGIN
     SET v_Time = UTC_TIMESTAMP(6);
     CALL sp_submission_exposure(p_BorrowerID, p_RequestID, v_Time, v_Burden, v_NoDelinquency);
     SET @ml_submit_user = p_BorrowerID, @ml_submit_request = p_RequestID,
-        @ml_submit_context = UUID_TO_BIN(UUID()), @ml_submit_profile_version = v_ProfileVersion,
+        @ml_submit_context = COALESCE(@ml_context,UUID_TO_BIN(UUID())), @ml_submit_profile_version = v_ProfileVersion,
         @ml_submit_request_version = v_Version, @ml_submit_income_digest = SHA2(v_Income, 256),
         @ml_submit_obligations_digest = SHA2(v_Obligations, 256), @ml_submit_time = v_Time,
         @ml_submit_burden = v_Burden, @ml_submit_no_delinquency = v_NoDelinquency;
@@ -504,15 +612,29 @@ CREATE PROCEDURE sp_submit_request(IN p_BorrowerID BIGINT UNSIGNED,
     IN p_Income TEXT, IN p_Obligations TEXT,
     IN p_SubmittedIncomeCipher BLOB, IN p_SubmittedObligationsCipher BLOB,
     IN p_PlatformBurdenCipher BLOB)
-SQL SECURITY INVOKER
+SQL SECURITY DEFINER
 BEGIN
+    DECLARE v_ActingRole VARCHAR(16);
     DECLARE v_Income DECIMAL(18,2);
     DECLARE v_Obligations DECIMAL(18,2);
     DECLARE v_EvaluationID BIGINT UNSIGNED;
     DECLARE v_AuditID BIGINT UNSIGNED;
     DECLARE v_Version BIGINT UNSIGNED;
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
-    BEGIN ROLLBACK; CALL sp_clear_submission(); RESIGNAL; END;
+ BEGIN
+  DECLARE v_Number INT; DECLARE v_Message TEXT; DECLARE v_Reason VARCHAR(40);
+  GET STACKED DIAGNOSTICS CONDITION 1 v_Number=MYSQL_ERRNO,v_Message=MESSAGE_TEXT;
+  ROLLBACK; CALL sp_clear_submission();
+  SET v_Reason=CASE WHEN v_Number=1213 THEN 'DB_DEADLOCK' WHEN v_Number=1205 THEN 'DB_LOCK_TIMEOUT'
+   WHEN v_Message LIKE '%version%' THEN 'STALE_VERSION' WHEN v_Message LIKE '%Owner%' OR v_Message LIKE '%Owned%' THEN 'OWNER_REQUIRED'
+   WHEN v_Message LIKE '%Participation%' THEN 'PARTICIPATION_REQUIRED' WHEN v_Message LIKE '%Permission%' THEN 'ROLE_REQUIRED'
+   WHEN LOWER(v_Message) LIKE '%audit%failure%' THEN 'INTEGRITY_FAILURE' WHEN v_Number=1644 THEN 'INVALID_INPUT' ELSE 'DB_ERROR' END;
+  BEGIN
+   DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET @ml_audit_failed=1;
+   CALL sp_record_failure(p_BorrowerID,'sp_submit_request',v_Reason,COALESCE(@ml_context,UUID_TO_BIN(UUID())),v_Number<>1644 OR v_Reason='INTEGRITY_FAILURE');
+  END;
+  RESIGNAL;
+ END;
     IF @ml_submit_context IS NULL OR p_Context IS NULL OR OCTET_LENGTH(p_Context) <> 16
        OR NOT (p_Context <=> @ml_submit_context)
        OR p_BorrowerID IS NULL OR NOT (p_BorrowerID <=> @ml_submit_user)
@@ -520,7 +642,7 @@ BEGIN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Matching prepared submission on this connection is required';
     END IF;
     RELEASE SAVEPOINT ml_submission_ready;
-    CALL sp_require_role(p_BorrowerID, 'Borrower', FALSE);
+    CALL sp_require_permission(p_BorrowerID, NULL, 'request.submit', p_RequestID, v_ActingRole);
     -- Guard against changes even from another statement on the reserved connection.
     IF NOT EXISTS (SELECT 1 FROM LoanRequest WHERE RequestID = p_RequestID
         AND BorrowerID = p_BorrowerID AND RequestState = 'Draft'
@@ -552,7 +674,7 @@ BEGIN
         SubmittedAt = @ml_submit_time, SubmittedIncomeCipher = p_SubmittedIncomeCipher,
         SubmittedObligationsCipher = p_SubmittedObligationsCipher, RowVersion = v_Version
     WHERE RequestID = p_RequestID;
-    CALL sp_early_audit('RequestSubmitted', p_BorrowerID, 'Borrower', 'LoanRequest', p_RequestID,
+    CALL sp_early_audit('RequestSubmitted', p_BorrowerID, v_ActingRole, 'LoanRequest', p_RequestID,
         p_Context, v_AuditID);
     INSERT INTO AuditChange (AuditEventID, FieldName, OldValue, NewValue) VALUES
         (v_AuditID, 'RequestState', 'Draft', 'Submitted'),

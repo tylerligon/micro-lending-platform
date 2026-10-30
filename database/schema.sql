@@ -28,9 +28,12 @@ CREATE TABLE `Role` (
     RoleCode VARCHAR(16) COLLATE utf8mb4_0900_bin PRIMARY KEY,
     Description VARCHAR(255) NOT NULL,
 
-    CHECK (
-        RoleCode IN ('Borrower', 'Lender', 'Administrator', 'Auditor')
-    ),
+    RoleClass VARCHAR(16) COLLATE utf8mb4_0900_bin NOT NULL DEFAULT 'Borrower',
+    IsActive BOOLEAN NOT NULL DEFAULT TRUE,
+    RowVersion BIGINT UNSIGNED NOT NULL DEFAULT 0,
+    CHECK (RoleClass IN ('Borrower', 'Lender', 'Administrator', 'Auditor')),
+    CHECK (IsActive IN (0,1)),
+    CHECK (CHAR_LENGTH(TRIM(RoleCode)) BETWEEN 1 AND 16),
     CHECK (CHAR_LENGTH(TRIM(Description)) > 0)
 ) ENGINE = InnoDB;
 
@@ -325,7 +328,7 @@ CREATE TABLE AuditEvent (
     CHECK (AttemptedOperationReference IS NULL
            OR CHAR_LENGTH(TRIM(AttemptedOperationReference)) > 0),
     CHECK (EventType IN (
-        'UserCreated', 'AccountStatusChanged', 'RoleGranted', 'RoleRevoked', 'ProfileSaved',
+        'PasswordProvisioned', 'RoleConfigured', 'PermissionConfigured', 'UserCreated', 'AccountStatusChanged', 'RoleGranted', 'RoleRevoked', 'ProfileSaved',
         'RequestSaved', 'RequestSubmitted', 'AssessmentCompleted', 'ReviewApproved',
         'ReviewRejected', 'CommitmentAccepted', 'CommitmentApplied', 'LoanActivated',
         'RequestCancelled', 'RequestExpired', 'CommitmentReleased', 'RepaymentPosted',
@@ -333,7 +336,7 @@ CREATE TABLE AuditEvent (
         'TransactionFailed', 'InterruptionObserved'
     )),
     CHECK (Outcome IN ('Success', 'Denied', 'Failed', 'Interrupted')),
-    CHECK (SubjectType IN ('User', 'UserRole', 'BorrowerProfile', 'LoanRequest', 'RequestEvaluation', 'FundingCommitment', 'Loan', 'Repayment', 'OversightNote', 'Attempt')),
+    CHECK (SubjectType IN ('Role', 'RolePermission', 'User', 'UserRole', 'BorrowerProfile', 'LoanRequest', 'RequestEvaluation', 'FundingCommitment', 'Loan', 'Repayment', 'OversightNote', 'Attempt')),
     CHECK (ServiceActor IS NULL OR ServiceActor IN (
         'Bootstrap', 'Assessment', 'Activation', 'Release', 'Expiration', 'RepaymentCompletion',
         'Delinquency', 'Recovery'
@@ -372,7 +375,7 @@ CREATE TABLE AuditChange (
         'OutstandingAfter', 'OutstandingBefore', 'OverduePrincipal', 'PasswordHash',
         'PendingTotal', 'PolicyCode', 'Principal', 'PrivateEmailCipher', 'PublicAlias',
         'Purpose', 'ReleasedAt', 'RequestID', 'RequestState', 'Result', 'RevokedAt', 'RoleCode',
-        'StatusReason', 'SubmittedAt', 'SubmittedIncomeCipher', 'SubmittedObligationsCipher',
+        'Configuration', 'StatusReason', 'SubmittedAt', 'SubmittedIncomeCipher', 'SubmittedObligationsCipher',
         'TerminalReason', 'UserID'
     )),
 

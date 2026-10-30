@@ -68,12 +68,14 @@ SELECT '5. FORCED ROLLBACK: audit failure undoes the cancellation and all its au
 CALL sp_create_loan_request(1, 'Midterm rollback example', '300', 3);
 SET @rollback_request = (SELECT MAX(RequestID) FROM LoanRequest WHERE BorrowerID = 1);
 SET @audit_before = (SELECT COUNT(*) FROM AuditEvent);
+SET @success_before = (SELECT COUNT(*) FROM AuditEvent WHERE Outcome='Success');
 SET @changes_before = (SELECT COUNT(*) FROM AuditChange);
 SET @midterm_fail_audit = 1;
 CALL midterm_reject('CALL sp_cancel_draft(1, ''Borrower'', @rollback_request, 0, ''Force failure'')', 1644, 'Injected audit failure returned');
 SET @midterm_fail_audit = 0;
 CALL midterm_assert((SELECT RequestState = 'Draft' AND RowVersion = 0 AND TerminalReason IS NULL FROM LoanRequest WHERE RequestID = @rollback_request), 'Rollback restores Draft version and reason');
-CALL midterm_assert((SELECT COUNT(*) = @audit_before FROM AuditEvent), 'Rollback removes new audit event');
+CALL midterm_assert((SELECT COUNT(*) = @audit_before+1 FROM AuditEvent), 'Rollback retains only separate failure observation');
+CALL midterm_assert((SELECT COUNT(*)=0 FROM AuditEvent WHERE EventType='RequestCancelled' AND SubjectKey=CAST(@rollback_request AS CHAR)), 'No cancellation success after audit failure');
 CALL midterm_assert((SELECT COUNT(*) = @changes_before FROM AuditChange), 'Rollback removes partial audit changes');
 SELECT RequestID, RequestState, RowVersion, TerminalReason FROM LoanRequest WHERE RequestID = @rollback_request;
 
@@ -98,7 +100,7 @@ CALL midterm_reject('CALL sp_cancel_draft(1, ''Borrower'', 101, 4, ''Funded'')',
 CALL midterm_reject('DELETE FROM LoanRequest WHERE RequestID = @rollback_request', 1644, 'Unreferenced Draft deletion denied');
 CALL midterm_reject('DELETE FROM LoanRequest WHERE RequestID = 101', 1644, 'Referenced request deletion denied before FK check');
 CALL midterm_assert((SELECT RequestState = 'Draft' AND RowVersion = 0 FROM LoanRequest WHERE RequestID = @rollback_request), 'All rejected actions leave Draft unchanged');
-CALL midterm_assert((SELECT COUNT(*) = @audit_before FROM AuditEvent), 'Rejected actions do not invent success audits');
+CALL midterm_assert((SELECT COUNT(*) = @success_before FROM AuditEvent WHERE Outcome='Success'), 'Rejected actions do not invent success audits');
 
 -- Restricted owners may still cancel, without permitting new borrowing.
 SET @account_version = (SELECT RowVersion FROM `User` WHERE UserID = 1);

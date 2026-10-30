@@ -1,0 +1,15 @@
+DROP PROCEDURE sp_lock_users;
+DROP PROCEDURE sp_require_role;
+DROP PROCEDURE sp_require_no_live_participation;
+DROP PROCEDURE sp_early_audit;
+DROP PROCEDURE sp_submission_exposure;
+DROP PROCEDURE sp_create_loan_request;
+DROP PROCEDURE sp_create_user;
+DROP PROCEDURE sp_set_role;
+DROP PROCEDURE sp_set_account_status;
+DROP PROCEDURE sp_save_profile;
+DROP PROCEDURE sp_update_loan_request;
+DROP PROCEDURE sp_clear_submission;
+DROP PROCEDURE sp_prepare_submission;
+DROP PROCEDURE sp_submit_request;
+DROP PROCEDURE sp_cancel_draft;

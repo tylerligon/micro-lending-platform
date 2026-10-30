@@ -1,5 +1,8 @@
 # Micro-Lending Platform — Technical Design Document
 
+> **October 30 entitlement implementation extension (pending review):** [Current contract](Entitlements.md) adds configurable permissions, custom roles, scoped reads and a local administrator console. The original 15-table design/dictionary remains the historical baseline; the extended SQL model has 17 tables, 126 columns and 29 FKs. Earlier statements that no SQL implementation exists are historical and superseded by README/Milestones evidence.
+
+
 Version: **1.2** · October 19, 2026 · Requirements baseline: **FRD 1.2**  
 Course: CS 437 Database Systems Implementation
 
@@ -1175,3 +1178,44 @@ execution → demo evidence. Current assertions test artifact consistency and re
 calculations; they are not MySQL concurrency, rollback, encryption-boundary or API tests.
 Fixture crypto round-trips test the materializer only. No native diagrams.net editing
 round-trip has been performed; source/XML and direct-export agreement are checked.
+
+## 11. Entitlement implementation amendment — October 30, 2026
+
+[Entitlements](Entitlements.md) is the current detailed contract for the new Permission
+and RolePermission tables and expanded Role definition. It supersedes original role-name
+allowlists and fixed 15-table counts for the extended build. The 15-table JSON dictionary
+and diagram verifier remain baseline artifacts, not validators of this extension.
+
+For this implementation, procedures own the complete action transaction; helpers do not
+commit. This supersedes the application-owned transaction proposal in §2 for implemented
+actions. Submission retains its same-connection prepare/finish protocol. Do not nest calls
+inside caller-owned transactions. SQL SECURITY DEFINER uses the trusted installer; runtime
+accounts require explicit narrow grants, never routine-wide EXECUTE.
+
+The audit amendment adds RoleConfigured/PermissionConfigured events, a safe Configuration
+change field, and validates custom acting roles by immutable category. Broader audit-feed
+reads and granular denial classification are not implemented by this increment.
+
+### 11.1 Expanded administration implementation
+
+The current implementation replaces the single-operator console with separate User-based
+sessions, a bounded concurrent HTTP server, per-action connections, post-rollback denial
+and failure observations, local structured tracing/metrics and tested alert/recovery rules.
+The current detailed contract is [Entitlements.md](Entitlements.md); operational rules and
+response steps are in [ops/README.md](../ops/README.md). Sessions are process memory, expire
+on restart, and do not add a table. The scrypt format described there supersedes the
+unimplemented Argon2 proposal for these application logins. No dependency installation or
+FastAPI runtime is required for this administration application; the original full lending
+API/worker remains future design, pending instructor architecture clarification.
+
+| EventType | SubjectType | Actor | Allowed AuditChange fields |
+| --- | --- | --- | --- |
+| `RoleConfigured` | Role | Administrator | Configuration |
+| `PermissionConfigured` | RolePermission (RoleCode/PermissionCode) | Administrator | Configuration |
+| `PasswordProvisioned` | User | Bootstrap (fresh build) | PasswordHash |
+
+Configuration subjects are actual Role/RolePermission keys, not Attempt subjects.
+SQL handlers use stacked diagnostics, roll back, then persist observed failure evidence.
+Fallback is local and bounded if MySQL evidence persistence fails; it is not automatic
+replay or host-crash durability. Runtime accounts cannot read raw audit or modify base
+users. Do not grant helper execution except the explicitly trusted gateway entrypoints.

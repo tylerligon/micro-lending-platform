@@ -114,19 +114,20 @@ CALL test_reject('CALL sp_submit_request(@borrower, @request, @ml_submit_context
 CALL test_assert((SELECT RequestState = 'Draft' FROM LoanRequest WHERE RequestID = @request), 'Lost transaction leaves Draft');
 
 -- Force an audit error after business writes. The SAME connection checks rollback.
-SET @events = (SELECT COUNT(*) FROM AuditEvent);
+SET @events = (SELECT COUNT(*) FROM AuditEvent WHERE Outcome='Success');
 SET @force_audit_failure = 1;
 CALL test_reject('CALL sp_update_loan_request(@borrower, @request, 1, ''Rollback'', ''900'', 6)', 1644);
 SET @force_audit_failure = 0;
 CALL test_assert((SELECT Purpose = 'Updated purpose' AND RowVersion = 1 FROM LoanRequest WHERE RequestID = @request), 'Failed edit rolled back');
-CALL test_assert((SELECT COUNT(*) = @events FROM AuditEvent), 'Failed edit audit rolled back');
+CALL test_assert((SELECT COUNT(*) = @events FROM AuditEvent WHERE Outcome='Success'), 'Failed edit success audit rolled back');
+CALL test_assert((SELECT COUNT(*)>0 FROM AuditEvent WHERE EventType='TransactionFailed' AND ReasonCode='INTEGRITY_FAILURE'), 'Separate failure evidence survives rollback');
 CALL sp_prepare_submission(@borrower, @request, 1);
 SET @force_audit_failure = 1;
 CALL test_reject('CALL sp_submit_request(@borrower, @request, @ml_submit_context, ''1000'', ''100'', X''11'', X''12'', X''13'')', 1644);
 SET @force_audit_failure = 0;
 CALL test_assert((SELECT RequestState = 'Draft' AND RowVersion = 1 FROM LoanRequest WHERE RequestID = @request), 'Failed submission rolled back');
 CALL test_assert((SELECT COUNT(*) = 0 FROM RequestEvaluation WHERE RequestID = @request), 'Failed submission evaluation rolled back');
-CALL test_assert((SELECT COUNT(*) = @events FROM AuditEvent), 'Failed submission audit rolled back');
+CALL test_assert((SELECT COUNT(*) = @events FROM AuditEvent WHERE Outcome='Success'), 'Failed submission audit rolled back');
 CALL test_assert(@ml_submit_context IS NULL, 'Failure clears submission context');
 
 CALL sp_prepare_submission(@borrower, @request, 1);
@@ -170,7 +171,7 @@ CALL test_assert((SELECT COUNT(*) = 0 FROM AuditChange WHERE FieldName IN ('Priv
     AND (OldValue IS NOT NULL OR NewValue IS NOT NULL)), 'Private audit values redacted');
 CALL test_assert((SELECT COUNT(*) = 2 FROM AuditEvent WHERE EventType = 'RequestSubmitted'), 'Exactly two successful submissions');
 -- Extra rejection/rollback coverage for all four account/profile writes.
-SET @events = (SELECT COUNT(*) FROM AuditEvent);
+SET @events = (SELECT COUNT(*) FROM AuditEvent WHERE Outcome='Success');
 SET @users = (SELECT COUNT(*) FROM `User`);
 SET @version = (SELECT RowVersion FROM `User` WHERE UserID = @other);
 SET @force_audit_failure = 1;
@@ -183,7 +184,7 @@ CALL test_assert((SELECT COUNT(*) = @users FROM `User`), 'Failed user creation r
 CALL test_assert((SELECT COUNT(*) = 0 FROM UserRole WHERE UserID = @other AND ActiveMarker = 1), 'Failed grant rolled back');
 CALL test_assert((SELECT AccountStatus = 'Active' AND RowVersion = @version FROM `User` WHERE UserID = @other), 'Failed status rolled back');
 CALL test_assert((SELECT RowVersion = 3 AND MonthlyIncomeCipher = X'21' FROM BorrowerProfile WHERE UserID = @borrower), 'Failed profile save rolled back');
-CALL test_assert((SELECT COUNT(*) = @events FROM AuditEvent), 'No partial success audits');
+CALL test_assert((SELECT COUNT(*) = @events FROM AuditEvent WHERE Outcome='Success'), 'No partial success audits');
 
 -- Prepared context/envelope checks, including case-only edits of frozen terms.
 CALL test_reject('UPDATE LoanRequest SET Purpose = LOWER(Purpose) WHERE RequestID = @request', 1644);

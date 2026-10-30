@@ -1,5 +1,8 @@
 # Implementation milestones
 
+> **October 30 entitlement implementation extension (pending review):** [Current contract](Entitlements.md) adds configurable permissions, custom roles, scoped reads and a local administrator console. The original 15-table design/dictionary remains the historical baseline; the extended SQL model has 17 tables, 126 columns and 29 FKs. Earlier statements that no SQL implementation exists are historical and superseded by README/Milestones evidence.
+
+
 Updated: October 21, 2026
 
 This file records implementation progress, test evidence, and explanations for
@@ -528,3 +531,38 @@ These are notes to consider later, not changes applied to the design documents:
   business requirements.
 
 Keep the SQL walkthrough here unless we later decide it belongs in the TDD.
+
+## Configurable entitlements
+
+October 30: reviewed implementation. Adds capability tables, custom-role
+configuration, local operator console, scoped reads and data-preserving migration.
+Tests and limitations are recorded in [Entitlements](Entitlements.md). Existing 44/86
+assertion suites passed on isolated MySQL8.4.6; no development database was modified.
+User approved this implementation for commit.
+
+### Expanded administration implementation
+
+Independent scrypt-backed administrator sign-in, hashed in-memory sessions, bounded
+concurrent request handling, per-action connections, denial/failure records after rollback,
+correlated request/SQL spans, protected monitoring and local alert/recovery are implemented.
+The complete contract and reproducible tests are in [Entitlements](Entitlements.md).
+
+Observed on isolated MySQL 8.4.6: revised midterm 45 and early-workflow 87 assertions,
+entitlement SQL cases, migration preservation, actual credential provisioning, runtime
+privilege denials, two administrator HTTP sessions, simultaneous edits, revocation,
+last-admin race, logout, evidence deduplication, real connection failure/fallback and
+recovery. Seven unit tests cover the associated security/telemetry boundaries. Sessions
+are single-instance memory; global policy serialization remains deliberate. No development
+database or external notification was used. User approved the completed change for commit.
+
+### Observability handout acceptance
+
+Mapped the supplied handout's nine deliverables to existing/new artifacts. Added real
+histograms and capacity gauges, protected metrics and trace views, explicit parent/child
+span identity, alert duration/context/links, and a disposable before/after experiment.
+Observed controlled-delay p50 181.68→30.07 ms and p95 224.68→38.36 ms over ten samples
+per phase; full timing controls/source hashes are in the JSON evidence. Nine unit tests,
+45/87 SQL checks, concurrency/security/migration checks and the metrics/trace/diagnosis
+integration passed. This is a local classroom manual-instrumentation implementation;
+there is no real connection pool, external monitoring backend or claimed production
+speedup. User approved these changes for commit.

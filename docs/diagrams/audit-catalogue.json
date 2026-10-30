@@ -1,5 +1,5 @@
 {
-  "version": "1.1",
+  "version": "1.2",
   "tdd_section": "8.1",
   "outcomes": [
     "Success",
@@ -17,7 +17,9 @@
     "Loan": "LoanID",
     "Repayment": "LoanID/RepaymentNumber",
     "OversightNote": "NoteID",
-    "Attempt": "ActionCode/target (see TDD \u00a78.1)"
+    "Attempt": "ActionCode/target (see TDD \u00a78.1)",
+    "Role": "RoleCode",
+    "RolePermission": "RoleCode/PermissionCode"
   },
   "service_actors": [
     "Bootstrap",
@@ -575,6 +577,52 @@
           "initiator": "optional_verified_user"
         }
       ]
+    },
+    {
+      "name": "RoleConfigured",
+      "subject": "Role",
+      "outcome": "Success",
+      "fields": [
+        "Configuration"
+      ],
+      "actors": [
+        {
+          "kind": "human",
+          "role": "Administrator",
+          "binding": "none"
+        }
+      ]
+    },
+    {
+      "name": "PermissionConfigured",
+      "subject": "RolePermission",
+      "outcome": "Success",
+      "fields": [
+        "Configuration"
+      ],
+      "actors": [
+        {
+          "kind": "human",
+          "role": "Administrator",
+          "binding": "none"
+        }
+      ]
+    },
+    {
+      "name": "PasswordProvisioned",
+      "subject": "User",
+      "outcome": "Success",
+      "fields": [
+        "PasswordHash"
+      ],
+      "actors": [
+        {
+          "kind": "service",
+          "service": "Bootstrap",
+          "binding": "fresh_build",
+          "initiator": "none"
+        }
+      ]
     }
   ],
   "protected_fields": {
@@ -595,7 +643,8 @@
   "bootstrap_contract": {
     "events": [
       "UserCreated",
-      "RoleGranted"
+      "RoleGranted",
+      "PasswordProvisioned"
     ],
     "requires_fresh_build": true,
     "requires_trusted_build_identity": true,

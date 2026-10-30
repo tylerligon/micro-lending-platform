@@ -1,0 +1,216 @@
+{
+  "scenario": "Unnecessary server-side wait in a read operation",
+  "injected_issue": "An explicitly added SELECT SLEEP(0.15) delays the response without changing its data",
+  "diagnosis": "The database round-trip child span dominates; admission waiting remains separately visible",
+  "remediation": "Remove the redundant wait; leave the response and database constraints unchanged",
+  "controls": "One client, same isolated MySQL server, same result, same instrumentation, no concurrent load",
+  "timing_boundary": "mysql CLI connection establishment plus server execution, not SQL engine time alone",
+  "percentile_method": "nearest-rank p95; p50 is median",
+  "samples_per_phase": 10,
+  "recorded_at": "2026-10-30T22:29:25.951325+00:00",
+  "python": "3.12.14",
+  "platform": "Linux",
+  "source_hashes": {
+    "app/admin_console.py": "45f94b5091a2cb00f229f7646a7304cb114fd3f3f49f03b0e70ff19b3eb0420a",
+    "app/telemetry.py": "9d55922304f2491b13c4dbec8e6183e79154ce05d047dfbf146165d7da9fa2fc",
+    "tests/observability/diagnose.py": "7379698772575126364b4157d63ebdc8c05f486da57a805e742061d2b918ff96"
+  },
+  "before": {
+    "durations_ms": [
+      197.55042499946285,
+      179.45366999992984,
+      224.67952399983915,
+      186.606686000232,
+      180.44629199994233,
+      180.45330200038734,
+      180.41861999972753,
+      182.90280700057338,
+      200.34088700049324,
+      178.66276099994138
+    ],
+    "p50_ms": 181.67805450048036,
+    "p95_ms": 224.67952399983915
+  },
+  "after": {
+    "durations_ms": [
+      32.45878600046126,
+      33.80534499956411,
+      27.57280100013304,
+      38.35855699981039,
+      28.686134000054153,
+      29.713371999605442,
+      30.430463999437052,
+      37.22282999933668,
+      28.242536999641743,
+      29.541168999458023
+    ],
+    "p50_ms": 30.071917999521247,
+    "p95_ms": 38.35855699981039
+  },
+  "example_trace": [
+    {
+      "time": 1793399365.986512,
+      "level": "INFO",
+      "service": "lending-admin",
+      "kind": "span",
+      "context_id": "efd888b70aaea6ced4e19dd9158a21b6",
+      "trace_id": "efd888b70aaea6ced4e19dd9158a21b6",
+      "span_id": "7794e03b757bf658",
+      "parent_span_id": "9aa81e6a5b54963e",
+      "name": "db.acquire_slot",
+      "component": "application",
+      "start_time": 1793399365.9864967,
+      "end_time": 1793399365.9865081,
+      "duration_ms": 0.01,
+      "outcome": "success"
+    },
+    {
+      "time": 1793399366.1831331,
+      "level": "INFO",
+      "service": "lending-admin",
+      "kind": "span",
+      "context_id": "efd888b70aaea6ced4e19dd9158a21b6",
+      "trace_id": "efd888b70aaea6ced4e19dd9158a21b6",
+      "span_id": "60fb995b7577c243",
+      "parent_span_id": "9aa81e6a5b54963e",
+      "name": "mysql.client_round_trip",
+      "component": "mysql",
+      "operation": "SELECT",
+      "start_time": 1793399365.987082,
+      "end_time": 1793399366.1831224,
+      "duration_ms": 196.02,
+      "outcome": "success"
+    },
+    {
+      "time": 1793399366.184057,
+      "level": "INFO",
+      "service": "lending-admin",
+      "kind": "request",
+      "context_id": "efd888b70aaea6ced4e19dd9158a21b6",
+      "trace_id": "efd888b70aaea6ced4e19dd9158a21b6",
+      "span_id": "9aa81e6a5b54963e",
+      "parent_span_id": null,
+      "name": "diagnostic_read",
+      "component": "application",
+      "action": "diagnostic_read",
+      "start_time": 1793399365.9864933,
+      "end_time": 1793399366.1840553,
+      "duration_ms": 197.55042499946285,
+      "outcome": "success"
+    }
+  ],
+  "metrics": {
+    "counters": {
+      "http_requests_total": 22,
+      "denials": 7,
+      "db_operations_total": 67,
+      "requests_success": 14,
+      "db_errors_total": 4,
+      "database_failures": 1,
+      "audit_failures": 1
+    },
+    "gauges": {
+      "db_connection_slots_capacity": 4,
+      "http_worker_capacity": 8,
+      "db_connection_slots_in_use": 0,
+      "http_requests_in_progress": 0
+    },
+    "histograms": {
+      "db_acquire_duration_seconds": {
+        "bounds": [
+          0.005,
+          0.01,
+          0.025,
+          0.05,
+          0.1,
+          0.25,
+          0.5,
+          1,
+          2.5,
+          5,
+          10
+        ],
+        "buckets": [
+          67,
+          67,
+          67,
+          67,
+          67,
+          67,
+          67,
+          67,
+          67,
+          67,
+          67
+        ],
+        "count": 67,
+        "sum": 0.0010285409935022471
+      },
+      "db_client_duration_seconds": {
+        "bounds": [
+          0.005,
+          0.01,
+          0.025,
+          0.05,
+          0.1,
+          0.25,
+          0.5,
+          1,
+          2.5,
+          5,
+          10
+        ],
+        "buckets": [
+          0,
+          0,
+          2,
+          55,
+          57,
+          67,
+          67,
+          67,
+          67,
+          67,
+          67
+        ],
+        "count": 67,
+        "sum": 3.766080690002127
+      },
+      "http_request_duration_seconds": {
+        "bounds": [
+          0.005,
+          0.01,
+          0.025,
+          0.05,
+          0.1,
+          0.25,
+          0.5,
+          1,
+          2.5,
+          5,
+          10
+        ],
+        "buckets": [
+          0,
+          0,
+          0,
+          11,
+          29,
+          42,
+          42,
+          42,
+          42,
+          42,
+          42
+        ],
+        "count": 42,
+        "sum": 3.978374990996599
+      }
+    },
+    "active_alerts": [
+      "audit_database_unavailable"
+    ],
+    "window_seconds": 60
+  },
+  "mysql_version": "8.4.6"
+}
