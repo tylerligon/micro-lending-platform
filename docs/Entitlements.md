@@ -1,9 +1,12 @@
 # Configurable entitlements and administration
 
-October 30, 2026 — implemented and approved for commit.
+> **Follow-up implementation:** [Table-driven request workflows](Table_Driven_Workflows.md) adds three policy tables, console controls and audited versioned changes. It also corrects grant selection to consider resource scope across all eligible roles. Current model: 20 tables / 136 columns / 33 FKs; the 17-table counts below describe the prior entitlement increment.
 
-The current implementation adds Permission and RolePermission to the original model:
-**17 application tables, 126 columns, 29 foreign keys**. Sessions and telemetry are
+October 30, 2026 — implemented entitlement contract, with the subsequent workflow amendment linked above.
+
+The entitlement increment added Permission and RolePermission, taking the original
+model to **17 tables, 126 columns and 29 FKs**. The current workflow extension brings
+the complete build to **20 tables, 136 columns and 33 FKs**. Sessions and telemetry are
 single-instance operational memory/files, not additional application tables. The
 [editable extension](diagrams/Entitlements.drawio) and [SVG](diagrams/06-entitlements.svg)
 define the additions to the original three-page lending model.
@@ -200,8 +203,8 @@ the handout, not dependencies added to this classroom application.
 
 | PDF deliverable | Current artifact and evidence |
 | --- | --- |
-| 1. ERD and normalized schema | Original lending ERD plus entitlement extension; 17-table schema with two added permission entities |
-| 2. DDL and representative seed | database/schema.sql, 025_entitlements.sql, reference/permission and fictional seed SQL |
+| 1. ERD and normalized schema | Original lending ERD plus permission/workflow extensions; current 20-table schema |
+| 2. DDL and representative seed | database/schema.sql, 024_entitlement_tables.sql, 026_request_workflow.sql, reference/policy and fictional seed SQL |
 | 3. Four database-backed operations | Sign-in lookup, permission matrix, role configuration, grant configuration and membership management |
 | 4. Structured request/database-error logs | operations.jsonl includes time, level, service, outcome, context/trace ID, span ID, safe operation name and timing |
 | 5. Counter, histogram and gauge | db_operations_total; db_client_duration_seconds and http_request_duration_seconds histograms; db_connection_slots_in_use/capacity and http_requests_in_progress gauges |

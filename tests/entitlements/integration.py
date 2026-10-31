@@ -37,7 +37,7 @@ def main():
                 if process.poll() is not None:raise AssertionError((directory/'server.log').read_text())
                 time.sleep(.1)
             else:raise AssertionError('MySQL startup timed out')
-            paths=['database/schema.sql','database/02_programmability/010_views.sql','database/02_programmability/011_midterm_reports.sql','database/02_programmability/020_functions.sql','database/02_programmability/025_entitlements.sql','database/02_programmability/030_procedures.sql','database/02_programmability/031_draft_cancellation.sql','database/02_programmability/040_triggers.sql','database/02_programmability/041_request_delete_guard.sql','database/04_seed/010_reference_data.sql','database/04_seed/015_permissions.sql']
+            paths=['database/schema.sql','database/02_programmability/010_views.sql','database/02_programmability/011_midterm_reports.sql','database/02_programmability/020_functions.sql','database/02_programmability/024_entitlement_tables.sql','database/02_programmability/025_entitlements.sql','database/02_programmability/026_request_workflow.sql','database/02_programmability/030_procedures.sql','database/02_programmability/031_draft_cancellation.sql','database/02_programmability/040_triggers.sql','database/02_programmability/041_request_delete_guard.sql','database/04_seed/010_reference_data.sql','database/04_seed/015_permissions.sql','database/04_seed/016_request_workflow.sql']
             for db in ['micro_lending_midterm_test','micro_lending_workflow_test']:
                 sql(f'CREATE DATABASE {db} CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;')
                 for path in paths:sql((ROOT/path).read_text(),db)
@@ -46,23 +46,32 @@ def main():
                     result=sql((ROOT/'tests/sql/midterm_demo.sql').read_text(),db)
                     assert '45' in result.stdout
                     sql((ROOT/'tests/sql/entitlements.sql').read_text(),db)
-                    print('PASS 45 midterm checks and entitlement SQL cases',flush=True)
+                    sql((ROOT/'tests/sql/request_workflow.sql').read_text(),db)
+                    print(sql((ROOT/'database/05_validation/010_object_validation.sql').read_text(),db).stdout,flush=True)
+                    print('PASS 45 midterm checks, entitlement SQL and table-driven workflow regressions',flush=True)
                 else:
                     result=sql((ROOT/'tests/sql/early_workflows.sql').read_text(),db)
                     assert '87' in result.stdout
                     print('PASS 87 early-workflow checks',flush=True)
             # Upgrade from committed 1deed92, retaining existing business/audit records.
             upgrade='upgrade_test';sql('CREATE DATABASE '+upgrade+' CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;')
-            for path in [p for p in paths if '025_' not in p and '015_permissions' not in p]:
+            for path in [p for p in paths if not any(x in p for x in ('024_', '025_', '026_', '015_permissions', '016_request'))]:
                 old=subprocess.run(['git','show','1deed928192f0f203e4f780e1b1a87daa957951a:'+path],cwd=ROOT,text=True,capture_output=True,check=True).stdout
                 sql(old,upgrade)
             sql("INSERT INTO `User`(UserID,LoginName,DisplayName,PublicAlias,PrivateEmailCipher,PasswordHash) VALUES(1,'preserve','Preserve','preserve',X'01','test'); INSERT INTO UserRole(UserID,RoleCode) VALUES(1,'Borrower'); INSERT INTO BorrowerProfile(UserID,MonthlyIncomeCipher,ExternalObligationsCipher) VALUES(1,X'01',X'01'); CALL sp_create_loan_request(1,'Preserved Draft','300',3);",upgrade)
             snapshot='SELECT * FROM `User`; SELECT * FROM LoanRequest; SELECT * FROM UserRole; SELECT * FROM AuditEvent; SELECT * FROM AuditChange;'
             before=sql(snapshot,upgrade).stdout
             for path in ['database/migrations/020_entitlements.sql','database/02_programmability/025_entitlements.sql','database/04_seed/015_permissions.sql','database/migrations/021_replace_early_routines.sql','database/02_programmability/030_procedures.sql','database/02_programmability/031_draft_cancellation.sql']:
+                committed=subprocess.run(['git','show','189ed0f:'+path],cwd=ROOT,text=True,capture_output=True,check=True).stdout
+                sql(committed,upgrade)
+            for path in ['database/migrations/030_request_workflow.sql','database/02_programmability/025_entitlements.sql','database/02_programmability/026_request_workflow.sql','database/04_seed/016_request_workflow.sql','database/02_programmability/030_procedures.sql','database/02_programmability/031_draft_cancellation.sql']:
                 sql((ROOT/path).read_text(),upgrade)
             assert sql(snapshot,upgrade).stdout==before
-            print('PASS upgrade preserves users, requests, memberships and audit history',flush=True)
+            assert sql("SELECT COUNT(*) FROM RequestWorkflowTransition;",upgrade).stdout.splitlines()[-1]=='4'
+            sql("CALL sp_create_loan_request(1,'After table-driven upgrade','300',3);",upgrade)
+            upgraded_id=sql("SELECT RequestID FROM LoanRequest WHERE Purpose='After table-driven upgrade';",upgrade).stdout.splitlines()[-1]
+            sql("CALL sp_update_loan_request(1,"+upgraded_id+",0,'Upgraded edit','600',6);",upgrade)
+            print('PASS upgrade preserves users, requests, memberships and audit history; upgraded commands work',flush=True)
             db='micro_lending_midterm_test'
             # Add independently authenticated administrator; fictional seed passwords cannot log in.
             sql("CALL sp_create_user(5,'second_admin','Second Admin','second_admin',X'01','fixture-not-a-login');",db)
@@ -83,7 +92,8 @@ def main():
             sql("CREATE USER 'console_operator'@'localhost';",db)
             sql((ROOT/'database/entitlements_console_grants.sql').read_text().replace('micro_lending_midterm_demo',db),db)
             runtime_commands=[client,'--no-defaults','--protocol=TCP','--host=127.0.0.1',f'--port={port}','--user=console_operator']
-            for denied in ['UPDATE `User` SET AccountStatus=AccountStatus;','SELECT * FROM AuditEvent;','CALL sp_lock_policy();']:
+            for denied in ['UPDATE `User` SET AccountStatus=AccountStatus;','SELECT * FROM AuditEvent;','CALL sp_lock_policy();','UPDATE RequestWorkflowTransition SET IsEnabled=0;',
+                           "CALL sp_require_request_transition(5,NULL,'EditDraft',101,0,@r,@s,@e);"]:
                 result=subprocess.run(runtime_commands+[db],input=denied,text=True,capture_output=True)
                 assert result.returncode, 'Runtime privilege bypass'
             print('PASS runtime cannot write base users, read raw audit or execute internal lock helper',flush=True)
@@ -113,6 +123,19 @@ def main():
                     ca,cb=session_a['csrf'],session_b['csrf']
                     assert session_a['user_id']!=session_b['user_id']
                     assert http(a,'/matrix')[0]==200 and http(b,'/matrix')[0]==200
+                    status,rules=http(a,'/workflow');assert status==200 and len(rules)==4
+                    rule=next(x for x in rules if x['ActionCode']=='EditDraft')
+                    v=int(rule['RowVersion'])
+                    body=dict(action='EditDraft',state='Draft',enabled=False,version=v)
+                    assert http(unknown,'/workflow')[0]==401
+                    assert http(a,'/workflow',body)[0]==403
+                    assert http(a,'/workflow',body,ca)[0]==200
+                    assert http(b,'/workflow',body,cb)[0]==409
+                    assert http(a,'/workflow',dict(body,enabled=True,version=v+1),ca)[0]==200
+                    with ThreadPoolExecutor(2) as pool:
+                        attempts=list(pool.map(lambda x:http(x[0],'/workflow',dict(body,version=v+2),x[1]),[(a,ca),(b,cb)]))
+                    assert sorted(x[0] for x in attempts)==[200,409],attempts
+                    assert http(a,'/workflow',dict(body,enabled=True,version=v+3),ca)[0]==200
                     assert http(a,'/role',dict(code='NoCSRF'))[0]==403
                     def create(opener,csrf,role):
                         return http(opener,'/role',dict(code=role,category='Borrower',description='Concurrent test',active=True,version=None),csrf)

@@ -328,7 +328,7 @@ CREATE TABLE AuditEvent (
     CHECK (AttemptedOperationReference IS NULL
            OR CHAR_LENGTH(TRIM(AttemptedOperationReference)) > 0),
     CHECK (EventType IN (
-        'PasswordProvisioned', 'RoleConfigured', 'PermissionConfigured', 'UserCreated', 'AccountStatusChanged', 'RoleGranted', 'RoleRevoked', 'ProfileSaved',
+        'WorkflowConfigured', 'PasswordProvisioned', 'RoleConfigured', 'PermissionConfigured', 'UserCreated', 'AccountStatusChanged', 'RoleGranted', 'RoleRevoked', 'ProfileSaved',
         'RequestSaved', 'RequestSubmitted', 'AssessmentCompleted', 'ReviewApproved',
         'ReviewRejected', 'CommitmentAccepted', 'CommitmentApplied', 'LoanActivated',
         'RequestCancelled', 'RequestExpired', 'CommitmentReleased', 'RepaymentPosted',
@@ -336,7 +336,7 @@ CREATE TABLE AuditEvent (
         'TransactionFailed', 'InterruptionObserved'
     )),
     CHECK (Outcome IN ('Success', 'Denied', 'Failed', 'Interrupted')),
-    CHECK (SubjectType IN ('Role', 'RolePermission', 'User', 'UserRole', 'BorrowerProfile', 'LoanRequest', 'RequestEvaluation', 'FundingCommitment', 'Loan', 'Repayment', 'OversightNote', 'Attempt')),
+    CHECK (SubjectType IN ('WorkflowTransition', 'Role', 'RolePermission', 'User', 'UserRole', 'BorrowerProfile', 'LoanRequest', 'RequestEvaluation', 'FundingCommitment', 'Loan', 'Repayment', 'OversightNote', 'Attempt')),
     CHECK (ServiceActor IS NULL OR ServiceActor IN (
         'Bootstrap', 'Assessment', 'Activation', 'Release', 'Expiration', 'RepaymentCompletion',
         'Delinquency', 'Recovery'

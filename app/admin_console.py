@@ -115,14 +115,20 @@ class Database:
             "FROM `Role` r CROSS JOIN Permission p LEFT JOIN RolePermission rp ON rp.RoleCode=r.RoleCode "
             "AND rp.PermissionCode=p.PermissionCode ORDER BY r.RoleCode,p.PermissionCode; COMMIT;")
 
+    def workflow(self):
+        return self.query(f"START TRANSACTION; CALL sp_require_permission({literal(self.actor)},NULL,'permission.manage',NULL,@r); "
+            "SELECT t.ActionCode,t.FromState,t.ToState,a.PermissionCode,a.SuccessEventType,t.IsEnabled,t.RowVersion "
+            "FROM RequestWorkflowTransition t JOIN RequestWorkflowAction a USING(ActionCode) ORDER BY t.ActionCode,t.FromState; COMMIT;")
+
     def action(self, route, data):
         name, keys = {'/role':('sp_configure_role',['code','category','description','active','version']),
                       '/permission':('sp_configure_permission',['role','permission','scope','version']),
-                      '/membership':('sp_set_role',['user','role','grant'])}[route]
+                      '/membership':('sp_set_role',['user','role','grant']),
+                      '/workflow':('sp_set_request_transition',['action','state','enabled','version'])}[route]
         values = [data[k] for k in keys]
         for key,value in zip(keys,values):
             if key in ('version','user') and value is not None and type(value) is not int: raise ValueError('Integer required')
-            if key in ('active','grant') and type(value) is not bool: raise ValueError('Boolean required')
+            if key in ('active','grant','enabled') and type(value) is not bool: raise ValueError('Boolean required')
             if isinstance(value,str) and len(value)>255: raise ValueError('Value too long')
         sql = 'CALL '+name+'('+','.join(map(literal,[self.actor]+values))+');'
         parent = self.context
@@ -257,6 +263,7 @@ def make_server(port=8765, telemetry=None, sessions=None):
             if self.command=='GET':
                 if self.path=='/session': self.reply(200,{'csrf':row['csrf'],'user_id':row['user']})
                 elif self.path=='/matrix': self.reply(200,self.db.matrix())
+                elif self.path=='/workflow': self.reply(200,self.db.workflow())
                 elif self.path in ('/monitoring','/metrics','/trace'):
                     self.db.matrix() # Requires live permission.manage, not merely a session.
                     if self.path=='/metrics':
@@ -277,7 +284,7 @@ def make_server(port=8765, telemetry=None, sessions=None):
             if self.path=='/logout':
                 sessions.revoke(token)
                 self.reply(200,{},cookie='session=; HttpOnly; SameSite=Strict; Path=/; Max-Age=0'); return
-            if self.path not in ('/role','/permission','/membership'): raise ActionError('INVALID_INPUT',404)
+            if self.path not in ('/role','/permission','/membership','/workflow'): raise ActionError('INVALID_INPUT',404)
             self.reply(200,self.db.action(self.path,self.body()))
 
         def dispatch(self):
@@ -288,11 +295,11 @@ def make_server(port=8765, telemetry=None, sessions=None):
             self.db = Database(context=context,telemetry=telemetry,parent_span=span)
             telemetry.gauge('http_requests_in_progress',delta=1)
             telemetry.count('http_requests_total')
-            operation = self.path if self.path in ('/','/login','/logout','/session','/matrix','/monitoring','/metrics','/trace','/role','/permission','/membership') else '/unknown'
+            operation = self.path if self.path in ('/','/login','/logout','/session','/matrix','/monitoring','/metrics','/trace','/role','/permission','/membership','/workflow') else '/unknown'
             try:
                 self.handle_action()
                 telemetry.count('requests_success')
-                if self.command=='POST' and self.path in ('/role','/permission','/membership'): telemetry.audit_recovered()
+                if self.command=='POST' and self.path in ('/role','/permission','/membership','/workflow'): telemetry.audit_recovered()
                 outcome = 'success'
             except Exception as exc:
                 error = exc if isinstance(exc,ActionError) else ActionError('INVALID_INPUT',400) if isinstance(exc,(ValueError,KeyError,TypeError)) else ActionError('DB_ERROR',503)

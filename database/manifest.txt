@@ -7,13 +7,16 @@ database/schema.sql
 database/02_programmability/010_views.sql
 database/02_programmability/011_midterm_reports.sql
 database/02_programmability/020_functions.sql
+database/02_programmability/024_entitlement_tables.sql
 database/02_programmability/025_entitlements.sql
+database/02_programmability/026_request_workflow.sql
 database/02_programmability/030_procedures.sql
 database/02_programmability/031_draft_cancellation.sql
 database/02_programmability/040_triggers.sql
 database/02_programmability/041_request_delete_guard.sql
 database/04_seed/010_reference_data.sql
 database/04_seed/015_permissions.sql
+database/04_seed/016_request_workflow.sql
 database/05_validation/010_object_validation.sql
 
 # Optional fictional midterm seed: dedicated demo/test DB ONLY, never automatic on dev.

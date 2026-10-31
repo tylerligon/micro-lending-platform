@@ -1,8 +1,8 @@
--- Structural overview for the current 15-table design. Compare with these expectations.
+-- Structural overview for the extended table-driven design. Compare with these expectations.
 -- INFORMATION_SCHEMA is MySQL's built-in catalogue of tables, columns, and constraints.
 -- DATABASE() limits each query to the database selected for this connection.
 
--- Expected: 17 tables, 126 columns, 29 foreign keys, and 52 CHECK constraints.
+-- Expected: 20 tables, 136 columns, 33 foreign keys, and 58 CHECK constraints.
 SELECT COUNT(*) AS table_count FROM information_schema.TABLES WHERE TABLE_SCHEMA = DATABASE() AND TABLE_TYPE = 'BASE TABLE';
 SELECT COUNT(*) AS column_count FROM information_schema.COLUMNS
 WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME IN (
@@ -13,7 +13,7 @@ WHERE CONSTRAINT_SCHEMA = DATABASE();
 SELECT COUNT(*) AS check_count FROM information_schema.TABLE_CONSTRAINTS
 WHERE CONSTRAINT_SCHEMA = DATABASE() AND CONSTRAINT_TYPE = 'CHECK';
 
--- Expected: 17 rows, all using InnoDB.
+-- Expected: 20 rows, all using InnoDB.
 SELECT TABLE_NAME, ENGINE FROM information_schema.TABLES
 WHERE TABLE_SCHEMA = DATABASE() AND TABLE_TYPE = 'BASE TABLE' ORDER BY TABLE_NAME;
 
@@ -24,7 +24,7 @@ WHERE TABLE_SCHEMA = DATABASE()
        OR (TABLE_NAME IN ('Role', 'UserRole') AND COLUMN_NAME = 'RoleCode'))
 ORDER BY TABLE_NAME, COLUMN_NAME;
 
--- After the full early-workflow build: 26 procedures, 1 function, 4 views, 2 triggers.
+-- After the full early-workflow build: 28 procedures, 2 functions, 4 views, 2 triggers.
 SELECT ROUTINE_TYPE, COUNT(*) AS routine_count FROM information_schema.ROUTINES
 WHERE ROUTINE_SCHEMA = DATABASE() GROUP BY ROUTINE_TYPE ORDER BY ROUTINE_TYPE;
 SELECT COUNT(*) AS view_count FROM information_schema.VIEWS WHERE TABLE_SCHEMA = DATABASE();

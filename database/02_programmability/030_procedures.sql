@@ -132,6 +132,8 @@ CREATE PROCEDURE sp_create_loan_request (
 SQL SECURITY DEFINER
 BEGIN
     DECLARE v_ActingRole VARCHAR(16);
+    DECLARE v_NextState VARCHAR(20);
+    DECLARE v_Event VARCHAR(40);
     DECLARE v_Principal DECIMAL(18,2);
     DECLARE v_AccountStatus VARCHAR(16) DEFAULT NULL;
     DECLARE v_UserRoleID BIGINT UNSIGNED DEFAULT NULL;
@@ -151,7 +153,7 @@ BEGIN
    WHEN LOWER(v_Message) LIKE '%audit%failure%' THEN 'INTEGRITY_FAILURE' WHEN v_Number=1644 THEN 'INVALID_INPUT' ELSE 'DB_ERROR' END;
   BEGIN
    DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET @ml_audit_failed=1;
-   CALL sp_record_failure(p_BorrowerID,'sp_create_loan_request',v_Reason,COALESCE(@ml_context,UUID_TO_BIN(UUID())),v_Number<>1644 OR v_Reason='INTEGRITY_FAILURE');
+   CALL sp_record_failure(p_BorrowerID,'sp_create_loan_request',v_Reason,fn_action_context(),v_Number<>1644 OR v_Reason='INTEGRITY_FAILURE');
   END;
   RESIGNAL;
  END;
@@ -184,7 +186,8 @@ BEGIN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Borrower account must be Active';
     END IF;
 
-    CALL sp_require_permission(p_BorrowerID, NULL, 'request.create', NULL, v_ActingRole);
+    CALL sp_require_request_transition(p_BorrowerID, NULL, 'CreateDraft', NULL, NULL,
+        v_ActingRole, v_NextState, v_Event);
 
     SELECT UserID INTO v_ProfileUserID
     FROM BorrowerProfile WHERE UserID = p_BorrowerID FOR UPDATE;
@@ -193,25 +196,25 @@ BEGIN
     END IF;
 
     -- Submission fields remain NULL. The new request starts as Draft, version 0.
-    INSERT INTO LoanRequest (BorrowerID, Purpose, Principal, InstallmentCount)
-    VALUES (p_BorrowerID, TRIM(p_Purpose), v_Principal, p_InstallmentCount);
+    INSERT INTO LoanRequest (BorrowerID, Purpose, Principal, InstallmentCount, RequestState)
+    VALUES (p_BorrowerID, TRIM(p_Purpose), v_Principal, p_InstallmentCount, v_NextState);
     SET v_RequestID = LAST_INSERT_ID();
 
     -- The successful action and its safe audit details commit together.
     INSERT INTO AuditEvent (EventType, Outcome, ActorUserID, ActingRoleCode,
         TechnicalAccount, SubjectType, SubjectKey, ContextID)
-    VALUES ('RequestSaved', 'Success', p_BorrowerID, v_ActingRole, SESSION_USER(),
-            'LoanRequest', CAST(v_RequestID AS CHAR), COALESCE(@ml_context,UUID_TO_BIN(UUID())));
+    VALUES (v_Event, 'Success', p_BorrowerID, v_ActingRole, SESSION_USER(),
+            'LoanRequest', CAST(v_RequestID AS CHAR), fn_action_context());
     SET v_AuditEventID = LAST_INSERT_ID();
 
     INSERT INTO AuditChange (AuditEventID, FieldName, OldValue, NewValue) VALUES
         (v_AuditEventID, 'Purpose', NULL, TRIM(p_Purpose)),
         (v_AuditEventID, 'Principal', NULL, CAST(v_Principal AS CHAR)),
         (v_AuditEventID, 'InstallmentCount', NULL, CAST(p_InstallmentCount AS CHAR)),
-        (v_AuditEventID, 'RequestState', NULL, 'Draft');
+        (v_AuditEventID, 'RequestState', NULL, v_NextState);
 
     COMMIT;
-    SELECT v_RequestID AS RequestID, 'Draft' AS RequestState, 0 AS RowVersion;
+    SELECT v_RequestID AS RequestID, v_NextState AS RequestState, 0 AS RowVersion;
 END //
 
 -- FR-01: an Active Administrator creates an account; bootstrap is separate.
@@ -234,7 +237,7 @@ BEGIN
    WHEN LOWER(v_Message) LIKE '%audit%failure%' THEN 'INTEGRITY_FAILURE' WHEN v_Number=1644 THEN 'INVALID_INPUT' ELSE 'DB_ERROR' END;
   BEGIN
    DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET @ml_audit_failed=1;
-   CALL sp_record_failure(p_AdminID,'sp_create_user',v_Reason,COALESCE(@ml_context,UUID_TO_BIN(UUID())),v_Number<>1644 OR v_Reason='INTEGRITY_FAILURE');
+   CALL sp_record_failure(p_AdminID,'sp_create_user',v_Reason,fn_action_context(),v_Number<>1644 OR v_Reason='INTEGRITY_FAILURE');
   END;
   RESIGNAL;
  END;
@@ -252,7 +255,7 @@ BEGIN
     VALUES (TRIM(p_LoginName), TRIM(p_DisplayName), TRIM(p_PublicAlias), p_EmailCipher, p_PasswordHash);
     SET v_UserID = LAST_INSERT_ID();
     CALL sp_early_audit('UserCreated', p_AdminID, v_ActingRole, 'User', v_UserID,
-        COALESCE(@ml_context,UUID_TO_BIN(UUID())), v_AuditID);
+        fn_action_context(), v_AuditID);
     INSERT INTO AuditChange (AuditEventID, FieldName, NewValue) VALUES
         (v_AuditID, 'LoginName', TRIM(p_LoginName)),
         (v_AuditID, 'PublicAlias', TRIM(p_PublicAlias)), (v_AuditID, 'AccountStatus', 'Active'),
@@ -283,7 +286,7 @@ BEGIN
    WHEN LOWER(v_Message) LIKE '%audit%failure%' THEN 'INTEGRITY_FAILURE' WHEN v_Number=1644 THEN 'INVALID_INPUT' ELSE 'DB_ERROR' END;
   BEGIN
    DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET @ml_audit_failed=1;
-   CALL sp_record_failure(p_AdminID,'sp_set_role',v_Reason,COALESCE(@ml_context,UUID_TO_BIN(UUID())),v_Number<>1644 OR v_Reason='INTEGRITY_FAILURE');
+   CALL sp_record_failure(p_AdminID,'sp_set_role',v_Reason,fn_action_context(),v_Number<>1644 OR v_Reason='INTEGRITY_FAILURE');
   END;
   RESIGNAL;
  END;
@@ -320,7 +323,7 @@ BEGIN
         VALUES (p_UserID, p_RoleCode, v_Time, p_AdminID);
         SET v_RoleID = LAST_INSERT_ID();
         CALL sp_early_audit('RoleGranted', p_AdminID, v_ActingRole, 'UserRole', v_RoleID,
-            COALESCE(@ml_context,UUID_TO_BIN(UUID())), v_AuditID);
+            fn_action_context(), v_AuditID);
         INSERT INTO AuditChange (AuditEventID, FieldName, NewValue) VALUES
             (v_AuditID, 'UserID', CAST(p_UserID AS CHAR)), (v_AuditID, 'RoleCode', p_RoleCode),
             (v_AuditID, 'GrantedAt', CAST(v_Time AS CHAR));
@@ -333,7 +336,7 @@ BEGIN
         END IF;
         -- Audit first, while the administrator's own role is still effective.
         CALL sp_early_audit('RoleRevoked', p_AdminID, v_ActingRole, 'UserRole', v_RoleID,
-            COALESCE(@ml_context,UUID_TO_BIN(UUID())), v_AuditID);
+            fn_action_context(), v_AuditID);
         SELECT GREATEST(UTC_TIMESTAMP(6), DATE_ADD(OccurredAt, INTERVAL 1 MICROSECOND))
             INTO v_Time FROM AuditEvent WHERE AuditEventID = v_AuditID;
         INSERT INTO AuditChange (AuditEventID, FieldName, NewValue)
@@ -366,7 +369,7 @@ BEGIN
    WHEN LOWER(v_Message) LIKE '%audit%failure%' THEN 'INTEGRITY_FAILURE' WHEN v_Number=1644 THEN 'INVALID_INPUT' ELSE 'DB_ERROR' END;
   BEGIN
    DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET @ml_audit_failed=1;
-   CALL sp_record_failure(p_AdminID,'sp_set_account_status',v_Reason,COALESCE(@ml_context,UUID_TO_BIN(UUID())),v_Number<>1644 OR v_Reason='INTEGRITY_FAILURE');
+   CALL sp_record_failure(p_AdminID,'sp_set_account_status',v_Reason,fn_action_context(),v_Number<>1644 OR v_Reason='INTEGRITY_FAILURE');
   END;
   RESIGNAL;
  END;
@@ -392,7 +395,7 @@ BEGIN
         CALL sp_require_no_live_participation(p_UserID);
     END IF;
     CALL sp_early_audit('AccountStatusChanged', p_AdminID, v_ActingRole, 'User', p_UserID,
-        COALESCE(@ml_context,UUID_TO_BIN(UUID())), v_AuditID);
+        fn_action_context(), v_AuditID);
     INSERT INTO AuditChange (AuditEventID, FieldName, OldValue, NewValue) VALUES
         (v_AuditID, 'AccountStatus', v_OldStatus, p_Status),
         (v_AuditID, 'StatusReason', NULL, TRIM(p_Reason));
@@ -423,7 +426,7 @@ BEGIN
    WHEN LOWER(v_Message) LIKE '%audit%failure%' THEN 'INTEGRITY_FAILURE' WHEN v_Number=1644 THEN 'INVALID_INPUT' ELSE 'DB_ERROR' END;
   BEGIN
    DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET @ml_audit_failed=1;
-   CALL sp_record_failure(p_BorrowerID,'sp_save_profile',v_Reason,COALESCE(@ml_context,UUID_TO_BIN(UUID())),v_Number<>1644 OR v_Reason='INTEGRITY_FAILURE');
+   CALL sp_record_failure(p_BorrowerID,'sp_save_profile',v_Reason,fn_action_context(),v_Number<>1644 OR v_Reason='INTEGRITY_FAILURE');
   END;
   RESIGNAL;
  END;
@@ -455,7 +458,7 @@ BEGIN
             RowVersion = v_Version WHERE UserID = p_BorrowerID;
     END IF;
     CALL sp_early_audit('ProfileSaved', p_BorrowerID, v_ActingRole, 'BorrowerProfile', p_BorrowerID,
-        COALESCE(@ml_context,UUID_TO_BIN(UUID())), v_AuditID);
+        fn_action_context(), v_AuditID);
     -- Field names only. Never put private plaintext, ciphertext or hashes in the audit feed.
     INSERT INTO AuditChange (AuditEventID, FieldName) VALUES
         (v_AuditID, 'MonthlyIncomeCipher'), (v_AuditID, 'ExternalObligationsCipher');
@@ -470,6 +473,8 @@ CREATE PROCEDURE sp_update_loan_request(IN p_BorrowerID BIGINT UNSIGNED,
 SQL SECURITY DEFINER
 BEGIN
     DECLARE v_ActingRole VARCHAR(16);
+    DECLARE v_NextState VARCHAR(20);
+    DECLARE v_Event VARCHAR(40);
     DECLARE v_Owner BIGINT UNSIGNED DEFAULT NULL;
     DECLARE v_State VARCHAR(20);
     DECLARE v_Version BIGINT UNSIGNED;
@@ -489,13 +494,14 @@ BEGIN
    WHEN LOWER(v_Message) LIKE '%audit%failure%' THEN 'INTEGRITY_FAILURE' WHEN v_Number=1644 THEN 'INVALID_INPUT' ELSE 'DB_ERROR' END;
   BEGIN
    DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET @ml_audit_failed=1;
-   CALL sp_record_failure(p_BorrowerID,'sp_update_loan_request',v_Reason,COALESCE(@ml_context,UUID_TO_BIN(UUID())),v_Number<>1644 OR v_Reason='INTEGRITY_FAILURE');
+   CALL sp_record_failure(p_BorrowerID,'sp_update_loan_request',v_Reason,fn_action_context(),v_Number<>1644 OR v_Reason='INTEGRITY_FAILURE');
   END;
   RESIGNAL;
  END;
     SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
     START TRANSACTION; CALL sp_lock_policy();
-    CALL sp_require_permission(p_BorrowerID, NULL, 'request.edit', p_RequestID, v_ActingRole);
+    CALL sp_require_request_transition(p_BorrowerID, NULL, 'EditDraft', p_RequestID, p_ExpectedVersion,
+        v_ActingRole, v_NextState, v_Event);
     IF NOT EXISTS (SELECT 1 FROM BorrowerProfile WHERE UserID = p_BorrowerID) THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Borrower profile is required';
     END IF;
@@ -504,9 +510,6 @@ BEGIN
     FROM LoanRequest WHERE RequestID = p_RequestID FOR UPDATE;
     IF v_Owner IS NULL OR v_Owner <> p_BorrowerID THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Owned request is required';
-    END IF;
-    IF v_State <> 'Draft' THEN
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Only Draft requests may be edited';
     END IF;
     IF p_ExpectedVersion IS NULL OR p_ExpectedVersion <> v_Version THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Stale request version';
@@ -517,16 +520,16 @@ BEGIN
        OR p_InstallmentCount IS NULL OR p_InstallmentCount NOT IN (3, 6) THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Valid purpose, principal 100 to 2000, and term 3 or 6 are required';
     END IF;
-    UPDATE LoanRequest SET Purpose = TRIM(p_Purpose), Principal = v_NewPrincipal,
+    UPDATE LoanRequest SET RequestState = v_NextState, Purpose = TRIM(p_Purpose), Principal = v_NewPrincipal,
         InstallmentCount = p_InstallmentCount, RowVersion = RowVersion + 1 WHERE RequestID = p_RequestID;
-    CALL sp_early_audit('RequestSaved', p_BorrowerID, v_ActingRole, 'LoanRequest', p_RequestID,
-        COALESCE(@ml_context,UUID_TO_BIN(UUID())), v_AuditID);
+    CALL sp_early_audit(v_Event, p_BorrowerID, v_ActingRole, 'LoanRequest', p_RequestID,
+        fn_action_context(), v_AuditID);
     INSERT INTO AuditChange (AuditEventID, FieldName, OldValue, NewValue) VALUES
         (v_AuditID, 'Purpose', v_Purpose, TRIM(p_Purpose)),
         (v_AuditID, 'Principal', CAST(v_Principal AS CHAR), CAST(v_NewPrincipal AS CHAR)),
         (v_AuditID, 'InstallmentCount', CAST(v_Term AS CHAR), CAST(p_InstallmentCount AS CHAR));
     COMMIT;
-    SELECT p_RequestID AS RequestID, 'Draft' AS RequestState, v_Version + 1 AS RowVersion;
+    SELECT p_RequestID AS RequestID, v_NextState AS RequestState, v_Version + 1 AS RowVersion;
 END //
 
 -- Internal helper: clear connection-local submission preparation context.
@@ -545,6 +548,8 @@ CREATE PROCEDURE sp_prepare_submission(IN p_BorrowerID BIGINT UNSIGNED,
 SQL SECURITY DEFINER
 BEGIN
     DECLARE v_ActingRole VARCHAR(16);
+    DECLARE v_NextState VARCHAR(20);
+    DECLARE v_Event VARCHAR(40);
     DECLARE v_Owner BIGINT UNSIGNED DEFAULT NULL;
     DECLARE v_State VARCHAR(20);
     DECLARE v_Version BIGINT UNSIGNED;
@@ -565,14 +570,15 @@ BEGIN
    WHEN LOWER(v_Message) LIKE '%audit%failure%' THEN 'INTEGRITY_FAILURE' WHEN v_Number=1644 THEN 'INVALID_INPUT' ELSE 'DB_ERROR' END;
   BEGIN
    DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET @ml_audit_failed=1;
-   CALL sp_record_failure(p_BorrowerID,'sp_prepare_submission',v_Reason,COALESCE(@ml_context,UUID_TO_BIN(UUID())),v_Number<>1644 OR v_Reason='INTEGRITY_FAILURE');
+   CALL sp_record_failure(p_BorrowerID,'sp_prepare_submission',v_Reason,fn_action_context(),v_Number<>1644 OR v_Reason='INTEGRITY_FAILURE');
   END;
   RESIGNAL;
  END;
     CALL sp_clear_submission();
     SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
     START TRANSACTION; CALL sp_lock_policy();
-    CALL sp_require_permission(p_BorrowerID, NULL, 'request.submit', p_RequestID, v_ActingRole);
+    CALL sp_require_request_transition(p_BorrowerID, NULL, 'SubmitRequest', p_RequestID, p_ExpectedVersion,
+        v_ActingRole, v_NextState, v_Event);
     SELECT RowVersion, MonthlyIncomeCipher, ExternalObligationsCipher
         INTO v_ProfileVersion, v_Income, v_Obligations
     FROM BorrowerProfile WHERE UserID = p_BorrowerID FOR UPDATE;
@@ -584,16 +590,13 @@ BEGIN
     IF v_Owner IS NULL OR v_Owner <> p_BorrowerID THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Owned request is required';
     END IF;
-    IF v_State <> 'Draft' THEN
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Only Draft requests may be submitted';
-    END IF;
     IF p_ExpectedVersion IS NULL OR p_ExpectedVersion <> v_Version THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Stale request version';
     END IF;
     SET v_Time = UTC_TIMESTAMP(6);
     CALL sp_submission_exposure(p_BorrowerID, p_RequestID, v_Time, v_Burden, v_NoDelinquency);
     SET @ml_submit_user = p_BorrowerID, @ml_submit_request = p_RequestID,
-        @ml_submit_context = COALESCE(@ml_context,UUID_TO_BIN(UUID())), @ml_submit_profile_version = v_ProfileVersion,
+        @ml_submit_context = fn_action_context(), @ml_submit_profile_version = v_ProfileVersion,
         @ml_submit_request_version = v_Version, @ml_submit_income_digest = SHA2(v_Income, 256),
         @ml_submit_obligations_digest = SHA2(v_Obligations, 256), @ml_submit_time = v_Time,
         @ml_submit_burden = v_Burden, @ml_submit_no_delinquency = v_NoDelinquency;
@@ -615,6 +618,8 @@ CREATE PROCEDURE sp_submit_request(IN p_BorrowerID BIGINT UNSIGNED,
 SQL SECURITY DEFINER
 BEGIN
     DECLARE v_ActingRole VARCHAR(16);
+    DECLARE v_NextState VARCHAR(20);
+    DECLARE v_Event VARCHAR(40);
     DECLARE v_Income DECIMAL(18,2);
     DECLARE v_Obligations DECIMAL(18,2);
     DECLARE v_EvaluationID BIGINT UNSIGNED;
@@ -631,7 +636,7 @@ BEGIN
    WHEN LOWER(v_Message) LIKE '%audit%failure%' THEN 'INTEGRITY_FAILURE' WHEN v_Number=1644 THEN 'INVALID_INPUT' ELSE 'DB_ERROR' END;
   BEGIN
    DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET @ml_audit_failed=1;
-   CALL sp_record_failure(p_BorrowerID,'sp_submit_request',v_Reason,COALESCE(@ml_context,UUID_TO_BIN(UUID())),v_Number<>1644 OR v_Reason='INTEGRITY_FAILURE');
+   CALL sp_record_failure(p_BorrowerID,'sp_submit_request',v_Reason,fn_action_context(),v_Number<>1644 OR v_Reason='INTEGRITY_FAILURE');
   END;
   RESIGNAL;
  END;
@@ -642,7 +647,8 @@ BEGIN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Matching prepared submission on this connection is required';
     END IF;
     RELEASE SAVEPOINT ml_submission_ready;
-    CALL sp_require_permission(p_BorrowerID, NULL, 'request.submit', p_RequestID, v_ActingRole);
+    CALL sp_require_request_transition(p_BorrowerID, NULL, 'SubmitRequest', p_RequestID, @ml_submit_request_version,
+        v_ActingRole, v_NextState, v_Event);
     -- Guard against changes even from another statement on the reserved connection.
     IF NOT EXISTS (SELECT 1 FROM LoanRequest WHERE RequestID = p_RequestID
         AND BorrowerID = p_BorrowerID AND RequestState = 'Draft'
@@ -670,14 +676,14 @@ BEGIN
         @ml_submit_no_delinquency, p_Context);
     SET v_EvaluationID = LAST_INSERT_ID();
     SET v_Version = @ml_submit_request_version + 1;
-    UPDATE LoanRequest SET RequestState = 'Submitted', PolicyCode = 'D1',
+    UPDATE LoanRequest SET RequestState = v_NextState, PolicyCode = 'D1',
         SubmittedAt = @ml_submit_time, SubmittedIncomeCipher = p_SubmittedIncomeCipher,
         SubmittedObligationsCipher = p_SubmittedObligationsCipher, RowVersion = v_Version
     WHERE RequestID = p_RequestID;
-    CALL sp_early_audit('RequestSubmitted', p_BorrowerID, v_ActingRole, 'LoanRequest', p_RequestID,
+    CALL sp_early_audit(v_Event, p_BorrowerID, v_ActingRole, 'LoanRequest', p_RequestID,
         p_Context, v_AuditID);
     INSERT INTO AuditChange (AuditEventID, FieldName, OldValue, NewValue) VALUES
-        (v_AuditID, 'RequestState', 'Draft', 'Submitted'),
+        (v_AuditID, 'RequestState', 'Draft', v_NextState),
         (v_AuditID, 'PolicyCode', NULL, 'D1'),
         (v_AuditID, 'SubmittedAt', NULL, CAST(@ml_submit_time AS CHAR)),
         (v_AuditID, 'EvaluationID', NULL, CAST(v_EvaluationID AS CHAR)),
@@ -685,7 +691,7 @@ BEGIN
         (v_AuditID, 'SubmittedObligationsCipher', NULL, NULL);
     COMMIT;
     CALL sp_clear_submission();
-    SELECT p_RequestID AS RequestID, 'Submitted' AS RequestState,
+    SELECT p_RequestID AS RequestID, v_NextState AS RequestState,
         v_Version AS RowVersion, v_EvaluationID AS EvaluationID;
 END //
 

@@ -1,17 +1,3 @@
-CREATE TABLE Permission (
- PermissionCode VARCHAR(40) COLLATE utf8mb4_0900_bin PRIMARY KEY,
- BorrowerScope VARCHAR(16), LenderScope VARCHAR(16), AdministratorScope VARCHAR(16), AuditorScope VARCHAR(16),
- AllowRestricted BOOLEAN NOT NULL DEFAULT FALSE
-) ENGINE=InnoDB;
-CREATE TABLE RolePermission (
- RoleCode VARCHAR(16) COLLATE utf8mb4_0900_bin NOT NULL,
- PermissionCode VARCHAR(40) COLLATE utf8mb4_0900_bin NOT NULL,
- ScopeCode VARCHAR(16) COLLATE utf8mb4_0900_bin NOT NULL,
- PRIMARY KEY(RoleCode,PermissionCode),
- FOREIGN KEY(RoleCode) REFERENCES `Role`(RoleCode),
- FOREIGN KEY(PermissionCode) REFERENCES Permission(PermissionCode),
- CHECK(ScopeCode IN ('SELF','OWN','PARTICIPATING','ALL'))
-) ENGINE=InnoDB;
 DELIMITER //
 CREATE PROCEDURE sp_lock_policy()
 BEGIN
@@ -47,33 +33,30 @@ END //
 CREATE PROCEDURE sp_require_permission(IN p_User BIGINT UNSIGNED,IN p_Role VARCHAR(16),
  IN p_Permission VARCHAR(40),IN p_Target BIGINT UNSIGNED,OUT p_Selected VARCHAR(16))
 BEGIN
- DECLARE v_Lock VARCHAR(16); DECLARE v_Status VARCHAR(16); DECLARE v_Scope VARCHAR(16);
- DECLARE v_Restricted BOOLEAN; DECLARE v_Owner BIGINT UNSIGNED;
+ DECLARE v_Lock VARCHAR(16); DECLARE v_Status VARCHAR(16);
  SET p_Selected=NULL;
- -- Baseline policy mutex; all configuration changes use the same lock.
  SELECT RoleCode INTO v_Lock FROM `Role` WHERE RoleCode='Administrator' FOR UPDATE;
  SELECT AccountStatus INTO v_Status FROM `User` WHERE UserID=p_User FOR UPDATE;
- SELECT ur.RoleCode,rp.ScopeCode,pp.AllowRestricted INTO p_Selected,v_Scope,v_Restricted
+ SELECT ur.RoleCode INTO p_Selected
  FROM UserRole ur JOIN `Role` r ON r.RoleCode=ur.RoleCode
  JOIN RolePermission rp ON rp.RoleCode=r.RoleCode JOIN Permission pp USING(PermissionCode)
  WHERE ur.UserID=p_User AND ur.ActiveMarker=1 AND r.IsActive=1
  AND (p_Role IS NULL OR r.RoleCode=BINARY p_Role) AND pp.PermissionCode=p_Permission
+ AND (v_Status='Active' OR (v_Status='Restricted' AND pp.AllowRestricted=1
+      AND r.RoleClass NOT IN ('Administrator','Auditor')))
+ AND (rp.ScopeCode='ALL'
+   OR (rp.ScopeCode='SELF' AND (p_Target IS NULL OR p_Target=p_User))
+   OR (rp.ScopeCode='OWN' AND (
+     (p_Permission='loan.read' AND EXISTS(SELECT 1 FROM Loan l JOIN LoanRequest q USING(RequestID)
+       WHERE l.LoanID=p_Target AND q.BorrowerID=p_User))
+     OR (p_Permission<>'loan.read' AND EXISTS(SELECT 1 FROM LoanRequest q
+       WHERE q.RequestID=p_Target AND q.BorrowerID=p_User))))
+   OR (rp.ScopeCode='PARTICIPATING' AND EXISTS(
+     SELECT 1 FROM Loan l JOIN FundingCommitment c ON c.RequestID=l.RequestID
+     JOIN OperationReceipt o USING(OperationID)
+     WHERE l.LoanID=p_Target AND c.CommitmentState='Applied' AND o.CallerUserID=p_User)))
  ORDER BY ur.RoleCode LIMIT 1 FOR UPDATE;
- IF p_Selected IS NULL OR v_Status IS NULL OR v_Status='Inactive'
- OR (v_Status='Restricted' AND (NOT v_Restricted OR p_Selected IN
- (SELECT RoleCode FROM `Role` WHERE RoleClass IN ('Administrator','Auditor')))) THEN
- SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT='Permission denied'; END IF;
- IF v_Scope='OWN' THEN
-  IF p_Permission='loan.read' THEN
-   SELECT r.BorrowerID INTO v_Owner FROM Loan l JOIN LoanRequest r USING(RequestID) WHERE l.LoanID=p_Target;
-  ELSE SELECT BorrowerID INTO v_Owner FROM LoanRequest WHERE RequestID=p_Target; END IF;
-  IF v_Owner IS NULL OR v_Owner<>p_User THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT='Owner required'; END IF;
- ELSEIF v_Scope='SELF' AND p_Target IS NOT NULL AND p_Target<>p_User THEN
- SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT='Self required';
- ELSEIF v_Scope='PARTICIPATING' AND NOT EXISTS(
- SELECT 1 FROM Loan l JOIN FundingCommitment c ON c.RequestID=l.RequestID
- JOIN OperationReceipt o USING(OperationID) WHERE l.LoanID=p_Target AND c.CommitmentState='Applied' AND o.CallerUserID=p_User) THEN
- SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT='Participation required'; END IF;
+ IF p_Selected IS NULL THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT='Permission denied'; END IF;
 END //
 CREATE PROCEDURE sp_protect_access_admin(IN p_User BIGINT UNSIGNED,IN p_Role VARCHAR(16),IN p_Grant BOOLEAN)
 BEGIN
@@ -98,7 +81,7 @@ BEGIN
    WHEN LOWER(v_Message) LIKE '%audit%failure%' THEN 'INTEGRITY_FAILURE' WHEN v_Number=1644 THEN 'INVALID_INPUT' ELSE 'DB_ERROR' END;
   BEGIN
    DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET @ml_audit_failed=1;
-   CALL sp_record_failure(p_Actor,'sp_configure_role',v_Reason,COALESCE(@ml_context,UUID_TO_BIN(UUID())),v_Number<>1644 OR v_Reason='INTEGRITY_FAILURE');
+   CALL sp_record_failure(p_Actor,'sp_configure_role',v_Reason,fn_action_context(),v_Number<>1644 OR v_Reason='INTEGRITY_FAILURE');
   END;
   RESIGNAL;
  END;
@@ -119,7 +102,7 @@ BEGIN
  UPDATE `Role` SET Description=TRIM(p_Description),IsActive=p_Active,RowVersion=RowVersion+1 WHERE RoleCode=p_Code;
  END IF;
  INSERT INTO AuditEvent(EventType,Outcome,ActorUserID,ActingRoleCode,TechnicalAccount,SubjectType,SubjectKey,ContextID)
- VALUES('RoleConfigured','Success',p_Actor,v_Role,SESSION_USER(),'Role',p_Code,COALESCE(@ml_context,UUID_TO_BIN(UUID())));
+ VALUES('RoleConfigured','Success',p_Actor,v_Role,SESSION_USER(),'Role',p_Code,fn_action_context());
  SET v_ID=LAST_INSERT_ID();
  INSERT INTO AuditChange VALUES(v_ID,'Configuration',v_Old,CONCAT(p_Class,':',p_Active,':',TRIM(p_Description)));
  COMMIT;
@@ -140,7 +123,7 @@ BEGIN
    WHEN LOWER(v_Message) LIKE '%audit%failure%' THEN 'INTEGRITY_FAILURE' WHEN v_Number=1644 THEN 'INVALID_INPUT' ELSE 'DB_ERROR' END;
   BEGIN
    DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET @ml_audit_failed=1;
-   CALL sp_record_failure(p_Actor,'sp_configure_permission',v_Reason,COALESCE(@ml_context,UUID_TO_BIN(UUID())),v_Number<>1644 OR v_Reason='INTEGRITY_FAILURE');
+   CALL sp_record_failure(p_Actor,'sp_configure_permission',v_Reason,fn_action_context(),v_Number<>1644 OR v_Reason='INTEGRITY_FAILURE');
   END;
   RESIGNAL;
  END;
@@ -158,7 +141,7 @@ BEGIN
  ELSE INSERT INTO RolePermission VALUES(p_Role,p_Permission,p_Scope) ON DUPLICATE KEY UPDATE ScopeCode=p_Scope; END IF;
  UPDATE `Role` SET RowVersion=RowVersion+1 WHERE RoleCode=p_Role;
  INSERT INTO AuditEvent(EventType,Outcome,ActorUserID,ActingRoleCode,TechnicalAccount,SubjectType,SubjectKey,ContextID)
- VALUES('PermissionConfigured','Success',p_Actor,v_ActorRole,SESSION_USER(),'RolePermission',CONCAT(p_Role,'/',p_Permission),COALESCE(@ml_context,UUID_TO_BIN(UUID())));
+ VALUES('PermissionConfigured','Success',p_Actor,v_ActorRole,SESSION_USER(),'RolePermission',CONCAT(p_Role,'/',p_Permission),fn_action_context());
  SET v_ID=LAST_INSERT_ID(); INSERT INTO AuditChange VALUES(v_ID,'Configuration',v_Old,p_Scope);
  COMMIT;
 END //
@@ -175,7 +158,7 @@ BEGIN
    WHEN LOWER(v_Message) LIKE '%audit%failure%' THEN 'INTEGRITY_FAILURE' WHEN v_Number=1644 THEN 'INVALID_INPUT' ELSE 'DB_ERROR' END;
   BEGIN
    DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET @ml_audit_failed=1;
-   CALL sp_record_failure(p_Actor,'sp_read_requests',v_Reason,COALESCE(@ml_context,UUID_TO_BIN(UUID())),v_Number<>1644 OR v_Reason='INTEGRITY_FAILURE');
+   CALL sp_record_failure(p_Actor,'sp_read_requests',v_Reason,fn_action_context(),v_Number<>1644 OR v_Reason='INTEGRITY_FAILURE');
   END;
   RESIGNAL;
  END;
@@ -196,7 +179,7 @@ BEGIN
    WHEN LOWER(v_Message) LIKE '%audit%failure%' THEN 'INTEGRITY_FAILURE' WHEN v_Number=1644 THEN 'INVALID_INPUT' ELSE 'DB_ERROR' END;
   BEGIN
    DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET @ml_audit_failed=1;
-   CALL sp_record_failure(p_Actor,'sp_read_loan',v_Reason,COALESCE(@ml_context,UUID_TO_BIN(UUID())),v_Number<>1644 OR v_Reason='INTEGRITY_FAILURE');
+   CALL sp_record_failure(p_Actor,'sp_read_loan',v_Reason,fn_action_context(),v_Number<>1644 OR v_Reason='INTEGRITY_FAILURE');
   END;
   RESIGNAL;
  END;

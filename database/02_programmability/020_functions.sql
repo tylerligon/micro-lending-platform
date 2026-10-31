@@ -11,3 +11,16 @@ BEGIN
 END //
 
 DELIMITER ;
+
+-- Keep request contexts binary; an unset user variable otherwise has a text type.
+DELIMITER //
+CREATE FUNCTION fn_action_context() RETURNS BINARY(16)
+NOT DETERMINISTIC NO SQL
+BEGIN
+ IF @ml_context IS NULL THEN RETURN UUID_TO_BIN(UUID()); END IF;
+ IF OCTET_LENGTH(@ml_context) <> 16 THEN
+  SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT='Invalid action context';
+ END IF;
+ RETURN CAST(@ml_context AS BINARY(16));
+END //
+DELIMITER ;

@@ -8,6 +8,8 @@ CREATE PROCEDURE sp_cancel_draft(IN p_ActorID BIGINT UNSIGNED,
 SQL SECURITY DEFINER
 BEGIN
     DECLARE v_ActingRole VARCHAR(16);
+    DECLARE v_NextState VARCHAR(20);
+    DECLARE v_Event VARCHAR(40);
     DECLARE v_Owner BIGINT UNSIGNED DEFAULT NULL;
     DECLARE v_State VARCHAR(20);
     DECLARE v_Version BIGINT UNSIGNED;
@@ -24,7 +26,7 @@ BEGIN
    WHEN LOWER(v_Message) LIKE '%audit%failure%' THEN 'INTEGRITY_FAILURE' WHEN v_Number=1644 THEN 'INVALID_INPUT' ELSE 'DB_ERROR' END;
   BEGIN
    DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET @ml_audit_failed=1;
-   CALL sp_record_failure(p_ActorID,'sp_cancel_draft',v_Reason,COALESCE(@ml_context,UUID_TO_BIN(UUID())),v_Number<>1644 OR v_Reason='INTEGRITY_FAILURE');
+   CALL sp_record_failure(p_ActorID,'sp_cancel_draft',v_Reason,fn_action_context(),v_Number<>1644 OR v_Reason='INTEGRITY_FAILURE');
   END;
   RESIGNAL;
  END;
@@ -44,12 +46,10 @@ BEGIN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Request is unavailable';
     END IF;
     CALL sp_lock_users(p_ActorID, v_Owner);
-    CALL sp_require_permission(p_ActorID, p_ActingRole, 'request.cancel', p_RequestID, v_ActingRole);
+    CALL sp_require_request_transition(p_ActorID, p_ActingRole, 'CancelDraft', p_RequestID, p_ExpectedVersion,
+        v_ActingRole, v_NextState, v_Event);
     SELECT RequestState, RowVersion, TerminalReason INTO v_State, v_Version, v_OldReason
     FROM LoanRequest WHERE RequestID = p_RequestID FOR UPDATE;
-    IF v_State <> 'Draft' THEN
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Only Draft cancellation is implemented';
-    END IF;
     IF p_ExpectedVersion IS NULL OR p_ExpectedVersion <> v_Version THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Stale request version';
     END IF;
@@ -59,18 +59,18 @@ BEGIN
        OR EXISTS (SELECT 1 FROM Loan WHERE RequestID = p_RequestID) THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Draft has unexpected lending records';
     END IF;
-    UPDATE LoanRequest SET RequestState = 'Cancelled', TerminalReason = TRIM(p_Reason),
+    UPDATE LoanRequest SET RequestState = v_NextState, TerminalReason = TRIM(p_Reason),
         RowVersion = RowVersion + 1 WHERE RequestID = p_RequestID;
     INSERT INTO AuditEvent (EventType, Outcome, ActorUserID, ActingRoleCode,
         TechnicalAccount, SubjectType, SubjectKey, ContextID, ReasonCode)
-    VALUES ('RequestCancelled', 'Success', p_ActorID, p_ActingRole, SESSION_USER(),
-        'LoanRequest', CAST(p_RequestID AS CHAR), COALESCE(@ml_context,UUID_TO_BIN(UUID())),
+    VALUES (v_Event, 'Success', p_ActorID, v_ActingRole, SESSION_USER(),
+        'LoanRequest', CAST(p_RequestID AS CHAR), fn_action_context(),
         IF(v_Owner <> p_ActorID, 'ADMIN_DECISION', 'BORROWER_CANCELLED'));
     SET v_AuditID = LAST_INSERT_ID();
     INSERT INTO AuditChange (AuditEventID, FieldName, OldValue, NewValue) VALUES
-        (v_AuditID, 'RequestState', 'Draft', 'Cancelled'),
+        (v_AuditID, 'RequestState', v_State, v_NextState),
         (v_AuditID, 'TerminalReason', v_OldReason, TRIM(p_Reason));
     COMMIT;
-    SELECT p_RequestID AS RequestID, 'Cancelled' AS RequestState, v_Version + 1 AS RowVersion;
+    SELECT p_RequestID AS RequestID, v_NextState AS RequestState, v_Version + 1 AS RowVersion;
 END //
 DELIMITER ;

@@ -19,7 +19,8 @@
     "OversightNote": "NoteID",
     "Attempt": "ActionCode/target (see TDD \u00a78.1)",
     "Role": "RoleCode",
-    "RolePermission": "RoleCode/PermissionCode"
+    "RolePermission": "RoleCode/PermissionCode",
+    "WorkflowTransition": "ActionCode/FromState"
   },
   "service_actors": [
     "Bootstrap",
@@ -621,6 +622,21 @@
           "service": "Bootstrap",
           "binding": "fresh_build",
           "initiator": "none"
+        }
+      ]
+    },
+    {
+      "name": "WorkflowConfigured",
+      "subject": "WorkflowTransition",
+      "outcome": "Success",
+      "fields": [
+        "Configuration"
+      ],
+      "actors": [
+        {
+          "kind": "human",
+          "role": "Administrator",
+          "binding": "none"
         }
       ]
     }

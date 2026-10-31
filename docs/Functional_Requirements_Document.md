@@ -1,6 +1,8 @@
 # Functional Requirements Document
 
-> **October 30 entitlement implementation extension (pending review):** [Current contract](Entitlements.md) adds configurable permissions, custom roles, scoped reads and a local administrator console. The original 15-table design/dictionary remains the historical baseline; the extended SQL model has 17 tables, 126 columns and 29 FKs. Earlier statements that no SQL implementation exists are historical and superseded by README/Milestones evidence.
+> **Workflow clarification:** Existing FR-06/07/10 actions use stored state/action/transition rules, with audited, versioned enable/disable administration. Financial invariants and scope remain unchanged. See [implemented workflow contract](Table_Driven_Workflows.md).
+
+> **Model scope:** The lending dictionary below is the original 15-table baseline. [Entitlements](Entitlements.md) adds two tables and [request workflows](Table_Driven_Workflows.md) adds three; the current executable build has 20 tables, 136 columns and 33 FKs. Current implementation/test status is maintained in the linked contracts and README.
 
 ## Micro-Lending Platform
 
@@ -9,7 +11,7 @@
 | Item | Information |
 | --- | --- |
 | Project title | Micro-Lending Platform |
-| Prepared by | Anuvik Das; second contributor’s name awaiting team confirmation |
+| Prepared by | Tyler Ligon (initial draft); Tyler Ligon and Anuvik Das (joint October 19 revision) |
 | Course/section | CS 437 - Database Systems Implementation / section number awaiting team confirmation |
 | Date | October 19, 2026 |
 | Version | 1.2 |

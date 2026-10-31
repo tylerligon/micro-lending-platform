@@ -15,3 +15,9 @@ GRANT EXECUTE ON PROCEDURE micro_lending_midterm_demo.sp_auth_lookup TO 'console
 GRANT EXECUTE ON PROCEDURE micro_lending_midterm_demo.sp_session_user TO 'console_operator'@'localhost';
 GRANT EXECUTE ON PROCEDURE micro_lending_midterm_demo.sp_failure_exists TO 'console_operator'@'localhost';
 GRANT EXECUTE ON PROCEDURE micro_lending_midterm_demo.sp_record_failure TO 'console_operator'@'localhost';
+
+-- Workflow policy metadata is non-private; mutation is audited and version-checked.
+GRANT SELECT ON micro_lending_midterm_demo.RequestWorkflowState TO 'console_operator'@'localhost';
+GRANT SELECT ON micro_lending_midterm_demo.RequestWorkflowAction TO 'console_operator'@'localhost';
+GRANT SELECT ON micro_lending_midterm_demo.RequestWorkflowTransition TO 'console_operator'@'localhost';
+GRANT EXECUTE ON PROCEDURE micro_lending_midterm_demo.sp_set_request_transition TO 'console_operator'@'localhost';

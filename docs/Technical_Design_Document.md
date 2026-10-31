@@ -1,26 +1,31 @@
 # Micro-Lending Platform — Technical Design Document
 
-> **October 30 entitlement implementation extension (pending review):** [Current contract](Entitlements.md) adds configurable permissions, custom roles, scoped reads and a local administrator console. The original 15-table design/dictionary remains the historical baseline; the extended SQL model has 17 tables, 126 columns and 29 FKs. Earlier statements that no SQL implementation exists are historical and superseded by README/Milestones evidence.
+> **Table-driven workflow amendment:** [Current implementation](Table_Driven_Workflows.md) supersedes the no-workflow-table assumption for existing request commands. The extended build now has 20 tables, 136 columns and 33 FKs. Procedure-owned transactions remain authoritative for implemented actions.
+
+> **Model scope:** The lending dictionary below is the original 15-table baseline. [Entitlements](Entitlements.md) adds two tables and [request workflows](Table_Driven_Workflows.md) adds three; the current executable build has 20 tables, 136 columns and 33 FKs. Current implementation/test status is maintained in the linked contracts and README.
 
 
 Version: **1.2** · October 19, 2026 · Requirements baseline: **FRD 1.2**  
 Course: CS 437 Database Systems Implementation
 
 Start with [ERD and interview walkthrough](ERD.md). The [reusable work prompt](ERD_Work_Prompt.md)
-records the approved simplification. This document is the implementation blueprint;
-SQL, a running application, and MySQL integration results are not yet present.
+records the approved lending simplification. This document combines the full-release
+blueprint with implementation amendments. Account/request SQL and an administration
+application are implemented and integration-tested; later financial handlers remain planned.
 
 ## 1. Scope and source decisions
 
-The model has **15 application tables, 114 attributes (including three generated
-attributes), and 27 foreign-key constraints**. Two operational build tables are
-separate. There is one editable draw.io file with three pages and three SVG exports.
+The original lending model has **15 application tables, 114 attributes (including three
+generated attributes), and 27 foreign-key constraints**. Permission/workflow extensions
+bring the current build to 20 tables, 136 columns and 33 FKs. The two build-administration
+tables described later remain a separate proposed build design. There is one editable draw.io file with three pages and three SVG exports.
 The professor requires meaningful relationships and 3NF, not the former 23-table count.
 
 Approved changes from TDD 1.0: frozen private submission inputs move into LoanRequest;
 RequestEvaluation combines observations, assessment completion, and review decisions;
 the two fixed eligibility conditions become columns. D1 is fixed release configuration,
-so there are no policy-version/option or generic status-label tables. Each check retains
+so there are no policy-version/option tables. The later request-workflow extension
+adds explicit state/action/transition policy for implemented request operations. Each check retains
 a total exposure burden and delinquency result rather than component-level history.
 No structured loan IDs are hidden in JSON/CSV to imitate the deleted component table.
 
@@ -55,8 +60,10 @@ A basic same-origin HTML/JavaScript UI demonstrates FR-33. These are planned cho
 
 Browser → authenticated Command/Query API → MySQL; worker → restricted routines → MySQL.
 There is no distributed transaction or independent service database. No transaction
-stays open while waiting for a reviewer, lender, or user input. The application owns
-one connection/transaction per action; mutation procedures never independently commit.
+stays open while waiting for a reviewer, lender, or user input. For implemented commands, procedures own their whole-action transactions and helpers
+do not commit. Submission retains one connection from prepare through finish. The
+application-owned transaction approach in the original full-release proposal is
+superseded for those commands by the implementation contract in §11.
 Any error rolls back the whole business action. Denial/failure evidence is separate.
 
 Use strict SQL mode, including ONLY_FULL_GROUP_BY. Keep DECIMAL money exact; reject
@@ -223,20 +230,26 @@ record wheel hashes/OS/architecture and MySQL image digest, scan the resolved se
 run clean-build tests before calling any baseline tested. Exact targets may change with
 that evidence without changing the lending model; record changes in this section.
 
-### 2.5 Contributor responsibility and unresolved submission metadata
+### 2.5 Contributor responsibility and submission metadata
 
-Anuvik Das is identified by the project repository. The second contributor's name and
-course section have not been verified; the local path in the review is not sufficient
-proof of identity. FRD identification now states this explicitly instead of template
-brackets. The team must supply those two facts before final submission.
+Tyler Ligon wrote the initial FRD and TDD drafts, committed on October 14 as `da0af8e`
+and `7d46092`. Tyler and Anuvik Das then worked together on the revised design delivered
+in the October 19 commit `fc6e09d`, which was submitted under Anuvik's name.
 
-Proposed work split (assign actual names before implementation): database lead owns
-P1 schema/build/security and P2 funding transactions; application lead owns API/session,
-UI and P3 repayment/report integration. Both pair-review authorization, trigger/rollback
-and race evidence, and each can explain every ERD relationship. P4 reports/UI and P5
-performance/demo are joint acceptance gates. This assigns responsibilities to workstreams,
-not invented contributions. The semester plan's individual contribution history must
-reflect actual student work; AI-generated commits are not proof of each person's work.
+After that shared revision, responsibility generally follows the recorded commits.
+Tyler handled the October 20 repository cleanup, initial account schema, complete lending
+schema/audited Draft creation, and early SQL workflows (`5f6a194`, `3327a4f`, `05fd24e`,
+`947ad55`, `a9303d5`). Anuvik handled the professor-review snapshot (`4f1c2c4`), October 21
+midterm demonstration (`1deed92`), and October 30 entitlements, administration and
+observability increment (`189ed0f`). The imported package records repository provenance;
+it does not replace the team's account of initial drafting and joint October 19 work.
+
+Both contributors are responsible for understanding and explaining their submitted
+work. AI assistance was used. The table-driven workflow follow-up is a separate later increment, identified by
+its own Git history; it is not part of the shared October 19 revision. The course section remains to be supplied before final submission.
+
+The [consolidated follow-up responses](Midterm_Followup_Responses.md), Q22, record the
+same contribution timeline. Future workstream assignments remain team planning decisions.
 
 ## 3. Conventions and fixed reference data
 
@@ -1101,7 +1114,10 @@ role validity, owner/reviewer/receipt/initiator mismatches, unauthorized Bootstr
 status-explanation boundaries and redacted read projections. These checks share the
 catalogue with the fixture validator; a wrong-role CommitmentAccepted must fail.
 They validate the model and complete seed specification, not an application implementation.
-MySQL integration remains unverified. §10.1 defines fixture materialization and open gates.
+Runtime integration is separately verified for the implemented account/request/admin
+operations, historical fixture and workflow extension; see README and the current
+contracts. Full assessment/funding/repayment integration and the production encrypted
+fixture remain unverified. §10.1 defines those remaining acceptance gates.
 
 Before claiming implementation completion, execute: each PK/FK/UNIQUE/NOT NULL/CHECK
 failure; immutable-update/delete denial; authorization/GRANT/REVOKE cases; positive and
@@ -1166,7 +1182,7 @@ writes. Real application tests create new actions under a controlled server test
 
 | Priority | Completion evidence still required after this design revision | FR / rules / acceptance |
 | --- | --- | --- |
-| P0 | Instructor architecture answer; actual contributor names/section; tested dependency lock/digest when implementation begins | C-03/04/08; FR-33; AC-25/26 |
+| P0 | Instructor architecture answer; course section; tested dependency lock/digest when implementation begins | C-03/04/08; FR-33; AC-25/26 |
 | P1 | Actual 15-table DDL, ordered build, SQL seed load/counts, constraint/role denial tests | FR-01–05/29/32; BR-01–03/19/21/22; SEC-01/06/13/14; AC-01/03/23/24/26 |
 | P2 | Submission→activation routines/API; actual same-loan/multi-loan locks, cap, self-funding, deadlines, retries and rollback | FR-07–16/30/31; BR-04–13/20/23/24; AC-04–10/15/16/29/30 |
 | P3 | Allocation/completion trigger, observation and notes; final-payment once-only and injected/killed-session rollback | FR-17–23/28; BR-14–18/21/23/25; SEC-08/11/12; AC-11–18/20/27 |
@@ -1210,6 +1226,7 @@ API/worker remains future design, pending instructor architecture clarification.
 
 | EventType | SubjectType | Actor | Allowed AuditChange fields |
 | --- | --- | --- | --- |
+| `WorkflowConfigured` | WorkflowTransition (ActionCode/FromState) | Administrator | Configuration |
 | `RoleConfigured` | Role | Administrator | Configuration |
 | `PermissionConfigured` | RolePermission (RoleCode/PermissionCode) | Administrator | Configuration |
 | `PasswordProvisioned` | User | Bootstrap (fresh build) | PasswordHash |

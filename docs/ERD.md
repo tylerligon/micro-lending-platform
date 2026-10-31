@@ -1,10 +1,12 @@
 # Micro-Lending ERD — compact study and implementation guide
 
-> **October 30 entitlement implementation extension (pending review):** [Current contract](Entitlements.md) adds configurable permissions, custom roles, scoped reads and a local administrator console. The original 15-table design/dictionary remains the historical baseline; the extended SQL model has 17 tables, 126 columns and 29 FKs. Earlier statements that no SQL implementation exists are historical and superseded by README/Milestones evidence.
+> **Current extension:** [Request workflow tables](Table_Driven_Workflows.md) add three entities and four FKs to the entitlement extension. Current total: 20 tables / 136 columns / 33 FKs. [Editable source](diagrams/Request_Workflow.drawio) and [SVG](diagrams/07-request-workflow.svg) describe these relationships; the original lending diagrams below remain the 15-table baseline.
+
+> **Model scope:** The lending dictionary below is the original 15-table baseline. [Entitlements](Entitlements.md) adds two tables and [request workflows](Table_Driven_Workflows.md) adds three; the current executable build has 20 tables, 136 columns and 33 FKs. Current implementation/test status is maintained in the linked contracts and README.
 
 
-**Baseline:** FRD 1.2 · TDD 1.2 · October 19, 2026.  
-**Application model:** 15 entities, 114 attributes, 27 foreign-key constraints.  
+**Baseline:** FRD 1.2 · TDD 1.2 · October 19, 2026.
+**Original lending model:** 15 entities, 114 attributes, 27 foreign-key constraints.
 **Deliverable:** one editable draw.io file, three pages, three corresponding SVGs.
 
 Start with page 1 to explain the business, then use pages 2–3 to answer key/column
@@ -82,9 +84,9 @@ repayment allocation, or required role/transaction behavior is silently removed.
 
 ## Professor requirement checklist
 
-P1 = [supplied project requirements](course/Course_Project_Requirements.pdf), pp.6–7 and 12.  
-P2 = [supplied deliverables and demo requirements](course/Deliverables_and_Demo.pdf), p.1 and design/demo expectations.  
-P3 = [supplied semester plan](course/Semester_Plan.pdf), p.1.  
+P1 = [supplied project requirements](course/Course_Project_Requirements.pdf), pp.6–7 and 12.
+P2 = [supplied deliverables and demo requirements](course/Deliverables_and_Demo.pdf), p.1 and design/demo expectations.
+P3 = [supplied semester plan](course/Semester_Plan.pdf), p.1.
 P4 = [supplied ERD resources](course/ERD_Resources.pdf), conceptual-versus-relational mapping.
 
 | Requirement | Where this model demonstrates it | Source |
@@ -101,7 +103,7 @@ P4 = [supplied ERD resources](course/ERD_Resources.pdf), conceptual-versus-relat
 | 3NF | Key dependencies, distinct historical snapshots, no repeated role/component lists; TDD §5 | P1 p.12 |
 | Transactions, entitlements, audit, reporting | Financial entities and TDD §§6–8; audit tables and derived-report inset on page 3 | P2; P3 p.1 |
 | Editable source, SVGs, explanatory Markdown in docs/ | One three-page source, three exports and this explanation, committed together | P3 p.1 |
-| Agreement with FRD/TDD/schema | FRD 1.2/TDD 1.2 updated together; dictionary/source/export checks pass. SQL implementation consistency remains unverified | P2 p.1 |
+| Agreement with FRD/TDD/schema | FRD 1.2/TDD 1.2 updated together; dictionary/source/export checks pass. The lending baseline and current permission/workflow extension have separate executable SQL integration evidence; see the current contracts | P2 p.1 |
 
 The professor does not prescribe 11 views, 23 tables, 139 attributes, or 39 FKs.
 Diagram count is a presentation choice. Attribute/FK counts follow required facts and
@@ -207,8 +209,8 @@ and no fictitious multi-table FK from AuditEvent.SubjectKey.
 The [sample records](diagrams/sample-records.json) are a **complete fictional seed
 specification**. Every column has a value or explicit encryption/password directive;
 the materializer emits full SQL rows and omits generated columns. The verifier checks
-keys, field completeness, audit vocabulary/redaction and calculations. SQL loading is
-still unverified; see [TDD §10.1](Technical_Design_Document.md#101-fixture-and-implementation-acceptance-gates).
+keys, field completeness, audit vocabulary/redaction and calculations. The historical placeholder fixture has been loaded and tested in MySQL; the full
+encrypted materializer remains an open gate. See [TDD §10.1](Technical_Design_Document.md#101-fixture-and-implementation-acceptance-gates).
 
 1. **Repeated funding and activation:** borrower 1 owns requests 101 ($900) and 102
    ($600). Lender 2 contributes $300 then $200 to request 101; lender 3 supplies $400.
@@ -275,12 +277,13 @@ The exports were rendered to PNG and inspected for clipping, intersecting labels
 readability and coverage. One ERD source contains three pages; a separate application
 design source contains the two course-requested flow/wireframe views.
 
-**Limits:** SQL implementation consistency remains unverified: no SQL implementation
-exists in the reviewed repository. No MySQL transactions, real races, rollback, application
-encryption/authorization integration, or native diagrams.net UI round-trip were executed.
-The fixture materializer alone was checked for field-bound encryption and password
-hashing round-trips; that is not a tested service security boundary. These
-remain implementation/demo checks, explicitly planned in TDD §10 and FRD acceptance criteria.
+**Limits:** Full financial workflow implementation consistency remains unverified.
+This diagram verifier checks the original lending design, not runtime
+transactions. Separate integration tests now cover implemented SQL, rollback, scoped
+reads, administration, workflow policy and concurrent edits. Full financial races and
+production encryption integration remain open, as does a native diagrams.net UI
+round-trip. Materializer encryption/password checks alone are not a tested service
+security boundary. See the current contracts and TDD §10 acceptance gates.
 
 The editable draw.io XML is the layout source; SVGs are exported directly from it.
 `model.json` holds the typed dictionary and FK metadata. For a diagram-only layout edit,
@@ -305,7 +308,9 @@ dictionary, samples, and explanations together. No separate audit document is pr
 
 The three original pages and model.json describe the original 15-table baseline.
 Read them together with [Entitlements.drawio](diagrams/Entitlements.drawio) and
-[its SVG](diagrams/06-entitlements.svg) for the 17-table current schema. The extension
+[its SVG](diagrams/06-entitlements.svg) for the two-table entitlement addition. The current 20-table build also includes
+[Request_Workflow.drawio](diagrams/Request_Workflow.drawio) and
+[its SVG](diagrams/07-request-workflow.svg). The extension
 adds RolePermission as an identifying associative entity with two required parents
 (Role and Permission), each with 0..N child grants. Role adds three non-null attributes;
 Permission adds six attributes and RolePermission three. No original FK is removed.
