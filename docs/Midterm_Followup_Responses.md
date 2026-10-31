@@ -2,7 +2,7 @@
 
 **Prepared jointly by Tyler Ligon and Anuvik Das.** Updated October 30, 2026.
 
-**Implementation snapshot:** the table-driven workflow follow-up to commit `189ed0f`. The extended build has **20 tables, 136 columns and 33 foreign keys**. The original lending model remains the 15-entity baseline. Current validation passed nine Python unit tests, 5,023 design assertions, the existing 45 midterm and 87 early-workflow checks, and the expanded disposable integration suite on installed MySQL 26.7.0. The workflow follow-up is source-controlled separately from the earlier demo; it has not been applied to the development database. “Planned” identifies an unimplemented behavior, not an executed test result.
+The original lending design contains 15 entities. The current entitlement and workflow extensions bring the application schema to 20 tables. Implemented behavior and planned workflows are distinguished in the responses.
 
 ## Follow-up deliverables requested by the professor
 
